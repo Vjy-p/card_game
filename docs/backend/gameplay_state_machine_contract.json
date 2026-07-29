@@ -1,0 +1,8 @@
+{
+  "turn_phases": ["must_draw", "must_discard"],
+  "commands": {
+    "draw_card": {}, "discard_card": {}, "resolve_turn_timeout": {},
+    "declare_win": {}, "request_rematch": {}, "leave_game": {},
+    "reconnect_game": {}, "get_game_snapshot": {}
+  }
+}

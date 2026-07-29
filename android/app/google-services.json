@@ -1,0 +1,158 @@
+{
+  "project_info": {
+    "project_number": "1092733022095",
+    "project_id": "housie-d854b",
+    "storage_bucket": "housie-d854b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092733022095:android:8b4cf4b87a48f87e1225fa",
+        "android_client_info": {
+          "package_name": "com.example.card_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092733022095-3m2n79bh742ttk2hq52fc5gk7bs447rv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.card_game",
+            "certificate_hash": "08e2cf191e8b3c1d48983258fc3feeaae9c92456"
+          }
+        },
+        {
+          "client_id": "1092733022095-afa4u8vqv8ik5kja4ttksl9jpqbrosfm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.card_game",
+            "certificate_hash": "040ff7c43509e154d23d8fb4eed364ae74471dc8"
+          }
+        },
+        {
+          "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOxD1V2cZ1TZ2-jIC_tn56n-qKWDp8a1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cardGame"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092733022095:android:c9f83b9d9ede965c1225fa",
+        "android_client_info": {
+          "package_name": "com.example.housie_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092733022095-omu1hu8nt288q3bd9hr3g2a91i2acisc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.housie_admin",
+            "certificate_hash": "3b9be34ad3fd010e2b6116179df39be3b091a49d"
+          }
+        },
+        {
+          "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOxD1V2cZ1TZ2-jIC_tn56n-qKWDp8a1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cardGame"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092733022095:android:20de9d92d54884181225fa",
+        "android_client_info": {
+          "package_name": "com.game.thambola"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092733022095-hcfqsedkleni5sda07dpl1a1a70k1kdc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.game.thambola",
+            "certificate_hash": "3b9be34ad3fd010e2b6116179df39be3b091a49d"
+          }
+        },
+        {
+          "client_id": "1092733022095-q12mj8v5p9saipl8gemmdm6sjldur7h1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.game.thambola",
+            "certificate_hash": "040ff7c43509e154d23d8fb4eed364ae74471dc8"
+          }
+        },
+        {
+          "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOxD1V2cZ1TZ2-jIC_tn56n-qKWDp8a1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092733022095-r6atmutnp4mb7p7lbdufjm7uqlrue63k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cardGame"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

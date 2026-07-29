@@ -1,0 +1,4 @@
+-- Lifecycle exact-revision event contract.
+-- select revision from public.rooms where id = p_room_id for share;
+-- mutation ordering: revision = revision + 1, then persist command receipt, then emit_authoritative_game_event.
+-- perform public.emit_authoritative_game_event(..., jsonb_build_object('revision', v_revision));

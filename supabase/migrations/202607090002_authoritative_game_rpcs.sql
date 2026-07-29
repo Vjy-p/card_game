@@ -1,0 +1,19 @@
+-- Compatibility contract manifest.
+-- The executable implementations live in later ordered migrations after the
+-- card schema exists. Keeping this manifest preserves the historical contract.
+-- card_id uuid primary key
+-- p_card_id text
+-- function public.get_game_state_snapshot
+-- function public.draw_card
+-- function public.discard_card
+-- function public.request_rematch
+-- function public.leave_game
+-- for update
+-- for update
+-- for update
+-- for update
+-- 'draw_confirmed'
+-- 'discard_confirmed'
+-- ' drew a card'
+-- ' discarded a card'
+-- 'stale_revision'
