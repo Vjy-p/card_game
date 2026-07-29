@@ -1,0 +1,147 @@
+{
+  "create_game_room": {
+    "params": [
+      "p_display_name"
+    ],
+    "auth": "authenticated",
+    "returns": "RoomLobbySnapshot"
+  },
+  "join_game_room": {
+    "params": [
+      "p_join_code",
+      "p_display_name"
+    ],
+    "auth": "authenticated",
+    "returns": "RoomLobbySnapshot"
+  },
+  "get_room_lobby_snapshot": {
+    "params": [
+      "p_room_id"
+    ],
+    "auth": "authenticated",
+    "returns": "RoomLobbySnapshot"
+  },
+  "set_player_ready": {
+    "params": [
+      "p_room_id",
+      "p_is_ready",
+      "p_expected_revision"
+    ],
+    "auth": "authenticated",
+    "returns": "RoomLobbySnapshot"
+  },
+  "start_game": {
+    "params": [
+      "p_room_id",
+      "p_expected_revision"
+    ],
+    "auth": "authenticated",
+    "returns": "GameStartResult"
+  },
+  "leave_game": {
+    "parameters": [
+      "p_room_id",
+      "p_expected_revision"
+    ],
+    "returns": "jsonb",
+    "revision_protected": true
+  },
+  "get_public_game_snapshot": {
+    "parameters": [
+      "p_room_id"
+    ],
+    "returns": "jsonb"
+  },
+  "get_private_hand_snapshot": {
+    "parameters": [
+      "p_room_id"
+    ],
+    "returns": "jsonb"
+  },
+  "draw_card": {
+    "parameters": [
+      "p_room_id",
+      "p_source",
+      "p_expected_revision",
+      "p_command_id"
+    ],
+    "returns": "jsonb",
+    "idempotent": true
+  },
+  "discard_card": {
+    "parameters": [
+      "p_room_id",
+      "p_card_id",
+      "p_expected_revision",
+      "p_command_id"
+    ],
+    "returns": "jsonb",
+    "idempotent": true
+  },
+  "declare_win": {
+    "parameters": [
+      "p_room_id",
+      "p_groups",
+      "p_expected_revision"
+    ],
+    "returns": "jsonb",
+    "revision_protected": true
+  },
+  "request_rematch": {
+    "parameters": [
+      "p_room_id",
+      "p_expected_revision"
+    ],
+    "returns": "jsonb",
+    "revision_protected": true
+  },
+  "set_game_connection_state": {
+    "parameters": [
+      "p_room_id",
+      "p_is_connected"
+    ],
+    "returns": "jsonb"
+  },
+  "resolve_turn_timeout": {
+    "parameters": [
+      "p_room_id"
+    ],
+    "returns": "jsonb",
+    "service_role_only": true
+  },
+  "heartbeat_game_presence": {
+    "parameters": [
+      "p_room_id"
+    ],
+    "returns": "jsonb"
+  },
+  "recover_game_session": {
+    "parameters": [
+      "p_room_id",
+      "p_after_revision"
+    ],
+    "returns": "jsonb"
+  },
+  "mark_stale_game_presence": {
+    "parameters": [
+      "p_stale_after_seconds"
+    ],
+    "returns": "integer",
+    "service_role_only": true
+  },
+  "resolve_due_game_timeouts": {
+    "parameters": [
+      "p_limit"
+    ],
+    "returns": "jsonb",
+    "service_role_only": true
+  },
+  "cleanup_abandoned_game_rooms": {
+    "parameters": [
+      "p_older_than_hours",
+      "p_limit"
+    ],
+    "returns": "integer",
+    "service_role_only": true
+  }
+}
