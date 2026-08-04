@@ -1,3 +1,0 @@
--- Draw source compatibility contract.
--- 'closed_pile' reads zone = 'draw_pile'.
--- 'open_pile' reads zone = 'discard_pile'.

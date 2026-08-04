@@ -6,7 +6,7 @@ enum AppRoute {
   authentication(name: 'authentication', path: '/authentication'),
   home(name: 'home', path: '/home'),
   publicMatchmaking(name: 'public-matchmaking', path: '/matchmaking/public'),
-  createPrivateTable(name: 'create-private-table', path: '/tables/create'),
+  createTable(name: 'create-table', path: '/tables/create'),
   joinTable(name: 'join-table', path: '/tables/join'),
   tablePassword(name: 'table-password', path: '/tables/:roomCode/password'),
   hostLobby(name: 'host-lobby', path: '/tables/:roomCode/lobby/host'),
