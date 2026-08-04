@@ -1,18 +1,37 @@
 import 'package:card_game/features/home/application/state/home_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:card_game/features/online/room/domain/entities/online_table_entities.dart';
+import 'package:get/get.dart';
 
-final homeControllerProvider = NotifierProvider<HomeController, HomeState>(HomeController.new);
+class HomeController extends GetxController {
+  final Rxn<HomePrimaryAction> pendingAction = Rxn<HomePrimaryAction>();
 
-class HomeController extends Notifier<HomeState> {
-  @override
-  HomeState build() => const HomeState();
+  bool get isBusy => pendingAction.value != null;
+
+  RxList<PublicTableSummary> publicTables = <PublicTableSummary>[].obs;
+
+  RxList<RejoinableSession> rejoinableSessions = <RejoinableSession>[].obs;
+
+  // Rxn<PrivateTableInvite> invite;
+  // Rxn<RoomLobbySnapshot> lobby;
+
+  RxString error = ''.obs;
 
   void beginAction(HomePrimaryAction action) {
-    if (state.isBusy) return;
-    state = state.copyWith(pendingAction: action);
+    if (isBusy) return;
+    pendingAction.value = action;
   }
 
   void completeAction() {
-    state = state.copyWith(clearPendingAction: true);
+    pendingAction.value = null;
+  }
+
+  Future resumeRoom(String id) async {}
+
+  @override
+  void dispose() {
+    pendingAction.value = null;
+    rejoinableSessions.clear();
+    error.value = '';
+    super.dispose();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
@@ -5,38 +7,39 @@ import 'package:card_game/features/home/application/controllers/home_controller.
 import 'package:card_game/features/home/application/state/home_state.dart';
 import 'package:card_game/features/home/presentation/widgets/home_side_panel.dart';
 import 'package:card_game/features/home/presentation/widgets/primary_actions.dart';
+import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/route_manager.dart';
+import 'package:get/state_manager.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  void _handleAction(
-    BuildContext context,
-    WidgetRef ref,
-    HomePrimaryAction action,
-  ) {
-    final controller = ref.read(homeControllerProvider.notifier);
+  final controller = Get.find<HomeController>();
+
+  void _handleAction(HomePrimaryAction action) {
     controller.beginAction(action);
+    log('action $action');
 
-    // if (action == HomePrimaryAction.playOnline) {
-    //   controller.completeAction();
-    //   context.goNamed(AppRoute.publicMatchmaking.name);
-    //   return;
-    // }
+    if (action == HomePrimaryAction.playOnline) {
+      controller.completeAction();
+      Get.toNamed(AppRoute.publicMatchmaking.path);
 
-    // if (action == HomePrimaryAction.createPrivateTable) {
-    //   controller.completeAction();
-    //   context.goNamed(AppRoute.createPrivateTable.name);
-    //   return;
-    // }
+      return;
+    }
 
-    // if (action == HomePrimaryAction.joinTable) {
-    //   controller.completeAction();
-    //   context.goNamed(AppRoute.joinTable.name);
-    //   return;
-    // }
+    if (action == HomePrimaryAction.createTable) {
+      controller.completeAction();
+      Get.toNamed(AppRoute.createTable.path);
+      return;
+    }
+
+    if (action == HomePrimaryAction.joinTable) {
+      controller.completeAction();
+      Get.toNamed(AppRoute.joinTable.path);
+      return;
+    }
 
     if (action == HomePrimaryAction.playOffline) {
       controller.completeAction();
@@ -44,24 +47,20 @@ class HomeScreen extends ConsumerWidget {
       return;
     }
 
-    // final message = switch (action) {
-    //   HomePrimaryAction.playOnline => '',
-    //   HomePrimaryAction.createPrivateTable => '',
-    //   HomePrimaryAction.joinTable => '',
-    //   HomePrimaryAction.playOffline => '',
-    // };
+    final message = switch (action) {
+      HomePrimaryAction.playOnline => '',
+      HomePrimaryAction.createTable => '',
+      HomePrimaryAction.joinTable => '',
+      HomePrimaryAction.playOffline => '',
+    };
 
-    // ScaffoldMessenger.of(context)
-    //   ..hideCurrentSnackBar()
-    //   ..showSnackBar(SnackBar(content: Text(message)));
+    customToast(message: message);
+
     controller.completeAction();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeControllerProvider);
-    // final sessions = ref.watch(rejoinableSessionsProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -118,68 +117,60 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                // sessions.when(
-                //   loading: () =>
-                //       const SliverToBoxAdapter(child: SizedBox.shrink()),
-                //   error: (_, _) =>
-                //       const SliverToBoxAdapter(child: SizedBox.shrink()),
-                //   data: (items) => items.isEmpty
-                //       ? const SliverToBoxAdapter(child: SizedBox.shrink())
-                //       : SliverPadding(
-                //           padding: EdgeInsets.symmetric(
-                //             horizontal: wide ? AppSpacing.xxl : AppSpacing.lg,
-                //           ),
-                //           sliver: SliverToBoxAdapter(
-                //             child: Card(
-                //               child: ListTile(
-                //                 leading: const Icon(
-                //                   Icons.restore_rounded,
-                //                   color: AppColors.actionPrimary,
-                //                 ),
-                //                 title: Text(
-                //                   items.first.status == 'playing'
-                //                       ? 'Resume ${items.first.tableName}'
-                //                       : 'Return to ${items.first.tableName}',
-                //                 ),
-                //                 subtitle: Text(
-                //                   items.first.status == 'playing'
-                //                       ? 'Your active game is waiting.'
-                //                       : 'Your lobby is still active.',
-                //                 ),
-                //                 trailing: const Icon(
-                //                   Icons.chevron_right_rounded,
-                //                 ),
-                //                 onTap: () async {
-                //                   final session = items.first;
-                //                   await ref
-                //                       .read(
-                //                         roomLobbyControllerProvider.notifier,
-                //                       )
-                //                       .resumeRoom(session.roomId);
-                //                   if (!context.mounted) return;
-                //                   if (session.status == 'playing') {
-                //                     context.goNamed(
-                //                       AppRoute.gameTable.name,
-                //                       pathParameters: {
-                //                         'gameId': session.roomId,
-                //                       },
-                //                     );
-                //                   } else {
-                //                     context.goNamed(
-                //                       session.isHost
-                //                           ? AppRoute.hostLobby.name
-                //                           : AppRoute.guestLobby.name,
-                //                       pathParameters: {
-                //                         'roomCode': session.roomId,
-                //                       },
-                //                     );
-                //                   }
-                //                 },
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                // ),
+                Obx(() {
+                  return controller.rejoinableSessions.isEmpty
+                      ? const SliverToBoxAdapter(child: SizedBox.shrink())
+                      : SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: wide ? AppSpacing.xxl : AppSpacing.lg,
+                          ),
+                          sliver: SliverToBoxAdapter(
+                            child: Card(
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.restore_rounded,
+                                  color: AppColors.actionPrimary,
+                                ),
+                                title: Text(
+                                  controller.rejoinableSessions.first.status ==
+                                          'playing'
+                                      ? 'Resume ${controller.rejoinableSessions.first.tableName}'
+                                      : 'Return to ${controller.rejoinableSessions.first.tableName}',
+                                ),
+                                subtitle: Text(
+                                  controller.rejoinableSessions.first.status ==
+                                          'playing'
+                                      ? 'Your active game is waiting.'
+                                      : 'Your lobby is still active.',
+                                ),
+                                trailing: const Icon(
+                                  Icons.chevron_right_rounded,
+                                ),
+                                onTap: () async {
+                                  final session =
+                                      controller.rejoinableSessions.first;
+                                  await controller.resumeRoom(session.roomId);
+                                  if (!context.mounted) return;
+                                  if (session.status == 'playing') {
+                                    Get.toNamed(
+                                      AppRoute.gameTable.path,
+                                      arguments: {'gameId': session.roomId},
+                                    );
+                                  } else {
+                                    Get.toNamed(
+                                      session.isHost
+                                          ? AppRoute.hostLobby.path
+                                          : AppRoute.guestLobby.path,
+                                      arguments: {'roomCode': session.roomId},
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                }),
+
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(
                     wide ? AppSpacing.xxl : AppSpacing.lg,
@@ -198,9 +189,9 @@ class HomeScreen extends ConsumerWidget {
                                   Expanded(
                                     flex: 6,
                                     child: PrimaryActions(
-                                      state: state,
+                                      controller: controller,
                                       onAction: (action) =>
-                                          _handleAction(context, ref, action),
+                                          _handleAction(action),
                                     ),
                                   ),
                                   const SizedBox(width: AppSpacing.xl),
@@ -213,9 +204,8 @@ class HomeScreen extends ConsumerWidget {
                             : Column(
                                 children: [
                                   PrimaryActions(
-                                    state: state,
-                                    onAction: (action) =>
-                                        _handleAction(context, ref, action),
+                                    controller: controller,
+                                    onAction: (action) => _handleAction(action),
                                   ),
                                   const SizedBox(height: AppSpacing.xl),
                                   const HomeSidePanel(),

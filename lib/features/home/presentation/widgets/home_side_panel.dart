@@ -51,17 +51,17 @@ class HomeSidePanel extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        Card(
-          child: ListTile(
-            leading: const Icon(
-              Icons.history_rounded,
-              color: AppColors.actionPrimary,
-            ),
-            title: const Text('Recent games'),
-            subtitle: const Text('Your game history will appear here.'),
-          ),
-        ),
+        // const SizedBox(height: AppSpacing.lg),
+        // Card(
+        //   child: ListTile(
+        //     leading: const Icon(
+        //       Icons.history_rounded,
+        //       color: AppColors.actionPrimary,
+        //     ),
+        //     title: const Text('Recent games'),
+        //     subtitle: const Text('Your game history will appear here.'),
+        //   ),
+        // ),
       ],
     );
   }
