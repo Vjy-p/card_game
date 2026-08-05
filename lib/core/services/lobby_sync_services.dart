@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:card_game/features/online/room/data/repositories/supabase_room_repository.dart';
+import 'package:card_game/features/online/room/repositories/supabase_room_repository.dart';
 
 class LobbySyncService {
   LobbySyncService(this._repository);

@@ -19,7 +19,6 @@ class JoinTableScreen extends GetView<RoomController> {
 
     return Obx(() {
       final loading = controller.isLoading.value;
-      final error = controller.errorMessage.value;
 
       return Scaffold(
         appBar: AppBar(title: const Text('Join Table')),
@@ -156,32 +155,5 @@ class JoinTableScreen extends GetView<RoomController> {
         ),
       );
     });
-  }
-}
-
-class _BackendError extends StatelessWidget {
-  const _BackendError({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      liveRegion: true,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.errorContainer,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onErrorContainer,
-          ),
-        ),
-      ),
-    );
   }
 }

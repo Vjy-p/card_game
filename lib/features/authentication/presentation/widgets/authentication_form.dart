@@ -1,6 +1,6 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/authentication/application/controllers/authentication_controller.dart';
+import 'package:card_game/features/authentication/controllers/authentication_controller.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

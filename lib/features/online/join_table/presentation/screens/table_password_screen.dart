@@ -1,7 +1,7 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/online/join_table/application/controllers/table_password_controller.dart';
+import 'package:card_game/features/online/join_table/controllers/table_password_controller.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';

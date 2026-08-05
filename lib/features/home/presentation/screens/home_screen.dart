@@ -3,14 +3,13 @@ import 'dart:developer';
 import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/home/application/controllers/home_controller.dart';
-import 'package:card_game/features/home/application/state/home_state.dart';
+import 'package:card_game/features/home/controllers/home_controller.dart';
+import 'package:card_game/features/home/models/home_state.dart';
 import 'package:card_game/features/home/presentation/widgets/home_side_panel.dart';
 import 'package:card_game/features/home/presentation/widgets/primary_actions.dart';
 import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,36 +21,35 @@ class HomeScreen extends StatelessWidget {
     controller.beginAction(action);
     log('action $action');
 
+    if (action == HomePrimaryAction.playOffline) {
+      controller.completeAction();
+      AppRoute.offline.go();
+      return;
+    }
+
     if (action == HomePrimaryAction.playOnline) {
       controller.completeAction();
-      Get.toNamed(AppRoute.publicMatchmaking.path);
-
+      AppRoute.publicMatchmaking.go();
       return;
     }
 
     if (action == HomePrimaryAction.createTable) {
       controller.completeAction();
-      Get.toNamed(AppRoute.createTable.path);
+      AppRoute.createTable.go();
       return;
     }
 
     if (action == HomePrimaryAction.joinTable) {
       controller.completeAction();
-      Get.toNamed(AppRoute.joinTable.path);
-      return;
-    }
-
-    if (action == HomePrimaryAction.playOffline) {
-      controller.completeAction();
-      Get.toNamed(AppRoute.offline.path);
+      AppRoute.joinTable.go();
       return;
     }
 
     final message = switch (action) {
+      HomePrimaryAction.playOffline => '',
       HomePrimaryAction.playOnline => '',
       HomePrimaryAction.createTable => '',
       HomePrimaryAction.joinTable => '',
-      HomePrimaryAction.playOffline => '',
     };
 
     customToast(message: message);
@@ -103,15 +101,15 @@ class HomeScreen extends StatelessWidget {
                           IconButton(
                             tooltip: 'Profile',
                             onPressed: () {
-                              Get.toNamed(AppRoute.profile.path);
+                              AppRoute.profile.go();
                             },
                             icon: const Icon(Icons.person_outline_rounded),
                           ),
-                          IconButton(
-                            tooltip: 'Settings',
-                            onPressed: null,
-                            icon: const Icon(Icons.settings_outlined),
-                          ),
+                          // IconButton(
+                          //   tooltip: 'Settings',
+                          //   onPressed: null,
+                          //   icon: const Icon(Icons.settings_outlined),
+                          // ),
                         ],
                       ),
                     ),
@@ -152,17 +150,21 @@ class HomeScreen extends StatelessWidget {
                                   await controller.resumeRoom(session.roomId);
                                   if (!context.mounted) return;
                                   if (session.status == 'playing') {
-                                    Get.toNamed(
-                                      AppRoute.gameTable.path,
-                                      arguments: {'gameId': session.roomId},
+                                    AppRoute.gameTable.go(
+                                      pathParams: {'gameId': session.roomId},
                                     );
                                   } else {
-                                    Get.toNamed(
-                                      session.isHost
-                                          ? AppRoute.hostLobby.path
-                                          : AppRoute.guestLobby.path,
-                                      arguments: {'roomCode': session.roomId},
-                                    );
+                                    session.isHost
+                                        ? AppRoute.hostLobby.go(
+                                            pathParams: {
+                                              'roomCode': session.roomId,
+                                            },
+                                          )
+                                        : AppRoute.guestLobby.go(
+                                            pathParams: {
+                                              'roomCode': session.roomId,
+                                            },
+                                          );
                                   }
                                 },
                               ),

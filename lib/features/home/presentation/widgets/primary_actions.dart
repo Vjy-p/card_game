@@ -1,6 +1,6 @@
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/home/application/controllers/home_controller.dart';
-import 'package:card_game/features/home/application/state/home_state.dart';
+import 'package:card_game/features/home/controllers/home_controller.dart';
+import 'package:card_game/features/home/models/home_state.dart';
 import 'package:card_game/features/home/presentation/widgets/home_action_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,8 +19,19 @@ class PrimaryActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return Column(
+        spacing: AppSpacing.md,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          HomeActionCard(
+            title: 'Play Offline',
+            subtitle: 'Practice against AI.',
+            icon: Icons.smart_toy_outlined,
+            isPending:
+                controller.pendingAction.value == HomePrimaryAction.playOffline,
+            onPressed: controller.isBusy
+                ? null
+                : () => onAction(HomePrimaryAction.playOffline),
+          ),
           HomeActionCard(
             title: 'Play Online',
             subtitle: 'Find three players and start automatically.',
@@ -32,9 +43,6 @@ class PrimaryActions extends StatelessWidget {
                 ? null
                 : () => onAction(HomePrimaryAction.playOnline),
           ),
-
-          const SizedBox(height: AppSpacing.md),
-
           HomeActionCard(
             title: 'Create Private Table',
             subtitle: 'Choose the table size and invite friends.',
@@ -45,9 +53,6 @@ class PrimaryActions extends StatelessWidget {
                 ? null
                 : () => onAction(HomePrimaryAction.createTable),
           ),
-
-          const SizedBox(height: AppSpacing.md),
-
           HomeActionCard(
             title: 'Join Table',
             subtitle: 'Enter room code.',
@@ -57,19 +62,6 @@ class PrimaryActions extends StatelessWidget {
             onPressed: controller.isBusy
                 ? null
                 : () => onAction(HomePrimaryAction.joinTable),
-          ),
-
-          const SizedBox(height: AppSpacing.md),
-
-          HomeActionCard(
-            title: 'Play Offline',
-            subtitle: 'Practice against AI.',
-            icon: Icons.smart_toy_outlined,
-            isPending:
-                controller.pendingAction.value == HomePrimaryAction.playOffline,
-            onPressed: controller.isBusy
-                ? null
-                : () => onAction(HomePrimaryAction.playOffline),
           ),
         ],
       );

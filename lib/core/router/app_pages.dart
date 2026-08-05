@@ -3,6 +3,7 @@ import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/features/authentication/presentation/screens/authentication_screen.dart';
 import 'package:card_game/features/home/presentation/screens/home_screen.dart';
 import 'package:card_game/features/offline/presentation/screens/offline_screen.dart';
+import 'package:card_game/features/offline/presentation/screens/ranking_screen.dart';
 import 'package:card_game/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:card_game/features/online/create_table/presentation/screens/create_table_screen.dart';
 import 'package:card_game/features/online/join_table/presentation/screens/join_table_screen.dart';
@@ -10,7 +11,10 @@ import 'package:card_game/features/online/join_table/presentation/screens/table_
 import 'package:card_game/features/online/lobby/presentation/screens/guest_lobby_screen.dart';
 import 'package:card_game/features/online/lobby/presentation/screens/host_lobby_screen.dart';
 import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
-import 'package:card_game/features/profile/screens/profile_screen.dart';
+import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
+import 'package:card_game/features/online/room/presentation/screens/online_ranking_screen.dart';
+import 'package:card_game/features/online/room/presentation/screens/table_screen.dart';
+import 'package:card_game/features/profile/presentation/screens/profile_screen.dart';
 import 'package:card_game/features/splash/presentation/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -54,14 +58,31 @@ class AppPages {
       name: AppRoute.guestLobby.path,
       page: () => const GuestLobbyScreen(),
     ),
-    // GetPage(
-    //   name: AppRoute.gameTable.path, // Path is '/games/:gameId'
-    //   page: () => const GameTableScreen(),
-    // ),
+    GetPage(
+      name: AppRoute.gameTable.path, // Path is '/games/:gameId'
+      page: () => const TableScreen(),
+      binding: BindingsBuilder.put(
+        () => OnlineGameController(
+          Get.parameters['roomId'] ?? '',
+          Get.parameters['localPlayerId'] ?? '',
+          Get.parameters['snapshotString'] ?? '',
+        ),
+      ),
+    ),
     GetPage(name: AppRoute.profile.path, page: () => const ProfileScreen()),
     GetPage(
       name: AppRoute.offline.path,
       page: () => OfflineScreen(),
+      // binding: AppBinding(),
+    ),
+    GetPage(
+      name: AppRoute.offlineRanking.path,
+      page: () => RankingScreen(),
+      // binding: AppBinding(),
+    ),
+    GetPage(
+      name: AppRoute.onlineRanking.path,
+      page: () => OnlineRankingScreen(),
       // binding: AppBinding(),
     ),
   ];

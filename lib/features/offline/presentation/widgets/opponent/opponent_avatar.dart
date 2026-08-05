@@ -1,4 +1,5 @@
 import 'package:card_game/core/theme/app_colors.dart';
+import 'package:card_game/features/online/room/presentation/widgets/turn_glow_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:glass/glass.dart';
 
@@ -8,29 +9,29 @@ class OpponentAvatar extends StatelessWidget {
     required this.name,
     required this.isCurrentTurn,
     required this.isJokerUnlocked,
+    required this.isGameEnded,
   });
 
   final String name;
   final bool isCurrentTurn;
   final bool isJokerUnlocked;
+  final bool isGameEnded;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      // alignment: AlignmentGeometry.center,
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: isCurrentTurn ? Colors.greenAccent : Colors.transparent,
-              width: 3,
-            ),
-          ),
+        TurnGlow(
+          active: isCurrentTurn && !isGameEnded,
           child: CircleAvatar(
-            radius: 22,
-            child: Text(name.substring(0, 1).toUpperCase()),
+            radius: 24,
+            backgroundColor: isCurrentTurn && !isGameEnded
+                ? Colors.orange
+                : AppColors.tableDark,
+            child: isCurrentTurn
+                ? Text(name[0], style: const TextStyle(fontSize: 22))
+                : const Icon(Icons.person_outline),
           ),
         ),
         if (isJokerUnlocked) ...[

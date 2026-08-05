@@ -1,10 +1,10 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
+import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/controllers/game_config.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
-import 'package:card_game/features/offline/presentation/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/presentation/widgets/table/table_widget.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,4 @@
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,8 +30,7 @@ class LeaveRoomButton extends GetView<RoomController> {
         if (leave != true) return;
 
         await controller.leaveLobby();
-
-        Get.offAllNamed('/home');
+        AppRoute.home.offAll();
       },
       icon: const Icon(Icons.logout),
       label: const Text('Leave Room'),

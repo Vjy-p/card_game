@@ -13,7 +13,9 @@ enum AppRoute {
   guestLobby(name: 'guest-lobby', path: '/tables/:roomCode/lobby/guest'),
   gameTable(name: 'game-table', path: '/games/:gameId'),
   offline(name: 'offline', path: '/offline'),
-  profile(name: 'profile', path: '/profile');
+  profile(name: 'profile', path: '/profile'),
+  offlineRanking(name: 'offline-ranking', path: '/features/offline/ranking'),
+  onlineRanking(name: 'online-ranking', path: '/features/online/ranking');
 
   const AppRoute({required this.name, required this.path});
   final String name;
@@ -21,11 +23,30 @@ enum AppRoute {
 }
 
 extension AppRouteNavigation on AppRoute {
-  void go({Map<String, String>? parameters}) {
-    Get.toNamed(path, parameters: parameters);
+  void go({Map<String, String>? pathParams, Map<String, String>? queryParams}) {
+    var route = path;
+
+    if (pathParams != null) {
+      pathParams.forEach((key, value) {
+        route = route.replaceAll(':$key', value);
+      });
+    }
+
+    Get.toNamed(route, parameters: queryParams);
   }
 
-  void offAll() {
-    Get.offAllNamed(path);
+  void offAll({
+    Map<String, String>? pathParams,
+    Map<String, String>? queryParams,
+  }) {
+    var route = path;
+
+    if (pathParams != null) {
+      pathParams.forEach((key, value) {
+        route = route.replaceAll(':$key', value);
+      });
+    }
+
+    Get.offAllNamed(route, parameters: queryParams);
   }
 }
