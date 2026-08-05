@@ -3,13 +3,10 @@ import 'dart:developer';
 
 import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/features/online/room/controllers/base_controller.dart';
-import 'package:card_game/features/online/room/data/repositories/supabase_room_repository.dart';
-import 'package:card_game/features/online/room/domain/entities/online_table_entities.dart';
-import 'package:card_game/features/online/room/domain/entities/room_lobby_snapshot.dart';
-import 'package:card_game/features/online/table/controller/online_game_controller.dart';
-import 'package:card_game/features/online/table/presentation/screens/table_screen.dart';
+import 'package:card_game/features/online/room/models/online_table_entities.dart';
+import 'package:card_game/features/online/room/models/room_lobby_snapshot.dart';
+import 'package:card_game/features/online/room/repositories/supabase_room_repository.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RoomController extends BaseController {
   RoomController(this._repository);
@@ -61,8 +58,7 @@ class RoomController extends BaseController {
 
   @override
   void onClose() {
-    _revisionSubscription?.cancel();
-    log('RoomController close ${identityHashCode(this)}');
+    clearData();
     super.onClose();
   }
 
@@ -89,15 +85,10 @@ class RoomController extends BaseController {
       snapshot.value = result;
       log('create table resp ${snapshot.value?.roomId}');
 
-      final test = await Supabase.instance.client
-          .from('rooms')
-          .select()
-          .eq('id', result.roomId);
-
-      log('Manual SELECT: $test');
-
       _watch(result.roomId);
-      Get.toNamed(AppRoute.hostLobby.path, arguments: snapshot.value?.joinCode);
+      AppRoute.hostLobby.go(
+        queryParams: {'roomCode': '${snapshot.value?.joinCode}'},
+      );
     });
   }
 
@@ -118,8 +109,7 @@ class RoomController extends BaseController {
       snapshot.value = result;
 
       _watch(result.roomId);
-
-      Get.toNamed(AppRoute.guestLobby.path, arguments: {'roomCode': joinCode});
+      AppRoute.guestLobby.go(pathParams: {'roomCode': joinCode});
     });
   }
 
@@ -294,15 +284,13 @@ class RoomController extends BaseController {
             log('Revision changed: $revision $snap');
             snapshot.value = snap;
             if (snap.status == 'playing' && snapshot.value != null) {
-              Get.off(
-                () => TableScreen(),
-                binding: BindingsBuilder.put(
-                  () => OnlineGameController(
-                    roomId,
-                    snap.localPlayerId,
-                    Rx(snapshot.value!),
-                  ),
-                ),
+              log('11111111');
+              AppRoute.gameTable.offAll(
+                queryParams: {
+                  'roomId': roomId,
+                  'localPlayerId': snap.localPlayerId,
+                  'snapshotString': snap.toRawJson(),
+                },
               );
             }
             refresh();
@@ -332,5 +320,15 @@ class RoomController extends BaseController {
       return true; // Host alone can start if you allow solo testing
     }
     return others.every((p) => p.isReady);
+  }
+
+  void clearData() {
+    snapshot.value = null;
+    startedRoomId.value = null;
+    publicTables.clear();
+    rejoinableSessions.clear();
+    privateInvite.value = null;
+    _revisionSubscription?.cancel();
+    log('RoomController close ${identityHashCode(this)}');
   }
 }

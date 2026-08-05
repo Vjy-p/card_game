@@ -1,5 +1,5 @@
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/authentication/application/controllers/authentication_controller.dart';
+import 'package:card_game/features/authentication/controllers/authentication_controller.dart';
 import 'package:card_game/features/authentication/presentation/widgets/authentication_brand_panel.dart';
 import 'package:card_game/features/authentication/presentation/widgets/authentication_form.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class AuthenticationScreen extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final wide = constraints.maxWidth >= 840;
+
                 return Center(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(AppSpacing.lg),

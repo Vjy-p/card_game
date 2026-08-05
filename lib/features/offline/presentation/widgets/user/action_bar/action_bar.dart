@@ -1,9 +1,9 @@
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/offline/models/action_state.dart';
 import 'package:card_game/features/offline/models/playing_card.dart';
-import 'package:card_game/features/offline/presentation/screens/ranking_screen.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/declare_card_sheet.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/fourth_card_bottom_sheet.dart';
@@ -149,7 +149,7 @@ class ActionBar extends StatelessWidget {
                 Expanded(
                   child: ActionButton(
                     onPressed: () {
-                      Get.to(() => RankingScreen());
+                      AppRoute.offlineRanking.go();
                     },
                     label: 'Winners',
                     icon: Icon(

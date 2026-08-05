@@ -1,8 +1,8 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
+import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/models/action_state.dart';
-import 'package:card_game/features/offline/presentation/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/presentation/widgets/center_table/center_area.dart';
 import 'package:card_game/features/offline/presentation/widgets/game_turn_indicator.dart';
 import 'package:card_game/features/offline/presentation/widgets/game_winner_indicator.dart';
@@ -57,7 +57,12 @@ class TableWidget extends StatelessWidget {
                               if (players.length < 2) {
                                 return const SizedBox.shrink();
                               }
-                              return OpponentWidget(player: players[1]);
+                              return OpponentWidget(
+                                player: players[1],
+                                isGameEnded:
+                                    controller.table.actionState ==
+                                    ActionState.gameFinished,
+                              );
                             }),
                           ),
                         ),
@@ -82,6 +87,9 @@ class TableWidget extends StatelessWidget {
                                   child: OpponentWidget(
                                     player: players[2],
                                     rotation: 1.6,
+                                    isGameEnded:
+                                        controller.table.actionState ==
+                                        ActionState.gameFinished,
                                   ),
                                 );
                               }),
@@ -156,6 +164,9 @@ class TableWidget extends StatelessWidget {
                                   child: OpponentWidget(
                                     player: players[0],
                                     rotation: -1.6,
+                                    isGameEnded:
+                                        controller.table.actionState ==
+                                        ActionState.gameFinished,
                                   ),
                                 );
                               }),

@@ -1,13 +1,13 @@
 // features/offline/controllers/ai_controller.dart
 import 'dart:math';
 
-import 'package:card_game/features/offline/ai/ai_engine.dart';
 import 'package:card_game/features/offline/ai/ai_move.dart';
 import 'package:card_game/features/offline/ai/ai_turn_decision_engine.dart';
 import 'package:card_game/features/offline/ai/easy_ai_strategy.dart';
 import 'package:card_game/features/offline/ai/hard_ai_strategy.dart';
 import 'package:card_game/features/offline/ai/medium_ai_strategy.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
+import 'package:card_game/features/offline/engine/ai_engine.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
 import 'package:card_game/features/offline/models/ai_difficulty.dart';
 import 'package:card_game/features/offline/models/player_model.dart';

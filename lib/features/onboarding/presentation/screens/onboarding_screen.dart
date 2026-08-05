@@ -1,7 +1,7 @@
 import 'package:card_game/core/responsive/responsive_value.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/onboarding/application/controllers/onboarding_controller.dart';
+import 'package:card_game/features/onboarding/controllers/onboarding_controller.dart';
 import 'package:card_game/features/onboarding/presentation/widgets/onboarding_page.dart';
 import 'package:card_game/features/onboarding/presentation/widgets/onboarding_progress.dart';
 import 'package:flutter/material.dart';

@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 abstract final class AppTheme {
   static ThemeData get dark {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.actionPrimary,
+      seedColor: AppColors.backgroundSecondary,
       brightness: Brightness.dark,
-      primary: AppColors.actionPrimary,
-      onPrimary: AppColors.actionPrimaryForeground,
-      secondary: AppColors.accent,
-      surface: AppColors.surfacePrimary,
-      error: AppColors.error,
+      // primary: AppColors.textMuted,
+      // onPrimary: AppColors.textSecondary,
+      // secondary: AppColors.actionPrimaryForeground,
+      // surface: AppColors.surfacePrimary,
+      // onSurface: AppColors.textSecondary,
+      // error: AppColors.error,
+      // surfaceContainerLow: AppColors.textMuted,
     );
 
     return ThemeData(
@@ -45,7 +47,7 @@ abstract final class AppTheme {
       seedColor: AppColors.gameTable,
       brightness: Brightness.light,
       primary: AppColors.gameTable,
-      secondary: AppColors.accent,
+      secondary: AppColors.surfaceElevated,
       surface: AppColors.lightSurface,
       error: AppColors.error,
     );
