@@ -1,4 +1,4 @@
-import 'package:card_game/features/online/room/domain/entities/room_lobby_snapshot.dart';
+import 'package:card_game/features/online/room/models/room_lobby_snapshot.dart';
 import 'package:flutter/material.dart';
 
 class LobbySeat extends StatelessWidget {

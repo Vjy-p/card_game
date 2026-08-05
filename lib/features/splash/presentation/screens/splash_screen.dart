@@ -2,7 +2,7 @@ import 'package:card_game/core/responsive/responsive_value.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_motion.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/splash/application/controllers/splash_controller.dart';
+import 'package:card_game/features/splash/controllers/splash_controller.dart';
 import 'package:card_game/features/splash/presentation/widgets/splash_brand_mark.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';

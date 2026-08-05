@@ -1,6 +1,6 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/onboarding/domain/entities/onboarding_page_content.dart';
+import 'package:card_game/features/onboarding/models/onboarding_page_content.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingCopy extends StatelessWidget {

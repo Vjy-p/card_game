@@ -1,7 +1,7 @@
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/home/presentation/screens/home_screen.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/presentation/widgets/cards/card_face.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
@@ -90,7 +90,7 @@ class RankingScreen extends StatelessWidget {
                   child: ActionButton(
                     onPressed: () {
                       controller.restart();
-                      Get.off(() => HomeScreen());
+                      AppRoute.home.offAll();
                     },
                     label: 'EXit',
                     icon: Icon(Icons.arrow_back_ios_new, size: 18),

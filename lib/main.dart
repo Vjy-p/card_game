@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:card_game/core/router/app_pages.dart';
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/router/bindings.dart';
 import 'package:card_game/core/theme/app_theme.dart';
+import 'package:card_game/firebase_options.dart';
 import 'package:card_game/utils/constants/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Supabase.initialize(
     url: Constants.supabaseUrl,
     publishableKey: Constants.supabaseKey,
@@ -46,6 +48,7 @@ class CardGameApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       getPages: AppPages.routes,
+      initialRoute: AppRoute.splash.path,
       initialBinding: AppBinding(),
       builder: FToastBuilder(),
     );

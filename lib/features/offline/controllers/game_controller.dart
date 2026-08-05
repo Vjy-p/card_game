@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:card_game/core/services/common_services.dart';
 import 'package:card_game/features/offline/controllers/ai_controller.dart';
+import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
 import 'package:card_game/features/offline/engine/rule_engine.dart';
 import 'package:card_game/features/offline/models/action_state.dart';
@@ -12,9 +13,9 @@ import 'package:card_game/features/offline/models/player_status.dart';
 import 'package:card_game/features/offline/models/player_type.dart';
 import 'package:card_game/features/offline/models/playing_card.dart';
 import 'package:card_game/features/offline/models/table_view_state.dart';
-import 'package:card_game/features/offline/presentation/animations/game_animation_controller.dart';
 import 'package:confetti/confetti.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GameController extends GetxController {
   GameController({required GameEngine engine}) : _engine = engine;
@@ -26,6 +27,8 @@ class GameController extends GetxController {
   final Rx<TableViewState> _table = TableViewState.initial().obs;
 
   TableViewState get table => _table.value;
+
+  final SupabaseClient supabase = Supabase.instance.client;
 
   final Rx<PlayingCard?> _selectedCard = Rx<PlayingCard?>(null);
 
@@ -230,6 +233,7 @@ class GameController extends GetxController {
         log('winner ${winners.first.id} ${winners.first.name}');
         confettiController.play();
         update();
+        updateUserScore();
       }
       refreshTable();
       return value;
@@ -406,6 +410,7 @@ class GameController extends GetxController {
 
       log('Game Over! Winner: ${winner.name}');
 
+      updateUserScore();
       // confettiController.play();
       refreshTable();
       update(); // Trigger UI refresh
@@ -419,6 +424,23 @@ class GameController extends GetxController {
     clearData();
     await initializeGame();
     refreshTable();
+  }
+
+  Future updateUserScore() async {
+    final userID = CommonServices.getUserId();
+
+    final int index = winners.indexWhere((e) => e.id == userID);
+
+    if (index != -1) {
+      final resp = await supabase.rpc(
+        'update_ai_game_statistics',
+        params: {
+          'p_player_score': winners[index].score,
+          'p_player_rank': index + 1,
+        },
+      );
+      log('user update $resp');
+    }
   }
 
   @override
