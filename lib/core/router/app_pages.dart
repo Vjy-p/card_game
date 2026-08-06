@@ -10,6 +10,7 @@ import 'package:card_game/features/online/join_table/presentation/screens/join_t
 import 'package:card_game/features/online/join_table/presentation/screens/table_password_screen.dart';
 import 'package:card_game/features/online/lobby/presentation/screens/guest_lobby_screen.dart';
 import 'package:card_game/features/online/lobby/presentation/screens/host_lobby_screen.dart';
+import 'package:card_game/features/online/public_rooms/presentation/screens/public_matchmaking_screen.dart';
 import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
 import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
 import 'package:card_game/features/online/room/presentation/screens/online_ranking_screen.dart';
@@ -30,10 +31,10 @@ class AppPages {
       page: () => const AuthenticationScreen(),
     ),
     GetPage(name: AppRoute.home.path, page: () => HomeScreen()),
-    // GetPage(
-    //   name: AppRoute.publicMatchmaking.path,
-    //   page: () => const PublicMatchmakingScreen(),
-    // ),
+    GetPage(
+      name: AppRoute.publicMatchmaking.path,
+      page: () => const PublicMatchmakingScreen(),
+    ),
     GetPage(
       name: AppRoute.createTable.path,
       page: () => const CreateTableScreen(),

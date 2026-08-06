@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:card_game/core/router/app_route.dart';
+import 'package:card_game/core/services/common_services.dart';
 import 'package:card_game/features/online/room/controllers/base_controller.dart';
 import 'package:card_game/features/online/room/models/online_table_entities.dart';
 import 'package:card_game/features/online/room/models/room_lobby_snapshot.dart';
@@ -25,7 +26,7 @@ class RoomController extends BaseController {
   // Tables
   // ----------------------------
 
-  final publicTables = <PublicTableSummary>[].obs;
+  RxList<PublicTableSummary> publicTables = <PublicTableSummary>[].obs;
 
   final rejoinableSessions = <RejoinableSession>[].obs;
 
@@ -52,6 +53,7 @@ class RoomController extends BaseController {
 
   @override
   void onInit() {
+    getPublicRooms();
     super.onInit();
     log('RoomController init ${identityHashCode(this)}');
   }
@@ -128,35 +130,85 @@ class RoomController extends BaseController {
       );
 
       snapshot.value = result;
+      log('join matchmaking ${result.toJson()}');
 
       _watch(result.roomId);
+      if (snapshot.value?.isLocalHost == true) {
+        AppRoute.hostLobby.go(
+          queryParams: {'roomCode': '${snapshot.value?.joinCode}'},
+        );
+      } else {
+        AppRoute.guestLobby.go(
+          pathParams: {'roomCode': '${snapshot.value?.joinCode}'},
+        );
+      }
     });
   }
 
   //=========================================================
-  // PUBLIC TABLE
+  // PUBLIC
   //=========================================================
 
-  Future<void> joinPublicTable({
-    required String roomId,
+  Future getPublicRooms() async {
+    await execute(() async {
+      final result = await _repository.getPublicTables();
+
+      publicTables.value = List.from(result);
+      if (publicTables.isEmpty) {
+        createPublicTable();
+      }
+      log('get table resp ${publicTables.toJson()}');
+    });
+  }
+
+  Future joinPublicTable({
     required String displayName,
+    required String roomId,
   }) async {
     await execute(() async {
-      final result = await _repository.joinPublicTable(
+      final response = await _repository.joinPublicTable(
         roomId: roomId,
         displayName: displayName,
       );
 
-      snapshot.value = result;
-
-      _watch(result.roomId);
+      snapshot.value = response;
+      _watch(snapshot.value?.roomId ?? '');
+      log('joined room details ${response.toJson()}');
+      if (snapshot.value?.isLocalHost == true) {
+        AppRoute.hostLobby.go(
+          queryParams: {'roomCode': '${snapshot.value?.joinCode}'},
+        );
+      } else {
+        AppRoute.guestLobby.go(
+          pathParams: {'roomCode': '${snapshot.value?.joinCode}'},
+        );
+      }
+      return response;
     });
+    return null;
   }
 
-  Future<void> loadPublicTables() async {
+  Future<void> createPublicTable({String? displayName}) async {
+    log('create table');
+
     await execute(() async {
-      publicTables.assignAll(await _repository.listPublicTables());
+      final result = await _repository.createTable(
+        displayName: displayName ?? CommonServices.getUserName(),
+        tableName: 'Luxury',
+        maxPlayers: 4,
+        visibility: 'public',
+      );
+      log('create table ${result.toJson()}');
+
+      // snapshot.value = result;
+      // log('create table resp ${snapshot.value?.roomId}');
+
+      // _watch(result.roomId);
+      // AppRoute.hostLobby.go(
+      //   queryParams: {'roomCode': '${snapshot.value?.joinCode}'},
+      // );
     });
+    getPublicRooms();
   }
 
   //=========================================================
@@ -325,7 +377,6 @@ class RoomController extends BaseController {
   void clearData() {
     snapshot.value = null;
     startedRoomId.value = null;
-    publicTables.clear();
     rejoinableSessions.clear();
     privateInvite.value = null;
     _revisionSubscription?.cancel();
