@@ -32,6 +32,7 @@ Future<void> main() async {
   Supabase.instance.client.realtime.onError((error) {
     log('Realtime ERROR: $error');
   });
+
   await GetStorage.init();
   runApp(const CardGameApp());
 }
