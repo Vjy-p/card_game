@@ -1,4 +1,5 @@
 import 'package:card_game/core/theme/app_colors.dart';
+import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/invite_card.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/lobby_footer.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/lobby_seat.dart';
@@ -77,7 +78,7 @@ class HostLobbyScreen extends GetView<RoomController> {
               ),
               InviteCard(),
               LobbyFooter(),
-              const SizedBox(height: 12),
+              SizedBox(height: AppSpacing.sm),
               StartGameButton(),
               const SizedBox(height: 24),
             ],
