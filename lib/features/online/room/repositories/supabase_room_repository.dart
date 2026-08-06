@@ -66,7 +66,7 @@ class SupabaseRoomRepository extends GetxService {
     return _snapshot(response);
   }
 
-  Future<List<PublicTableSummary>> listPublicTables({int limit = 30}) async {
+  Future<List<PublicTableSummary>> getPublicTables({int limit = 30}) async {
     final response = await _client.rpc(
       'list_public_tables',
       params: {'p_limit': limit},
