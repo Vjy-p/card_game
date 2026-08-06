@@ -80,7 +80,7 @@ class HostLobbyScreen extends GetView<RoomController> {
               LobbyFooter(),
               SizedBox(height: AppSpacing.sm),
               StartGameButton(),
-              const SizedBox(height: 24),
+              SizedBox(height: AppSpacing.lg),
             ],
           );
         }),
