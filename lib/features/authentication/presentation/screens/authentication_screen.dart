@@ -33,7 +33,8 @@ class AuthenticationScreen extends StatelessWidget {
                                 const SizedBox(width: AppSpacing.xxl),
                                 Expanded(
                                   child: AuthenticationForm(
-                                    onGoogleSignIn: controller.signInWithGoogle,
+                                    onGoogleSignIn:
+                                        controller.signInWithGoogleMobile,
                                   ),
                                 ),
                               ],
@@ -41,7 +42,8 @@ class AuthenticationScreen extends StatelessWidget {
                           : ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 520),
                               child: AuthenticationForm(
-                                onGoogleSignIn: controller.signInWithGoogle,
+                                onGoogleSignIn:
+                                    controller.signInWithGoogleMobile,
                               ),
                             ),
                     ),

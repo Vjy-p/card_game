@@ -3,10 +3,17 @@ import 'dart:developer';
 import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
+import 'package:card_game/features/ads/presentation/widgets/banner_ad_widget.dart';
 import 'package:card_game/features/home/controllers/home_controller.dart';
 import 'package:card_game/features/home/models/home_state.dart';
 import 'package:card_game/features/home/presentation/widgets/home_side_panel.dart';
 import 'package:card_game/features/home/presentation/widgets/primary_actions.dart';
+import 'package:card_game/features/offline/controllers/ai_controller.dart';
+import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
+import 'package:card_game/features/offline/controllers/game_config.dart';
+import 'package:card_game/features/offline/engine/game_engine.dart';
+import 'package:card_game/features/online/create_table/controller/create_table_controller.dart';
+import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
 import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -20,6 +27,12 @@ class HomeScreen extends StatelessWidget {
   void _handleAction(HomePrimaryAction action) {
     controller.beginAction(action);
     log('action $action');
+    if (!Get.isRegistered<GameAnimationController>()) {
+      Get.lazyPut(() => GameAnimationController());
+    }
+    if (!Get.isRegistered<AIController>()) {
+      Get.lazyPut(() => AIController(engine: GameEngine(config: GameConfig())));
+    }
 
     if (action == HomePrimaryAction.playOffline) {
       controller.completeAction();
@@ -28,18 +41,27 @@ class HomeScreen extends StatelessWidget {
     }
 
     if (action == HomePrimaryAction.playOnline) {
+      if (!Get.isRegistered<JoinTableController>()) {
+        Get.lazyPut<JoinTableController>(() => JoinTableController());
+      }
       controller.completeAction();
       AppRoute.publicMatchmaking.go();
       return;
     }
 
     if (action == HomePrimaryAction.createTable) {
+      if (!Get.isRegistered<CreateTableController>()) {
+        Get.lazyPut<CreateTableController>(() => CreateTableController());
+      }
       controller.completeAction();
       AppRoute.createTable.go();
       return;
     }
 
     if (action == HomePrimaryAction.joinTable) {
+      if (!Get.isRegistered<JoinTableController>()) {
+        Get.lazyPut<JoinTableController>(() => JoinTableController());
+      }
       controller.completeAction();
       AppRoute.joinTable.go();
       return;
@@ -65,10 +87,11 @@ class HomeScreen extends StatelessWidget {
           builder: (context, constraints) {
             final wide = constraints.maxWidth >= 840;
             return CustomScrollView(
+              physics: BouncingScrollPhysics(),
               slivers: [
                 SliverPadding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: wide ? AppSpacing.xxl : AppSpacing.lg,
+                    horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
                     vertical: AppSpacing.md,
                   ),
                   sliver: SliverToBoxAdapter(
@@ -93,18 +116,38 @@ class HomeScreen extends StatelessWidget {
                                   'Ready for the next table?',
                                   style: Theme.of(
                                     context,
-                                  ).textTheme.headlineLarge,
+                                  ).textTheme.headlineMedium,
                                 ),
                               ],
                             ),
                           ),
                           IconButton(
+                            style: ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: VisualDensity.compact,
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                            ),
                             tooltip: 'Profile',
                             onPressed: () {
                               AppRoute.profile.go();
                             },
-                            icon: const Icon(Icons.person_outline_rounded),
+                            icon: const Icon(
+                              Icons.person_outline_rounded,
+                              size: 24,
+                            ),
                           ),
+                          // IconButton(
+                          //   style: ButtonStyle(
+                          //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          //     visualDensity: VisualDensity.compact,
+                          //     padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                          //   ),
+                          //   tooltip: 'Payments',
+                          //   onPressed: () {
+                          //     AppRoute.payments.go();
+                          //   },
+                          //   icon: Icon(Icons.payments, size: 24),
+                          // ),
                           // IconButton(
                           //   tooltip: 'Settings',
                           //   onPressed: null,
@@ -125,6 +168,8 @@ class HomeScreen extends StatelessWidget {
                           sliver: SliverToBoxAdapter(
                             child: Card(
                               child: ListTile(
+                                dense: true,
+                                visualDensity: VisualDensity.comfortable,
                                 leading: const Icon(
                                   Icons.restore_rounded,
                                   color: AppColors.actionPrimary,
@@ -172,12 +217,19 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
                 }),
-
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
+                    ),
+                    child: const BannerAdWidget(),
+                  ),
+                ),
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(
-                    wide ? AppSpacing.xxl : AppSpacing.lg,
-                    AppSpacing.lg,
-                    wide ? AppSpacing.xxl : AppSpacing.lg,
+                    wide ? AppSpacing.xxl : AppSpacing.sm,
+                    AppSpacing.md,
+                    wide ? AppSpacing.xxl : AppSpacing.sm,
                     AppSpacing.xxl,
                   ),
                   sliver: SliverToBoxAdapter(
@@ -217,6 +269,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // SliverToBoxAdapter(child: const NativeAdWidget()),
               ],
             );
           },

@@ -26,6 +26,7 @@ class PrimaryActions extends StatelessWidget {
             title: 'Play Offline',
             subtitle: 'Practice against AI.',
             icon: Icons.smart_toy_outlined,
+            isPrimary: true,
             isPending:
                 controller.pendingAction.value == HomePrimaryAction.playOffline,
             onPressed: controller.isBusy
@@ -36,7 +37,7 @@ class PrimaryActions extends StatelessWidget {
             title: 'Play Online',
             subtitle: 'Find three players and start automatically.',
             icon: Icons.public_rounded,
-            isPrimary: true,
+            // isPrimary: true,
             isPending:
                 controller.pendingAction.value == HomePrimaryAction.playOnline,
             onPressed: controller.isBusy

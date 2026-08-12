@@ -1,3 +1,4 @@
+import 'package:card_game/core/responsive/get_device.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/presentation/widgets/cards/card_face.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,9 @@ class UserCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = GetDevice.isMobile(context);
+    final isTablet = GetDevice.isTablet(context);
+
     final controller = Get.find<GameController>();
     return Obx(() {
       final bool isLocked = controller.players.first.fourthCard.any(
@@ -18,7 +22,11 @@ class UserCardTile extends StatelessWidget {
         top: controller.selectedCard?.id == controller.table.myCards[index].id
             ? -40
             : 0,
-        left: index * 24.0,
+        left: isMobile
+            ? index * 24.0
+            : isTablet
+            ? index * 32
+            : index * 48,
         duration: const Duration(milliseconds: 250),
         child: SizedBox(
           width: 65,

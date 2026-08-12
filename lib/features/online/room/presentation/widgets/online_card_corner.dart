@@ -15,9 +15,16 @@ class OnlineCardCorner extends StatelessWidget {
       children: [
         Text(
           card.cardNumber,
-          style: TextStyle(color: card.suit.color, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            // fontSize: 16,
+            color: card.suit.color,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        Text(card.suit.symbol, style: TextStyle(color: card.suit.color)),
+        Text(
+          card.suit.symbol,
+          style: TextStyle(fontSize: 12, color: card.suit.color),
+        ),
       ],
     );
 

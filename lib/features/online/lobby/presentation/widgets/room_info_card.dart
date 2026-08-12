@@ -1,4 +1,5 @@
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
+import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class RoomInfoCard extends GetView<RoomController> {
                     ClipboardData(text: room?.joinCode ?? ''),
                   );
 
-                  Get.snackbar('Copied', 'Room code copied');
+                  customToast(message: 'Room code copied');
                 },
                 icon: const Icon(Icons.copy),
                 label: const Text('Copy'),

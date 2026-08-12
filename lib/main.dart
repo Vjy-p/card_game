@@ -7,10 +7,13 @@ import 'package:card_game/core/theme/app_theme.dart';
 import 'package:card_game/firebase_options.dart';
 import 'package:card_game/utils/constants/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -20,6 +23,9 @@ Future<void> main() async {
   await Supabase.initialize(
     url: Constants.supabaseUrl,
     publishableKey: Constants.supabaseKey,
+  );
+  await GoogleSignIn.instance.initialize(
+    serverClientId: kIsWeb ? null : Constants.googleServerClientKey,
   );
   Supabase.instance.client.realtime.onOpen(() {
     log('Realtime OPEN');
@@ -33,6 +39,8 @@ Future<void> main() async {
     log('Realtime ERROR: $error');
   });
 
+  MobileAds.instance.initialize();
+
   await GetStorage.init();
   runApp(const CardGameApp());
 }
@@ -45,7 +53,7 @@ class CardGameApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Card Game',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
+      theme: AppTheme.dark,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       getPages: AppPages.routes,
