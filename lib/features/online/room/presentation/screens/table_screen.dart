@@ -2,6 +2,7 @@ import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
+import 'package:card_game/features/ads/presentation/widgets/banner_ad_widget.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
 import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
 import 'package:card_game/features/online/room/presentation/widgets/animations/card_animation_overlay.dart';
@@ -30,8 +31,10 @@ class TableScreen extends GetView<OnlineGameController> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.tableDark,
+          surfaceTintColor: AppColors.tableDark,
           toolbarHeight: 40,
-          title: const Text(''),
+          title: BannerAdWidget(),
           leading: BackButton(
             onPressed: () async {
               final bool isExit = await openExitDialog();
@@ -78,13 +81,15 @@ class TableScreen extends GetView<OnlineGameController> {
                         Expanded(
                           flex: 11,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               /// Left
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: PlayerWidget(player: seats[1]?.player),
                               ),
-                              Expanded(child: OnlineCenterArea()),
+                              OnlineCenterArea(),
 
                               /// Right
                               Align(

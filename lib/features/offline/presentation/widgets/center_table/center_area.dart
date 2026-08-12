@@ -10,6 +10,7 @@ import 'package:card_game/features/offline/presentation/widgets/center_table/dis
 import 'package:card_game/features/offline/presentation/widgets/center_table/joker_pile.dart';
 import 'package:card_game/features/offline/presentation/widgets/center_table/open_pile.dart';
 import 'package:card_game/utils/custom_toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,6 +47,7 @@ class CenterArea extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Container(
+        constraints: kIsWeb ? BoxConstraints(maxWidth: Get.width / 2) : null,
         padding: EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -99,24 +101,30 @@ class CenterArea extends StatelessWidget {
         _buildDeckSection(),
         IntrinsicHeight(
           child: Row(
-            spacing: AppSpacing.xs,
+            spacing: AppSpacing.sm,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Obx(() {
-                  return JokerPile(
-                    card: hiddenJoker,
-                    enabled: controller.players.first.jokerUnlocked.value,
-                    onTap: () {
-                      log(
-                        'on joker tap ${controller.players.first.jokerUnlocked.value}',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      return JokerPile(
+                        card: hiddenJoker,
+                        enabled: controller.players.first.jokerUnlocked.value,
+                        onTap: () {
+                          log(
+                            'on joker tap ${controller.players.first.jokerUnlocked.value}',
+                          );
+                          if (!controller.players.first.jokerUnlocked.value) {
+                            customToast(message: 'Need a 4th card set');
+                          }
+                        },
                       );
-                      if (!controller.players.first.jokerUnlocked.value) {
-                        customToast(message: 'Need a 4th card set');
-                      }
-                    },
-                  );
-                }),
+                    }),
+                  ],
+                ),
               ),
               Expanded(child: _buildDiscardSection(controller: controller)),
             ],
@@ -171,20 +179,26 @@ class CenterArea extends StatelessWidget {
       children: [
         Expanded(child: _buildDeckSection()),
         Expanded(
-          child: Obx(() {
-            return JokerPile(
-              card: hiddenJoker,
-              enabled: controller.players.first.jokerUnlocked.value,
-              onTap: () {
-                log(
-                  'on joker tap ${controller.players.first.jokerUnlocked.value}',
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(() {
+                return JokerPile(
+                  card: hiddenJoker,
+                  enabled: controller.players.first.jokerUnlocked.value,
+                  onTap: () {
+                    log(
+                      'on joker tap ${controller.players.first.jokerUnlocked.value}',
+                    );
+                    if (!controller.players.first.jokerUnlocked.value) {
+                      customToast(message: 'Need a 4th card set');
+                    }
+                  },
                 );
-                if (!controller.players.first.jokerUnlocked.value) {
-                  customToast(message: 'Need a 4th card set');
-                }
-              },
-            );
-          }),
+              }),
+            ],
+          ),
         ),
         Expanded(child: _buildDiscardSection(controller: controller)),
       ],

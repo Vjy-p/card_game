@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com</string>
+	<string>1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1</string>
+	<string>com.googleusercontent.apps.1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>1092733022095-3m2n79bh742ttk2hq52fc5gk7bs447rv.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.cardGame</string>
+	<string>com.game.cardGame</string>
 	<key>PROJECT_ID</key>
 	<string>housie-d854b</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1092733022095:ios:df4ef7c088aec7c31225fa</string>
+	<string>1:1092733022095:ios:dc6dd7841f1bea041225fa</string>
 </dict>
 </plist>

@@ -1,3 +1,5 @@
+import 'package:card_game/core/responsive/get_device.dart';
+import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/leave_room_button.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/lobby_header.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/player_list.dart';
@@ -14,9 +16,21 @@ class GuestLobbyScreen extends GetView<RoomController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Lobby')),
-      body: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: GetDevice.isMobile(context)
+                ? Get.width
+                : GetDevice.isTablet(context)
+                ? Get.width * 0.9
+                : Get.width / 2,
+          ),
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.md,
+          ),
           child: Column(
             spacing: 20,
             children: [

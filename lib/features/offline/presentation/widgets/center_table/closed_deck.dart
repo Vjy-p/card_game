@@ -111,8 +111,8 @@ class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
                 ? 'Draw a card (${widget.remainingCards})'
                 : 'No cards available',
             child: MouseRegion(
-              onEnter: (_) => _setHovered(true),
-              onExit: (_) => _setHovered(false),
+              // onEnter: (_) => _setHovered(true),
+              // onExit: (_) => _setHovered(false),
               cursor: widget.enabled
                   ? SystemMouseCursors.click
                   : MouseCursor.defer,

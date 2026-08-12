@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:card_game/core/services/common_services.dart';
+import 'package:card_game/features/ads/controllers/ads_controller.dart';
 import 'package:card_game/features/offline/controllers/ai_controller.dart';
 import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
@@ -23,6 +24,7 @@ class GameController extends GetxController {
   final GameEngine _engine;
   late final AIController _aiController;
   String gameSessionId = DateTime.fromMicrosecondsSinceEpoch.toString();
+  final adsController = Get.find<AdsController>();
 
   final Rx<TableViewState> _table = TableViewState.initial().obs;
 
@@ -231,6 +233,7 @@ class GameController extends GetxController {
         winners = List.from(players);
         winners.sort((a, b) => b.score.compareTo(a.score));
         log('winner ${winners.first.id} ${winners.first.name}');
+        adsController.showInterstitialAd();
         confettiController.play();
         update();
         updateUserScore();
@@ -409,7 +412,7 @@ class GameController extends GetxController {
       winners.sort((a, b) => b.score.compareTo(a.score));
 
       log('Game Over! Winner: ${winner.name}');
-
+      adsController.showInterstitialAd();
       updateUserScore();
       // confettiController.play();
       refreshTable();

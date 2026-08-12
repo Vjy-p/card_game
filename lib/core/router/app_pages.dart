@@ -15,6 +15,7 @@ import 'package:card_game/features/online/room/controllers/join_table_controller
 import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
 import 'package:card_game/features/online/room/presentation/screens/online_ranking_screen.dart';
 import 'package:card_game/features/online/room/presentation/screens/table_screen.dart';
+import 'package:card_game/features/payments/presentation/screens/payments_screen.dart';
 import 'package:card_game/features/profile/presentation/screens/profile_screen.dart';
 import 'package:card_game/features/splash/presentation/screens/splash_screen.dart';
 import 'package:get/get.dart';
@@ -86,5 +87,6 @@ class AppPages {
       page: () => OnlineRankingScreen(),
       // binding: AppBinding(),
     ),
+    GetPage(name: AppRoute.payments.path, page: () => const PaymentsScreen()),
   ];
 }

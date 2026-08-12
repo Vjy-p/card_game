@@ -42,11 +42,11 @@ class HomeSidePanel extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                OutlinedButton.icon(
-                  onPressed: null,
-                  icon: const Icon(Icons.menu_book_outlined),
-                  label: const Text('How to Play'),
-                ),
+                // OutlinedButton.icon(
+                //   onPressed: null,
+                //   icon: const Icon(Icons.menu_book_outlined),
+                //   label: const Text('How to Play'),
+                // ),
               ],
             ),
           ),

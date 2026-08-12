@@ -108,8 +108,8 @@ class HostLobbyScreen extends GetView<RoomController> {
           ),
           const Spacer(),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings, color: AppColors.lightSurface),
+            onPressed: null,
+            icon: const Icon(Icons.settings, color: Colors.transparent),
           ),
         ],
       ),

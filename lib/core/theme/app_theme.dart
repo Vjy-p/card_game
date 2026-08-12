@@ -1,5 +1,6 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
+import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/core/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 
@@ -28,39 +29,30 @@ abstract final class AppTheme {
         AppColors.textSecondary,
       ),
       splashFactory: InkSparkle.splashFactory,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.backgroundPrimary,
+        surfaceTintColor: AppColors.backgroundSecondary,
+      ),
+      bottomAppBarTheme: BottomAppBarThemeData(
+        color: AppColors.backgroundPrimary,
+        surfaceTintColor: AppColors.backgroundSecondary,
+      ),
+      cardTheme: CardThemeData(color: AppColors.surfacePrimary),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.actionPrimary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(48, 52),
+          backgroundColor: AppColors.gameTable,
+          // minimumSize: const Size(42, 52),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.sm,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.md),
           ),
         ),
-      ),
-    );
-  }
-
-  static ThemeData get light {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.gameTable,
-      brightness: Brightness.light,
-      primary: AppColors.gameTable,
-      secondary: AppColors.surfaceElevated,
-      surface: AppColors.lightSurface,
-      error: AppColors.error,
-    );
-
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.light,
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: AppColors.lightBackground,
-      fontFamily: AppTypography.fontFamily,
-      textTheme: AppTypography.textTheme(
-        AppColors.lightTextPrimary,
-        AppColors.lightTextSecondary,
       ),
     );
   }

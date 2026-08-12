@@ -1,9 +1,9 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
-import 'package:card_game/features/authentication/controllers/authentication_controller.dart';
-import 'package:card_game/utils/custom_loading.dart';
+import 'package:card_game/features/authentication/presentation/widgets/google_sign_in_button.dart'
+    if (dart.library.js_interop) 'google_sign_in_web_button.dart'
+    if (dart.library.io) 'google_sign_in_mobile_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AuthenticationForm extends StatelessWidget {
   const AuthenticationForm({super.key, required this.onGoogleSignIn});
@@ -11,9 +11,9 @@ class AuthenticationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationController authenticationController = Get.put(
-      AuthenticationController(),
-    );
+    // final AuthenticationController authenticationController = Get.put(
+    //   AuthenticationController(),
+    // );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -40,21 +40,7 @@ class AuthenticationForm extends StatelessWidget {
 
         const SizedBox(height: AppSpacing.xxl),
 
-        Obx(() {
-          return FilledButton.icon(
-            onPressed: authenticationController.isLoading.value
-                ? null
-                : onGoogleSignIn,
-            icon: const Icon(Icons.login),
-            label: authenticationController.isLoading.value
-                ? CustomLoading()
-                : Text(
-                    authenticationController.isLoading.value
-                        ? 'Signing in...'
-                        : 'Continue with Google',
-                  ),
-          );
-        }),
+        getGoogleSignInButton(onPressed: onGoogleSignIn),
 
         const SizedBox(height: AppSpacing.lg),
 

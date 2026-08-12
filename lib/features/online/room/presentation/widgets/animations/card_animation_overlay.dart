@@ -64,9 +64,9 @@ class _CardAnimationOverlayState extends State<CardAnimationOverlay>
     final box = key.currentContext!.findRenderObject() as RenderBox;
     final size = box.size;
 
-    const widthFraction = 0.88; // how far right, 1.0 = far edge
+    const widthFraction = 0.68; // how far right, 1.0 = far edge
     const heightFraction =
-        0.05; // vertical anchor within the hand box (0 = top, 1 = bottom)
+        -0.5; // vertical anchor within the hand box (0 = top, 1 = bottom)
 
     final local = Offset(
       size.width * widthFraction,

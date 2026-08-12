@@ -15,7 +15,8 @@ enum AppRoute {
   offline(name: 'offline', path: '/offline'),
   profile(name: 'profile', path: '/profile'),
   offlineRanking(name: 'offline-ranking', path: '/features/offline/ranking'),
-  onlineRanking(name: 'online-ranking', path: '/features/online/ranking');
+  onlineRanking(name: 'online-ranking', path: '/features/online/ranking'),
+  payments(name: 'payments', path: '/features/payments');
 
   const AppRoute({required this.name, required this.path});
   final String name;

@@ -1,3 +1,4 @@
+import 'package:card_game/core/responsive/get_device.dart';
 import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
 import 'package:card_game/features/online/room/presentation/widgets/online_card_face.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,9 @@ class OnlineUserCardTile extends GetView<OnlineGameController> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = GetDevice.isMobile(context);
+    final isTablet = GetDevice.isTablet(context);
+
     return Obx(() {
       final bool isLocked = controller.fourthCard.any(
         (e) => e.id == controller.myHand[index].id,
@@ -17,7 +21,11 @@ class OnlineUserCardTile extends GetView<OnlineGameController> {
         top: controller.selectedCard.value?.id == controller.myHand[index].id
             ? -40
             : 0,
-        left: index * 24.0,
+        left: isMobile
+            ? index * 24.0
+            : isTablet
+            ? index * 32
+            : index * 48,
         duration: const Duration(milliseconds: 250),
         child: SizedBox(
           width: 65,

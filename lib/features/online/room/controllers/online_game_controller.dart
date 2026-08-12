@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:card_game/core/router/app_route.dart';
+import 'package:card_game/features/ads/controllers/ads_controller.dart';
 import 'package:card_game/features/online/room/controllers/base_controller.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
 import 'package:card_game/features/online/room/models/card_animation_type.dart';
@@ -25,6 +26,8 @@ class OnlineGameController extends BaseController {
   ConfettiController confettiController = ConfettiController(
     duration: const Duration(seconds: 5),
   );
+
+  final adsController = Get.find<AdsController>();
 
   final OnlineGameService _service = Get.put(OnlineGameService());
 
@@ -134,6 +137,7 @@ class OnlineGameController extends BaseController {
         if (rankings.isNotEmpty) {
           AppRoute.onlineRanking.go();
         }
+        adsController.showInterstitialAd();
         log('rankings $rankings');
       }
     });

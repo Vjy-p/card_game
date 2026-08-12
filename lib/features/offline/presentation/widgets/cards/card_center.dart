@@ -12,7 +12,7 @@ class CardCenter extends StatelessWidget {
     return Center(
       child: Text(
         card.suit.symbol,
-        style: TextStyle(fontSize: 28, color: card.suit.color),
+        style: TextStyle(fontSize: 24, color: card.suit.color),
       ),
     );
   }

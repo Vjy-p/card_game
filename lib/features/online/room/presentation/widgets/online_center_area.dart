@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:card_game/core/responsive/get_device.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
@@ -18,15 +19,18 @@ class OnlineCenterArea extends GetView<OnlineGameController> {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
-    final isTablet =
-        MediaQuery.of(context).size.width >= 600 &&
-        MediaQuery.of(context).size.width < 1000;
+    final isMobile = GetDevice.isMobile(context);
+    final isTablet = GetDevice.isTablet(context);
+    final isDesktop = !isMobile && !isTablet;
     final double cardHeight = CardDimensions.height(context);
 
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(AppSpacing.lg),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: isDesktop ? AppSpacing.xxl : AppSpacing.lg,
+        ),
+        constraints: isDesktop ? BoxConstraints(maxWidth: Get.width / 2) : null,
         decoration: BoxDecoration(
           color: AppColors.backgroundSecondary,
           gradient: LinearGradient(
@@ -121,7 +125,7 @@ class OnlineCenterArea extends GetView<OnlineGameController> {
             children: [
               Obx(() {
                 return OnlineJokerTile(
-                  card: null,
+                  card: controller.joker.value,
                   enabled: controller.jokerUnlocked.value,
                   onTap: () {
                     log('on joker tap ${controller.jokerUnlocked.value}');
@@ -131,7 +135,7 @@ class OnlineCenterArea extends GetView<OnlineGameController> {
                   },
                 );
               }),
-              _buildDiscardSection(),
+              Expanded(child: _buildDiscardSection()),
             ],
           ),
         ),
@@ -149,19 +153,26 @@ class OnlineCenterArea extends GetView<OnlineGameController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(child: _buildDeckSection()),
-          Obx(() {
-            return OnlineJokerTile(
-              card: null,
-              enabled: controller.jokerUnlocked.value,
-              onTap: () {
-                log('on joker tap ${controller.jokerUnlocked.value}');
-                if (!controller.jokerUnlocked.value) {
-                  customToast(message: 'Need a 4th card set');
-                }
-              },
-            );
-          }),
-          _buildDiscardSection(),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: cardHeight),
+            child: Row(
+              children: [
+                Obx(() {
+                  return OnlineJokerTile(
+                    card: controller.joker.value,
+                    enabled: controller.jokerUnlocked.value,
+                    onTap: () {
+                      log('on joker tap ${controller.jokerUnlocked.value}');
+                      if (!controller.jokerUnlocked.value) {
+                        customToast(message: 'Need a 4th card set');
+                      }
+                    },
+                  );
+                }),
+              ],
+            ),
+          ),
+          Expanded(child: _buildDiscardSection()),
         ],
       ),
     );

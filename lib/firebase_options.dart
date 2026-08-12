@@ -52,30 +52,30 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBOxD1V2cZ1TZ2-jIC_tn56n-qKWDp8a1w',
-    appId: '1:1092733022095:android:8b4cf4b87a48f87e1225fa',
+    appId: '1:1092733022095:android:7aa2df67b318445f1225fa',
     messagingSenderId: '1092733022095',
     projectId: 'housie-d854b',
     storageBucket: 'housie-d854b.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAP1JatVe0XhD_JM-W6ffzfLTMUFA-8IkY',
-    appId: '1:1092733022095:ios:df4ef7c088aec7c31225fa',
+    appId: '1:1092733022095:ios:dc6dd7841f1bea041225fa',
     messagingSenderId: '1092733022095',
     projectId: 'housie-d854b',
     storageBucket: 'housie-d854b.firebasestorage.app',
     androidClientId: '1092733022095-3m2n79bh742ttk2hq52fc5gk7bs447rv.apps.googleusercontent.com',
-    iosClientId: '1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.cardGame',
+    iosClientId: '1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t.apps.googleusercontent.com',
+    iosBundleId: 'com.game.cardGame',
   );
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAP1JatVe0XhD_JM-W6ffzfLTMUFA-8IkY',
-    appId: '1:1092733022095:ios:df4ef7c088aec7c31225fa',
+    appId: '1:1092733022095:ios:dc6dd7841f1bea041225fa',
     messagingSenderId: '1092733022095',
     projectId: 'housie-d854b',
     storageBucket: 'housie-d854b.firebasestorage.app',
     androidClientId: '1092733022095-3m2n79bh742ttk2hq52fc5gk7bs447rv.apps.googleusercontent.com',
-    iosClientId: '1092733022095-foqvl1oqhtttvdr4s26liek7ssjugbf1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.cardGame',
+    iosClientId: '1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t.apps.googleusercontent.com',
+    iosBundleId: 'com.game.cardGame',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
