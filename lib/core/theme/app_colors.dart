@@ -27,7 +27,7 @@ abstract final class AppColors {
   static const success = Color(0xFF00FFAB);
   static const error = Color(0xFFFF005C);
 
-  static const borderSubtle = Color(0xFF27483D);
+  static const borderSubtle = Color.fromARGB(255, 39, 40, 72);
 
   static const lightBackground = Color(0xFFF4F7F5);
   static const lightSurface = Color(0xFFFFFFFF);

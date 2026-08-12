@@ -1,5 +1,7 @@
+import 'package:card_game/core/responsive/get_device.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
+import 'package:card_game/core/theme/card_dimensions.dart';
 import 'package:card_game/features/offline/presentation/widgets/cards/card_back.dart';
 import 'package:card_game/features/online/room/models/card_model.dart';
 import 'package:card_game/features/online/room/models/online_player_view_data.dart';
@@ -28,10 +30,12 @@ class _OpenPileState extends State<OnlineOpenCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = GetDevice.isMobile(context);
+
     if (widget.card == null) {
       return SizedBox(
-        width: 72,
-        height: 100,
+        height: CardDimensions.height(context),
+        width: CardDimensions.width(context),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.card),
@@ -54,60 +58,73 @@ class _OpenPileState extends State<OnlineOpenCard> {
       );
     }
 
-    return Tooltip(
-      message: widget.enabled ? 'Take open card' : 'Cannot take card',
-      child: MouseRegion(
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
-        child: GestureDetector(
-          onTap: widget.enabled ? widget.onTap : null,
-          child: AnimatedOpacity(
-            opacity: widget.enabled ? 1 : 0.45,
-            duration: const Duration(milliseconds: 200),
-            child: AnimatedScale(
-              scale: _isHovered && widget.enabled ? 1.08 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              child:
-                  Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppRadius.card),
-                          boxShadow: [
-                            BoxShadow(
-                              color: widget.enabled
-                                  ? AppColors.actionPrimary.withValues(
-                                      alpha: 0.4,
-                                    )
-                                  : Colors.black.withValues(alpha: 0.2),
-                              blurRadius: _isHovered && widget.enabled ? 12 : 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: OnlinePlayerCardWidget(
-                          data: OnlinePlayerViewData(
-                            card: widget.card!,
-                            selected: false,
-                          ),
-                        ),
-                      )
-                      .animate(delay: Duration(milliseconds: 1200))
-                      .custom(
-                        duration: 1000.ms,
-                        builder: (context, value, child) {
-                          return value == 1 ? child : CardBack();
-                        },
-                      )
-                      .slide(
-                        curve: Curves.easeOut,
-                        begin: Offset(-0.1, -1.15),
-                        end: Offset(0, 0),
-                        duration: Duration(milliseconds: 1000),
-                      )
-                      .then(delay: (-700).ms)
-                      .flipH(),
+    return SizedBox(
+      height: CardDimensions.height(context),
+      child: Row(
+        children: [
+          Tooltip(
+            message: widget.enabled ? 'Take open card' : 'Cannot take card',
+            child: MouseRegion(
+              onEnter: (_) => setState(() => _isHovered = true),
+              onExit: (_) => setState(() => _isHovered = false),
+              child: GestureDetector(
+                onTap: widget.enabled ? widget.onTap : null,
+                child: AnimatedOpacity(
+                  opacity: widget.enabled ? 1 : 0.45,
+                  duration: const Duration(milliseconds: 200),
+                  child: AnimatedScale(
+                    scale: _isHovered && widget.enabled ? 1.08 : 1.0,
+                    duration: const Duration(milliseconds: 200),
+                    child:
+                        Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.card,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: widget.enabled
+                                        ? AppColors.actionPrimary.withValues(
+                                            alpha: 0.4,
+                                          )
+                                        : Colors.black.withValues(alpha: 0.2),
+                                    blurRadius: _isHovered && widget.enabled
+                                        ? 12
+                                        : 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: OnlinePlayerCardWidget(
+                                data: OnlinePlayerViewData(
+                                  card: widget.card!,
+                                  selected: false,
+                                ),
+                              ),
+                            )
+                            .animate(delay: Duration(milliseconds: 1200))
+                            .custom(
+                              duration: 1000.ms,
+                              builder: (context, value, child) {
+                                return value == 1 ? child : CardBack();
+                              },
+                            )
+                            .slide(
+                              curve: Curves.easeOut,
+                              begin: isMobile
+                                  ? Offset(-0.1, -1.15)
+                                  : Offset(-3, 0),
+                              end: Offset(0, 0),
+                              duration: Duration(milliseconds: 1000),
+                            )
+                            .then(delay: (-700).ms)
+                            .flipH(),
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

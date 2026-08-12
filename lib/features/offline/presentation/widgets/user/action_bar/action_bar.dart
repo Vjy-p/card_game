@@ -69,63 +69,72 @@ class ActionBar extends StatelessWidget {
       // margin: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       child: (state != ActionState.gameFinished)
           ? Row(
-              spacing: AppSpacing.lg,
+              spacing: AppSpacing.md,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ActionButton(
-                  onPressed: selectedCard == null ? null : onDiscard,
-                  label: 'Discard',
-                  icon: Icon(
-                    Icons.transform,
-                    size: 20,
-                    color: AppColors.lightBackground.withValues(alpha: 0.7),
+                Expanded(
+                  child: ActionButton(
+                    onPressed: selectedCard == null ? null : onDiscard,
+                    label: 'Discard',
+                    icon: Icon(
+                      Icons.transform,
+                      size: 20,
+                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                    ),
                   ),
                 ),
-                ActionButton(
-                  onPressed: onSort,
-                  label: 'Sort',
-                  icon: Icon(
-                    Icons.sort_by_alpha,
-                    size: 20,
-                    color: AppColors.lightBackground.withValues(alpha: 0.7),
+                Expanded(
+                  child: ActionButton(
+                    onPressed: onSort,
+                    label: 'Sort',
+                    icon: Icon(
+                      Icons.sort_by_alpha,
+                      size: 20,
+                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                    ),
                   ),
                 ),
-                ActionButton(
-                  onPressed: canDeclare
-                      ? () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => DeclareCardSheet(
-                              cards: cards,
-                              fourthCard: fourthCard,
-                            ),
-                          );
-                        }
-                      : null,
-                  label: 'Group',
-                  icon: Icon(
-                    Icons.category,
-                    size: 20,
-                    color: AppColors.lightBackground.withValues(alpha: 0.7),
+                Expanded(
+                  child: ActionButton(
+                    onPressed: canDeclare
+                        ? () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => DeclareCardSheet(
+                                cards: cards,
+                                fourthCard: fourthCard,
+                              ),
+                            );
+                          }
+                        : null,
+                    label: 'Group',
+                    icon: Icon(
+                      Icons.category,
+                      size: 20,
+                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                    ),
                   ),
                 ),
-                ActionButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => FourthCardBottomSheet(cards: cards),
-                    );
-                  },
-                  label: '4th card',
-                  icon: Icon(
-                    Icons.check_circle,
-                    size: 20,
-                    color: AppColors.lightBackground.withValues(alpha: 0.7),
+                Expanded(
+                  child: ActionButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) =>
+                            FourthCardBottomSheet(cards: cards),
+                      );
+                    },
+                    label: '4th card',
+                    icon: Icon(
+                      Icons.check_circle,
+                      size: 20,
+                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                    ),
                   ),
                 ),
               ],

@@ -1,3 +1,4 @@
+import 'package:card_game/core/responsive/get_device.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/features/offline/models/playing_card.dart';
@@ -27,6 +28,8 @@ class _OpenPileState extends State<JokerPile> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = GetDevice.isMobile(context);
+
     if (widget.card == null) {
       return SizedBox(
         width: 72,
@@ -93,7 +96,7 @@ class _OpenPileState extends State<JokerPile> {
                       .animate(delay: Duration(milliseconds: 1200))
                       .slide(
                         curve: Curves.easeOut,
-                        begin: Offset(0.5, -1.2),
+                        begin: isMobile ? Offset(0.5, -1.2) : Offset(-1.7, 0),
                         end: Offset(0, 0),
                         duration: Duration(milliseconds: 1300),
                       ),

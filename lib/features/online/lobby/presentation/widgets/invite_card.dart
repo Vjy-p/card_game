@@ -1,6 +1,8 @@
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
+import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 class InviteCard extends GetView<RoomController> {
@@ -16,7 +18,15 @@ class InviteCard extends GetView<RoomController> {
           controller.room?.joinCode ?? '',
           style: TextStyle(color: AppColors.textSecondary),
         ),
-        trailing: IconButton(icon: const Icon(Icons.copy), onPressed: () {}),
+        trailing: IconButton(
+          icon: const Icon(Icons.copy),
+          onPressed: () {
+            Clipboard.setData(
+              ClipboardData(text: controller.room?.joinCode ?? ''),
+            );
+            customToast(message: 'Room code copied');
+          },
+        ),
       ),
     );
   }

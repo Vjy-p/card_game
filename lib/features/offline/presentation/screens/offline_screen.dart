@@ -1,6 +1,8 @@
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
+import 'package:card_game/features/ads/presentation/widgets/banner_ad_widget.dart';
 import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/controllers/game_config.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
@@ -21,24 +23,34 @@ class OfflineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    final isTablet =
+        MediaQuery.of(context).size.width >= 600 &&
+        MediaQuery.of(context).size.width < 1000;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
-        final bool isExit = await openExitDialog();
+        final bool isExit = await openExitDialog(isMobile: isMobile);
         if (isExit) {
-          Get.back();
+          AppRoute.home.offAll();
+          // Get.back();
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.tableDark,
+          surfaceTintColor: AppColors.tableDark,
+          elevation: 0,
           toolbarHeight: 40,
-          title: const Text(''),
+          title: BannerAdWidget(),
           leading: BackButton(
             onPressed: () async {
-              final bool isExit = await openExitDialog();
+              final bool isExit = await openExitDialog(isMobile: isMobile);
               if (isExit) {
-                Get.back();
+                AppRoute.home.offAll();
+                // Get.back();
               }
             },
           ),
@@ -48,13 +60,16 @@ class OfflineScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> openExitDialog() async {
+  Future<bool> openExitDialog({required bool isMobile}) async {
     return await Get.dialog(
       Dialog(
         backgroundColor: AppColors.backgroundSecondary,
         insetPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(AppRadius.card),
+        ),
+        constraints: BoxConstraints(
+          maxWidth: isMobile ? Get.width : Get.width / 2,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(

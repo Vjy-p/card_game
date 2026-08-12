@@ -64,7 +64,7 @@ class OnlineActionBar extends GetView<OnlineGameController> {
                   Expanded(
                     child: ActionButton(
                       onPressed: () {
-                        AppRoute.offlineRanking.go();
+                        AppRoute.onlineRanking.go();
                       },
                       label: 'Winners',
                       icon: Icon(
@@ -93,69 +93,77 @@ class OnlineActionBar extends GetView<OnlineGameController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ActionButton(
-                    onPressed: controller.selectedCard.value == null
-                        ? null
-                        : () {
-                            controller.discardCard(
-                              cardId: controller.selectedCard.value!.id,
-                            );
-                          },
-                    label: 'Discard',
-                    icon: Icon(
-                      Icons.transform,
-                      size: 20,
-                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: controller.selectedCard.value == null
+                          ? null
+                          : () {
+                              controller.discardCard(
+                                cardId: controller.selectedCard.value!.id,
+                              );
+                            },
+                      label: 'Discard',
+                      icon: Icon(
+                        Icons.transform,
+                        size: 20,
+                        color: AppColors.lightBackground.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
-                  ActionButton(
-                    onPressed: () {
-                      controller.sort();
-                    },
-                    label: 'Sort',
-                    icon: Icon(
-                      Icons.sort_by_alpha,
-                      size: 20,
-                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: () {
+                        controller.sort();
+                      },
+                      label: 'Sort',
+                      icon: Icon(
+                        Icons.sort_by_alpha,
+                        size: 20,
+                        color: AppColors.lightBackground.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
-                  ActionButton(
-                    onPressed: controller.isMyTurn
-                        ? () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => OnlineDeclareBottomsheet(
-                                cards: controller.myHand,
-                                fourthCard: controller.fourthCard,
-                              ),
-                            );
-                          }
-                        : null,
-                    label: 'Group',
-                    icon: Icon(
-                      Icons.category,
-                      size: 20,
-                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: controller.isMyTurn
+                          ? () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => OnlineDeclareBottomsheet(
+                                  cards: controller.myHand,
+                                  fourthCard: controller.fourthCard,
+                                ),
+                              );
+                            }
+                          : null,
+                      label: 'Group',
+                      icon: Icon(
+                        Icons.category,
+                        size: 20,
+                        color: AppColors.lightBackground.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
-                  ActionButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) => OnlineFourthCardBottomsheet(
-                          cards: controller.myHand,
-                        ),
-                      );
-                    },
-                    label: '4th card',
-                    icon: Icon(
-                      Icons.check_circle,
-                      size: 20,
-                      color: AppColors.lightBackground.withValues(alpha: 0.7),
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => OnlineFourthCardBottomsheet(
+                            cards: controller.myHand,
+                          ),
+                        );
+                      },
+                      label: '4th card',
+                      icon: Icon(
+                        Icons.check_circle,
+                        size: 20,
+                        color: AppColors.lightBackground.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
                 ],

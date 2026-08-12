@@ -15,7 +15,7 @@ class PlayerWidget extends GetView<OnlineGameController> {
     final occupied = player != null;
 
     return occupied == false
-        ? SizedBox.shrink()
+        ? SizedBox(width: 20)
         : Obx(() {
             final bool isCurrentTurn =
                 player?.playerId == controller.currentPlayerInternalId;
