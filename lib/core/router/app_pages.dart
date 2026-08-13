@@ -2,6 +2,8 @@ import 'package:card_game/core/router/app_route.dart';
 // Import all your screens...
 import 'package:card_game/features/authentication/presentation/screens/authentication_screen.dart';
 import 'package:card_game/features/home/presentation/screens/home_screen.dart';
+import 'package:card_game/features/legal/presentation/screens/privacy_policy_screen.dart';
+import 'package:card_game/features/legal/presentation/screens/terms_conditions_screen.dart';
 import 'package:card_game/features/offline/presentation/screens/offline_screen.dart';
 import 'package:card_game/features/offline/presentation/screens/ranking_screen.dart';
 import 'package:card_game/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -88,5 +90,13 @@ class AppPages {
       // binding: AppBinding(),
     ),
     GetPage(name: AppRoute.payments.path, page: () => const PaymentsScreen()),
+    GetPage(
+      name: AppRoute.privacy.path,
+      page: () => const PrivacyPolicyScreen(),
+    ),
+    GetPage(
+      name: AppRoute.terms.path,
+      page: () => const TermsConditionsScreen(),
+    ),
   ];
 }
