@@ -1,8 +1,10 @@
+import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/authentication/presentation/widgets/google_sign_in_button.dart'
     if (dart.library.js_interop) 'google_sign_in_web_button.dart'
     if (dart.library.io) 'google_sign_in_mobile_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationForm extends StatelessWidget {
@@ -43,10 +45,40 @@ class AuthenticationForm extends StatelessWidget {
         getGoogleSignInButton(onPressed: onGoogleSignIn),
 
         const SizedBox(height: AppSpacing.lg),
-
-        Text(
-          'By continuing you agree to the Terms & Privacy Policy.',
+        RichText(
           textAlign: TextAlign.center,
+          text: TextSpan(
+            text: 'By continuing you agree to the ',
+            style: TextStyle(color: AppColors.textMuted),
+            children: [
+              TextSpan(
+                text: 'Terms',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  decoration: TextDecoration.underline,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    AppRoute.terms.go();
+                  },
+              ),
+              TextSpan(
+                text: ' & ',
+                style: TextStyle(color: AppColors.textMuted),
+              ),
+              TextSpan(
+                text: 'Privacy Policy.',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  decoration: TextDecoration.underline,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    AppRoute.privacy.go();
+                  },
+              ),
+            ],
+          ),
         ),
       ],
     );

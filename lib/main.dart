@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:card_game/core/router/app_pages.dart';
 import 'package:card_game/core/router/app_route.dart';
@@ -9,6 +10,7 @@ import 'package:card_game/utils/constants/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,6 +29,7 @@ Future<void> main() async {
   await GoogleSignIn.instance.initialize(
     serverClientId: kIsWeb ? null : Constants.googleServerClientKey,
   );
+  usePathUrlStrategy();
   Supabase.instance.client.realtime.onOpen(() {
     log('Realtime OPEN');
   });
@@ -54,12 +57,23 @@ class CardGameApp extends StatelessWidget {
       title: 'Card Game',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
+      scrollBehavior: MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.trackpad,
+          PointerDeviceKind.unknown,
+        },
+      ),
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       getPages: AppPages.routes,
       initialRoute: AppRoute.splash.path,
+      // home: SplashScreen(),
       initialBinding: AppBinding(),
-      builder: FToastBuilder(),
+      // builder: FToastBuilder(),
+      builder: (context, child) => FToastBuilder()(context, child!),
     );
   }
 }
