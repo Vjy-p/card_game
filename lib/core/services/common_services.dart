@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommonServices {
   static GetStorage box = GetStorage();
@@ -42,5 +43,29 @@ class CommonServices {
   static Future<void> clearData() async {
     await box.erase();
     log('user clear data');
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map(
+          (MapEntry<String, String> e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+        )
+        .join('&');
+  }
+
+  Future<void> launchEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'YOUR_SUPPORT_EMAIL@example.com',
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Card Game - Account Deletion Request',
+        'body':
+            'Hello,\n\nI request deletion of my Card Game account and associated data.\n\nAccount email: ',
+      }),
+    );
+    if (await canLaunchUrl(emailLaunchUri)) {
+      await launchUrl(emailLaunchUri);
+    }
   }
 }

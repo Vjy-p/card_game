@@ -14,6 +14,7 @@ abstract final class AppColors {
   static const actionPrimary = Color(0xFF00F5FF); // Electric Cyan
   static const actionPrimaryForeground = Color(0xFF0F0C1D);
   static const accent = Color(0xFFBD00FF); // Neon Purple
+  static const Color accentPurple = Color(0xFF7C5CFC);
 
   // Text
   static const textPrimary = Color(0xFFFFFFFF);

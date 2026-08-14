@@ -75,8 +75,24 @@ class AuthenticationForm extends StatelessWidget {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     AppRoute.privacy.go();
+                    // AppRoute.delete.go();
                   },
               ),
+              // TextSpan(
+              //   text: ' & ',
+              //   style: TextStyle(color: AppColors.textMuted),
+              // ),
+              // TextSpan(
+              //   text: 'Delete',
+              //   style: TextStyle(
+              //     color: AppColors.textSecondary,
+              //     decoration: TextDecoration.underline,
+              //   ),
+              //   recognizer: TapGestureRecognizer()
+              //     ..onTap = () {
+              //       AppRoute.delete.go();
+              //     },
+              // ),
             ],
           ),
         ),
