@@ -61,9 +61,8 @@ class LegalSection extends StatelessWidget {
 }
 
 class _SectionTitle extends StatelessWidget {
-  final String title;
-
   const _SectionTitle({required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {

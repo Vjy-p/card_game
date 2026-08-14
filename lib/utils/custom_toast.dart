@@ -11,9 +11,9 @@ Future<void> customToast({
 }) async {
   Fluttertoast.showToast(
     msg: message,
-    toastLength: Toast.LENGTH_SHORT,
+    toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
+    timeInSecForIosWeb: durationInSeconds ?? 3,
     textColor: AppColors.textPrimary,
     backgroundColor: AppColors.surfaceElevated,
     fontSize: 14,

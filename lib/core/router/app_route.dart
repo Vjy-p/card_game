@@ -1,4 +1,3 @@
-import 'package:card_game/core/services/common_services.dart';
 import 'package:get/get.dart';
 
 enum AppRoute {
@@ -19,7 +18,8 @@ enum AppRoute {
   onlineRanking(name: 'online-ranking', path: '/features/online/ranking'),
   payments(name: 'payments', path: '/features/payments'),
   privacy(name: 'privacy-policy', path: '/features/legal/privacy'),
-  terms(name: 'terms and conditions', path: '/features/legal/terms');
+  terms(name: 'terms and conditions', path: '/features/legal/terms'),
+  delete(name: 'delete-account', path: '/features/legal/delete');
 
   const AppRoute({required this.name, required this.path});
   final String name;
@@ -52,18 +52,5 @@ extension AppRouteNavigation on AppRoute {
     }
 
     Get.offAllNamed(route, parameters: queryParams);
-  }
-
-  void smartBack() {
-    if (Get.previousRoute.isEmpty || Get.previousRoute == '') {
-      // If stack is empty (after refresh), go to Home instead of getting stuck
-      if (CommonServices.getUserId().isNotEmpty) {
-        AppRoute.home.offAll();
-      } else {
-        AppRoute.splash.offAll();
-      }
-    } else {
-      Get.back();
-    }
   }
 }

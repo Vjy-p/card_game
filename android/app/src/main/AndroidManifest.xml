@@ -38,6 +38,20 @@
                      android:scheme="io.supabase.flutter"
                      android:host="login-callback" />
             </intent-filter>
+
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="vjy-p.github.io"
+                    android:pathPrefix="/" />
+                <!-- <data  android:pathPrefix /> -->
+            </intent-filter>
         </activity>
 
         <!--  AdMob app ID: -->

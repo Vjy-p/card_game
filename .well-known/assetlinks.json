@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.game.cardGame",
+      "sha256_cert_fingerprints": [
+        "36:be:36:34:75:29:0c:7d:5f:5e:f4:d3:c1:9c:62:20:0e:46:cd:bd:13:0c:bb:19:55:37:23:ea:26:06:31:fe",
+        "c4:f0:5a:b2:45:b8:bc:18:0b:80:9c:4b:f6:88:d6:d7:fc:55:96:dd:1e:32:cf:bd:4e:98:e6:7e:a8:cc:c4:e5"
+      ]
+    }
+  }
+]

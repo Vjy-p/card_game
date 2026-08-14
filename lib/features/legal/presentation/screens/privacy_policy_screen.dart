@@ -1,4 +1,4 @@
-import 'package:card_game/core/router/app_route.dart';
+import 'package:card_game/core/router/can_go_back.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/legal/models/legal_content_model.dart';
 import 'package:card_game/features/legal/presentation/widgets/legal_footer.dart';
@@ -124,14 +124,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        AppRoute.home.smartBack();
+        CanGoBack.go();
       },
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           centerTitle: false,
           leading: IconButton(
-            onPressed: () => AppRoute.home.smartBack(),
+            onPressed: CanGoBack.go,
             icon: const Icon(
               Icons.arrow_back_ios_new_rounded,
               color: Colors.white,
