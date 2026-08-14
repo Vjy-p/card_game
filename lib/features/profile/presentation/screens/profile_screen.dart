@@ -62,76 +62,84 @@ class ProfileScreen extends StatelessWidget {
                       vertical: AppSpacing.md,
                     ),
                     physics: BouncingScrollPhysics(),
-                    child: Column(
-                      spacing: AppSpacing.lg,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ProfileWidget(
-                          name: controller.userDetails?.displayName ?? '',
-                          profilePath: controller.userDetails?.photoUrl ?? '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Email',
-                          value: controller.userDetails?.email ?? '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Played',
-                          value:
-                              controller.userDetails?.gamesPlayed?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Won',
-                          value:
-                              controller.userDetails?.gamesWon?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'First Place',
-                          value:
-                              controller.userDetails?.firstPlace?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Second Place',
-                          value:
-                              controller.userDetails?.secondPlace?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Third Place',
-                          value:
-                              controller.userDetails?.thirdPlace?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Total Score',
-                          value:
-                              controller.userDetails?.totalScore?.toString() ??
-                              '',
-                        ),
-                        // ProfileRowWidget(
-                        //   label: 'Total Points',
-                        //   value:
-                        //       controller.userDetails?.totalPoints?.toString() ??
-                        //       '',
-                        // ),
-                        ProfileRowWidget(
-                          label: 'Win Streak',
-                          value:
-                              controller.userDetails?.currentWinStreak
-                                  ?.toString() ??
-                              '',
-                        ),
-                        ProfileRowWidget(
-                          label: 'Longest Win Streak',
-                          value:
-                              controller.userDetails?.longestWinStreak
-                                  ?.toString() ??
-                              '',
-                        ),
-                      ],
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Column(
+                        spacing: AppSpacing.lg,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ProfileWidget(
+                            name: controller.userDetails?.displayName ?? '',
+                            profilePath: controller.userDetails?.photoUrl ?? '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Email',
+                            value: controller.userDetails?.email ?? '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Played',
+                            value:
+                                controller.userDetails?.gamesPlayed
+                                    ?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Won',
+                            value:
+                                controller.userDetails?.gamesWon?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'First Place',
+                            value:
+                                controller.userDetails?.firstPlace
+                                    ?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Second Place',
+                            value:
+                                controller.userDetails?.secondPlace
+                                    ?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Third Place',
+                            value:
+                                controller.userDetails?.thirdPlace
+                                    ?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Total Score',
+                            value:
+                                controller.userDetails?.totalScore
+                                    ?.toString() ??
+                                '',
+                          ),
+                          // ProfileRowWidget(
+                          //   label: 'Total Points',
+                          //   value:
+                          //       controller.userDetails?.totalPoints?.toString() ??
+                          //       '',
+                          // ),
+                          ProfileRowWidget(
+                            label: 'Win Streak',
+                            value:
+                                controller.userDetails?.currentWinStreak
+                                    ?.toString() ??
+                                '',
+                          ),
+                          ProfileRowWidget(
+                            label: 'Longest Win Streak',
+                            value:
+                                controller.userDetails?.longestWinStreak
+                                    ?.toString() ??
+                                '',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

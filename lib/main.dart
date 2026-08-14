@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:card_game/core/router/app_pages.dart';
-import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/router/bindings.dart';
+import 'package:card_game/core/router/web_route_helper.dart';
 import 'package:card_game/core/theme/app_theme.dart';
 import 'package:card_game/firebase_options.dart';
 import 'package:card_game/utils/constants/constants.dart';
@@ -42,7 +42,9 @@ Future<void> main() async {
     log('Realtime ERROR: $error');
   });
 
-  MobileAds.instance.initialize();
+  if (!kIsWeb) {
+    MobileAds.instance.initialize();
+  }
 
   await GetStorage.init();
   runApp(const CardGameApp());
@@ -69,11 +71,9 @@ class CardGameApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       getPages: AppPages.routes,
-      initialRoute: AppRoute.splash.path,
-      // home: SplashScreen(),
+      initialRoute: WebRouteHelper.getInitialRoute(),
       initialBinding: AppBinding(),
-      // builder: FToastBuilder(),
-      builder: (context, child) => FToastBuilder()(context, child!),
+      builder: FToastBuilder(),
     );
   }
 }
