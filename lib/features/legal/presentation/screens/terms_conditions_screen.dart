@@ -4,6 +4,7 @@ import 'package:card_game/features/legal/models/legal_content_model.dart';
 import 'package:card_game/features/legal/presentation/widgets/legal_footer.dart';
 import 'package:card_game/features/legal/presentation/widgets/legal_header.dart';
 import 'package:card_game/features/legal/presentation/widgets/legal_section.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 
 class TermsConditionsScreen extends StatelessWidget {
@@ -115,7 +116,7 @@ class TermsConditionsScreen extends StatelessWidget {
     LegalContentModel(
       title: '18. Contact Us',
       content:
-          'If you have questions, concerns, or requests regarding these Terms, please contact us at: YOUR_SUPPORT_EMAIL',
+          'If you have questions, concerns, or requests regarding these Terms, please contact us at: card.game.support@gmail.com',
     ),
   ];
 
@@ -128,15 +129,7 @@ class TermsConditionsScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () => CanGoBack.go(),
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
+          leading: CustomBackButton(onTap: CanGoBack.go),
           title: const Text(
             'Terms & Conditions',
             // style: TextStyle(

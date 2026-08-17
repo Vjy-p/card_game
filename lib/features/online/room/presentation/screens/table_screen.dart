@@ -9,6 +9,7 @@ import 'package:card_game/features/online/room/presentation/widgets/animations/c
 import 'package:card_game/features/online/room/presentation/widgets/online_center_area.dart';
 import 'package:card_game/features/online/room/presentation/widgets/player_widget.dart';
 import 'package:card_game/features/online/room/presentation/widgets/user/online_user_widget.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,8 +36,9 @@ class TableScreen extends GetView<OnlineGameController> {
           surfaceTintColor: AppColors.tableDark,
           toolbarHeight: 40,
           title: BannerAdWidget(),
-          leading: BackButton(
-            onPressed: () async {
+
+          leading: CustomBackButton(
+            onTap: () async {
               final bool isExit = await openExitDialog();
               if (isExit) {
                 Get.back();

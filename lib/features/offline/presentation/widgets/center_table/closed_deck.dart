@@ -26,7 +26,7 @@ class ClosedDeck extends StatefulWidget {
 class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isHovered = false;
+  final bool _isHovered = false;
   bool initialise = false;
   Timer? timer;
 
@@ -67,10 +67,10 @@ class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
     widget.onTap();
   }
 
-  void _setHovered(bool value) {
-    if (!widget.enabled) return;
-    setState(() => _isHovered = value);
-  }
+  // void _setHovered(bool value) {
+  //   if (!widget.enabled) return;
+  //   setState(() => _isHovered = value);
+  // }
 
   @override
   Widget build(BuildContext context) {

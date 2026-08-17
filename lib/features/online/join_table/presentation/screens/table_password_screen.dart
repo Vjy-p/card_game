@@ -2,6 +2,7 @@ import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/online/join_table/controllers/table_password_controller.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
@@ -25,7 +26,10 @@ class _TablePasswordScreenState extends State<TablePasswordScreen> {
       init: TablePasswordController(),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Table Password')),
+          appBar: AppBar(
+            leading: CustomBackButton(),
+            title: const Text('Table Password'),
+          ),
           body: SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:card_game/core/router/app_route.dart';
 import 'package:card_game/core/theme/app_colors.dart';
+import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/ads/presentation/widgets/banner_ad_widget.dart';
 import 'package:card_game/features/home/controllers/home_controller.dart';
@@ -12,12 +13,12 @@ import 'package:card_game/features/offline/controllers/ai_controller.dart';
 import 'package:card_game/features/offline/controllers/animations/game_animation_controller.dart';
 import 'package:card_game/features/offline/controllers/game_config.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
+import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
 import 'package:card_game/features/online/create_table/controller/create_table_controller.dart';
 import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
 import 'package:card_game/utils/custom_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -81,198 +82,359 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final wide = constraints.maxWidth >= 840;
-            return CustomScrollView(
-              physics: BouncingScrollPhysics(),
-              slivers: [
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
-                    vertical: AppSpacing.md,
-                  ),
-                  sliver: SliverToBoxAdapter(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1120),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'CARD GAME',
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: AppColors.actionPrimary,
-                                        letterSpacing: 1.2,
-                                      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final bool isExit = await openExitDialog();
+        if (isExit) {
+          Get.back();
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final wide = constraints.maxWidth >= 840;
+              return CustomScrollView(
+                physics: BouncingScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
+                      vertical: AppSpacing.md,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1120),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'CARD GAME',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium
+                                        ?.copyWith(
+                                          color: AppColors.actionPrimary,
+                                          letterSpacing: 1.2,
+                                        ),
+                                  ),
+                                  const SizedBox(height: AppSpacing.xs),
+                                  Text(
+                                    'Ready for the next table?',
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              style: ButtonStyle(
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                                padding: WidgetStatePropertyAll(
+                                  EdgeInsets.zero,
                                 ),
-                                const SizedBox(height: AppSpacing.xs),
-                                Text(
-                                  'Ready for the next table?',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineMedium,
-                                ),
-                              ],
+                              ),
+                              tooltip: 'Profile',
+                              onPressed: () {
+                                AppRoute.profile.go();
+                              },
+                              icon: const Icon(
+                                Icons.person_outline_rounded,
+                                size: 24,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            style: ButtonStyle(
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
-                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                            ),
-                            tooltip: 'Profile',
-                            onPressed: () {
-                              AppRoute.profile.go();
-                            },
-                            icon: const Icon(
-                              Icons.person_outline_rounded,
-                              size: 24,
-                            ),
-                          ),
-                          // IconButton(
-                          //   style: ButtonStyle(
-                          //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          //     visualDensity: VisualDensity.compact,
-                          //     padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                          //   ),
-                          //   tooltip: 'Payments',
-                          //   onPressed: () {
-                          //     AppRoute.payments.go();
-                          //   },
-                          //   icon: Icon(Icons.payments, size: 24),
-                          // ),
-                          // IconButton(
-                          //   tooltip: 'Settings',
-                          //   onPressed: null,
-                          //   icon: const Icon(Icons.settings_outlined),
-                          // ),
-                        ],
+                            // IconButton(
+                            //   style: ButtonStyle(
+                            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            //     visualDensity: VisualDensity.compact,
+                            //     padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                            //   ),
+                            //   tooltip: 'Payments',
+                            //   onPressed: () {
+                            //     AppRoute.payments.go();
+                            //   },
+                            //   icon: Icon(Icons.payments, size: 24),
+                            // ),
+                            // IconButton(
+                            //   tooltip: 'Settings',
+                            //   onPressed: null,
+                            //   icon: const Icon(Icons.settings_outlined),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Obx(() {
-                  return controller.rejoinableSessions.isEmpty
-                      ? const SliverToBoxAdapter(child: SizedBox.shrink())
-                      : SliverPadding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: wide ? AppSpacing.xxl : AppSpacing.lg,
-                          ),
-                          sliver: SliverToBoxAdapter(
-                            child: Card(
-                              child: ListTile(
-                                dense: true,
-                                visualDensity: VisualDensity.comfortable,
-                                leading: const Icon(
-                                  Icons.restore_rounded,
-                                  color: AppColors.actionPrimary,
+                  Obx(() {
+                    return controller.rejoinableSessions.isEmpty
+                        ? const SliverToBoxAdapter(child: SizedBox.shrink())
+                        : SliverPadding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: wide ? AppSpacing.xxl : AppSpacing.lg,
+                            ),
+                            sliver: SliverToBoxAdapter(
+                              child: Card(
+                                child: ListTile(
+                                  dense: true,
+                                  visualDensity: VisualDensity.comfortable,
+                                  leading: const Icon(
+                                    Icons.restore_rounded,
+                                    color: AppColors.actionPrimary,
+                                  ),
+                                  title: Text(
+                                    controller
+                                                .rejoinableSessions
+                                                .first
+                                                .status ==
+                                            'playing'
+                                        ? 'Resume ${controller.rejoinableSessions.first.tableName}'
+                                        : 'Return to ${controller.rejoinableSessions.first.tableName}',
+                                  ),
+                                  subtitle: Text(
+                                    controller
+                                                .rejoinableSessions
+                                                .first
+                                                .status ==
+                                            'playing'
+                                        ? 'Your active game is waiting.'
+                                        : 'Your lobby is still active.',
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.chevron_right_rounded,
+                                  ),
+                                  onTap: () async {
+                                    final session =
+                                        controller.rejoinableSessions.first;
+                                    await controller.resumeRoom(session.roomId);
+                                    if (!context.mounted) return;
+                                    if (session.status == 'playing') {
+                                      AppRoute.gameTable.go(
+                                        pathParams: {'gameId': session.roomId},
+                                      );
+                                    } else {
+                                      session.isHost
+                                          ? AppRoute.hostLobby.go(
+                                              pathParams: {
+                                                'roomCode': session.roomId,
+                                              },
+                                            )
+                                          : AppRoute.guestLobby.go(
+                                              pathParams: {
+                                                'roomCode': session.roomId,
+                                              },
+                                            );
+                                    }
+                                  },
                                 ),
-                                title: Text(
-                                  controller.rejoinableSessions.first.status ==
-                                          'playing'
-                                      ? 'Resume ${controller.rejoinableSessions.first.tableName}'
-                                      : 'Return to ${controller.rejoinableSessions.first.tableName}',
-                                ),
-                                subtitle: Text(
-                                  controller.rejoinableSessions.first.status ==
-                                          'playing'
-                                      ? 'Your active game is waiting.'
-                                      : 'Your lobby is still active.',
-                                ),
-                                trailing: const Icon(
-                                  Icons.chevron_right_rounded,
-                                ),
-                                onTap: () async {
-                                  final session =
-                                      controller.rejoinableSessions.first;
-                                  await controller.resumeRoom(session.roomId);
-                                  if (!context.mounted) return;
-                                  if (session.status == 'playing') {
-                                    AppRoute.gameTable.go(
-                                      pathParams: {'gameId': session.roomId},
-                                    );
-                                  } else {
-                                    session.isHost
-                                        ? AppRoute.hostLobby.go(
-                                            pathParams: {
-                                              'roomCode': session.roomId,
-                                            },
-                                          )
-                                        : AppRoute.guestLobby.go(
-                                            pathParams: {
-                                              'roomCode': session.roomId,
-                                            },
-                                          );
-                                  }
-                                },
                               ),
                             ),
-                          ),
-                        );
-                }),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
+                          );
+                  }),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: wide ? AppSpacing.xxl : AppSpacing.sm,
+                      ),
+                      child: const BannerAdWidget(),
                     ),
-                    child: const BannerAdWidget(),
                   ),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.fromLTRB(
-                    wide ? AppSpacing.xxl : AppSpacing.sm,
-                    AppSpacing.md,
-                    wide ? AppSpacing.xxl : AppSpacing.sm,
-                    AppSpacing.xxl,
-                  ),
-                  sliver: SliverToBoxAdapter(
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1120),
-                        child: wide
-                            ? Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: PrimaryActions(
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      wide ? AppSpacing.xxl : AppSpacing.sm,
+                      AppSpacing.md,
+                      wide ? AppSpacing.xxl : AppSpacing.sm,
+                      AppSpacing.xxl,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1120),
+                          child: wide
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: PrimaryActions(
+                                        controller: controller,
+                                        onAction: (action) =>
+                                            _handleAction(action),
+                                      ),
+                                    ),
+                                    const SizedBox(width: AppSpacing.xl),
+                                    const Expanded(
+                                      flex: 4,
+                                      child: HomeSidePanel(),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    PrimaryActions(
                                       controller: controller,
                                       onAction: (action) =>
                                           _handleAction(action),
                                     ),
-                                  ),
-                                  const SizedBox(width: AppSpacing.xl),
-                                  const Expanded(
-                                    flex: 4,
-                                    child: HomeSidePanel(),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  PrimaryActions(
-                                    controller: controller,
-                                    onAction: (action) => _handleAction(action),
-                                  ),
-                                  const SizedBox(height: AppSpacing.xl),
-                                  const HomeSidePanel(),
-                                ],
-                              ),
+                                    const SizedBox(height: AppSpacing.xl),
+                                    const HomeSidePanel(),
+                                  ],
+                                ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                // SliverToBoxAdapter(child: const NativeAdWidget()),
-              ],
-            );
-          },
+                  // SliverToBoxAdapter(child: const NativeAdWidget()),
+                  // SliverToBoxAdapter(
+                  //   child: RichText(
+                  //     textAlign: TextAlign.center,
+                  //     text: TextSpan(
+                  //       text: 'View ',
+                  //       style: TextStyle(
+                  //         fontSize: 12,
+                  //         color: AppColors.textMuted,
+                  //         letterSpacing: 0.12,
+                  //       ),
+                  //       children: [
+                  //         TextSpan(
+                  //           text: 'Terms',
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             color: AppColors.textSecondary,
+                  //             decoration: TextDecoration.underline,
+                  //             letterSpacing: 0.12,
+                  //           ),
+                  //           recognizer: TapGestureRecognizer()
+                  //             ..onTap = () {
+                  //               AppRoute.terms.go();
+                  //             },
+                  //         ),
+                  //         TextSpan(
+                  //           text: ' & ',
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             color: AppColors.textMuted,
+                  //             letterSpacing: 0.12,
+                  //           ),
+                  //         ),
+                  //         TextSpan(
+                  //           text: 'Privacy Policy.',
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             color: AppColors.textSecondary,
+                  //             decoration: TextDecoration.underline,
+                  //             letterSpacing: 0.12,
+                  //           ),
+                  //           recognizer: TapGestureRecognizer()
+                  //             ..onTap = () {
+                  //               AppRoute.privacy.go();
+                  //               // AppRoute.delete.go();
+                  //             },
+                  //         ),
+                  //         TextSpan(
+                  //           text: ' & ',
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             color: AppColors.textMuted,
+                  //             letterSpacing: 0.12,
+                  //           ),
+                  //         ),
+                  //         TextSpan(
+                  //           text: 'Delete',
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             color: AppColors.textSecondary,
+                  //             decoration: TextDecoration.underline,
+                  //             letterSpacing: 0.12,
+                  //           ),
+                  //           recognizer: TapGestureRecognizer()
+                  //             ..onTap = () {
+                  //               AppRoute.delete.go();
+                  //             },
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: AppSpacing.xs,
+                      ),
+                      child: Text(
+                        '© 2026 Card Game. All rights reserved.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<bool> openExitDialog() async {
+    return await Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.backgroundSecondary,
+        insetPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(AppRadius.card),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.lg,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: AppSpacing.xxxl,
+            children: [
+              Text(
+                'Are you sure to exit?',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                spacing: AppSpacing.sm,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: () {
+                        Get.back(result: false);
+                      },
+                      label: 'Cancel',
+                      icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                    ),
+                  ),
+                  Expanded(
+                    child: ActionButton(
+                      onPressed: () async {
+                        Get.back(result: true);
+                      },
+                      label: 'Exit',
+                      icon: Icon(Icons.restart_alt, size: 18),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
