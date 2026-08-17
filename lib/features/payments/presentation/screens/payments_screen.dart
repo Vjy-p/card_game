@@ -5,6 +5,7 @@ import 'package:card_game/features/offline/presentation/widgets/user/action_bar/
 import 'package:card_game/features/payments/controllers/payment_controller.dart';
 import 'package:card_game/features/payments/models/payment_history_model.dart';
 import 'package:card_game/features/payments/models/payment_status.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +40,7 @@ class PaymentsScreen extends GetView<PaymentController> {
         appBar: AppBar(
           backgroundColor: AppColors.backgroundSecondary,
           surfaceTintColor: AppColors.backgroundSecondary,
+          leading: CustomBackButton(),
           title: Text('Payments'),
         ),
         backgroundColor: AppColors.backgroundSecondary,
@@ -401,7 +403,7 @@ class PaymentsScreen extends GetView<PaymentController> {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  payment.status ?? '',
+                                  payment.status,
                                   style: TextStyle(
                                     color: AppColors.textSecondary,
                                     fontSize: 12,

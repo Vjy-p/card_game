@@ -5,6 +5,7 @@ import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/presentation/widgets/cards/card_face.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,7 @@ class RankingScreen extends StatelessWidget {
     return GetBuilder<GameController>(
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(title: Text('Winners')),
+          appBar: AppBar(leading: CustomBackButton(), title: Text('Winners')),
           body: ListView.separated(
             itemCount: controller.winners.length,
             padding: EdgeInsets.symmetric(

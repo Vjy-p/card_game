@@ -4,6 +4,7 @@ import 'package:card_game/features/authentication/controllers/authentication_con
 import 'package:card_game/features/profile/controllers/profile_controller.dart';
 import 'package:card_game/features/profile/presentation/widgets/profile_row_widget.dart';
 import 'package:card_game/features/profile/presentation/widgets/profile_widget.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
+            leading: CustomBackButton(),
             title: const Text('Profile'),
             actions: [
               IconButton(

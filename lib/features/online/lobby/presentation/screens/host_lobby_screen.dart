@@ -5,6 +5,7 @@ import 'package:card_game/features/online/lobby/presentation/widgets/lobby_foote
 import 'package:card_game/features/online/lobby/presentation/widgets/lobby_seat.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/start_game_button.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,7 +23,6 @@ class HostLobbyScreen extends GetView<RoomController> {
           return Column(
             children: [
               _buildTopBar(),
-
               Expanded(
                 child: Stack(
                   children: [
@@ -93,10 +93,7 @@ class HostLobbyScreen extends GetView<RoomController> {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          IconButton(
-            onPressed: controller.leaveLobby,
-            icon: const Icon(Icons.arrow_back, color: AppColors.lightSurface),
-          ),
+          CustomBackButton(onTap: controller.leaveLobby),
           const Spacer(),
           const Text(
             'Host Lobby',

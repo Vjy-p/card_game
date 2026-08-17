@@ -1,6 +1,7 @@
 import 'package:card_game/core/router/can_go_back.dart';
 import 'package:card_game/core/services/common_services.dart';
 import 'package:card_game/core/theme/app_colors.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 
 class DeleteAccountScreen extends StatelessWidget {
@@ -33,7 +34,6 @@ class DeleteAccountScreen extends StatelessWidget {
                 250,
               ),
             ),
-
             SafeArea(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
@@ -56,7 +56,7 @@ class DeleteAccountScreen extends StatelessWidget {
                         const Text(
                           '© 2026 Card Game. All rights reserved.',
                           style: TextStyle(
-                            color: Color(0xFF817B96),
+                            color: AppColors.textMuted,
                             fontSize: 13,
                           ),
                         ),
@@ -86,31 +86,45 @@ class DeleteAccountScreen extends StatelessWidget {
   Widget _buildHeader() {
     return Column(
       children: [
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [AppColors.accentPurple, Color(0xFF4935A5)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.accentPurple.withValues(alpha: 0.28),
-                blurRadius: 35,
-                offset: const Offset(0, 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: CustomBackButton(onTap: CanGoBack.go),
               ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              '♠',
-              style: TextStyle(fontSize: 30, color: AppColors.textPrimary),
             ),
-          ),
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppColors.accentPurple, Color(0xFF4935A5)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accentPurple.withValues(alpha: 0.28),
+                    blurRadius: 35,
+                    offset: const Offset(0, 12),
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: Text(
+                  '♠',
+                  style: TextStyle(fontSize: 30, color: AppColors.textPrimary),
+                ),
+              ),
+            ),
+            Expanded(child: SizedBox()),
+          ],
         ),
+
         const SizedBox(height: 20),
         const Text(
           'Delete Your Card Game Account',

@@ -23,7 +23,7 @@ class SplashController extends GetxController {
 
       // GitHub Pages base path:
       // https://vjy-p.github.io/card_game/...
-      const basePath = '/card_game';
+      // const basePath = '/card_game';
 
       final route = queryParams;
 

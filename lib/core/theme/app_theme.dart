@@ -30,6 +30,7 @@ abstract final class AppTheme {
       ),
       splashFactory: InkSparkle.splashFactory,
       appBarTheme: AppBarTheme(
+        centerTitle: true,
         backgroundColor: AppColors.backgroundPrimary,
         surfaceTintColor: AppColors.backgroundSecondary,
       ),

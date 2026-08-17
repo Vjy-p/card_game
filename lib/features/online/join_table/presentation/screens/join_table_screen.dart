@@ -3,6 +3,7 @@ import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:card_game/utils/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,10 @@ class JoinTableScreen extends GetView<RoomController> {
       final loading = controller.isLoading.value;
 
       return Scaffold(
-        appBar: AppBar(title: const Text('Join Table')),
+        appBar: AppBar(
+          leading: CustomBackButton(),
+          title: const Text('Join Table'),
+        ),
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(

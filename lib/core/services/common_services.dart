@@ -57,7 +57,7 @@ class CommonServices {
   Future<void> launchEmail() async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'YOUR_SUPPORT_EMAIL@example.com',
+      path: 'card.game.support@gmail.com',
       query: encodeQueryParameters(<String, String>{
         'subject': 'Card Game - Account Deletion Request',
         'body':
