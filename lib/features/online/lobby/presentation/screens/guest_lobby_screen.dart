@@ -6,6 +6,7 @@ import 'package:card_game/features/online/lobby/presentation/widgets/player_list
 import 'package:card_game/features/online/lobby/presentation/widgets/room_info_card.dart';
 import 'package:card_game/features/online/lobby/presentation/widgets/waiting_for_host_widget.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class GuestLobbyScreen extends GetView<RoomController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lobby')),
+      appBar: AppBar(leading: CustomBackButton(), title: const Text('Lobby')),
       body: Align(
         alignment: Alignment.topCenter,
         child: Container(

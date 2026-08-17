@@ -6,6 +6,7 @@ import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
 import 'package:card_game/features/online/room/controllers/online_game_controller.dart';
 import 'package:card_game/features/online/room/presentation/widgets/online_card_face.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,7 +45,7 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
   Widget build(BuildContext context) {
     final isMobile = GetDevice.isMobile(context);
     final isTablet = GetDevice.isTablet(context);
-    final isDesktop = !isMobile && !isTablet;
+    // final isDesktop = !isMobile && !isTablet;
 
     return GetBuilder<OnlineGameController>(
       builder: (controller) {
@@ -60,7 +61,10 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
           children: [
             Positioned.fill(
               child: Scaffold(
-                appBar: AppBar(title: Text('Winners')),
+                appBar: AppBar(
+                  leading: CustomBackButton(),
+                  title: Text('Winners'),
+                ),
                 body: Align(
                   alignment: AlignmentGeometry.topCenter,
                   child: Container(

@@ -15,7 +15,7 @@ class WebRouteHelper {
 
     // GitHub Pages base path:
     // https://vjy-p.github.io/card_game/...
-    const basePath = '/card_game';
+    // const basePath = '/card_game';
 
     var route = queryParams;
 

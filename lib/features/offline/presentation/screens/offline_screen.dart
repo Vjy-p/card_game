@@ -9,6 +9,7 @@ import 'package:card_game/features/offline/controllers/game_controller.dart';
 import 'package:card_game/features/offline/engine/game_engine.dart';
 import 'package:card_game/features/offline/presentation/widgets/table/table_widget.dart';
 import 'package:card_game/features/offline/presentation/widgets/user/action_bar/action_button.dart';
+import 'package:card_game/utils/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,9 +25,9 @@ class OfflineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-    final isTablet =
-        MediaQuery.of(context).size.width >= 600 &&
-        MediaQuery.of(context).size.width < 1000;
+    // final isTablet =
+    //     MediaQuery.of(context).size.width >= 600 &&
+    //     MediaQuery.of(context).size.width < 1000;
 
     return PopScope(
       canPop: false,
@@ -45,8 +46,8 @@ class OfflineScreen extends StatelessWidget {
           elevation: 0,
           toolbarHeight: 40,
           title: BannerAdWidget(),
-          leading: BackButton(
-            onPressed: () async {
+          leading: CustomBackButton(
+            onTap: () async {
               final bool isExit = await openExitDialog(isMobile: isMobile);
               if (isExit) {
                 AppRoute.home.offAll();

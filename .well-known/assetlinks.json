@@ -5,6 +5,9 @@
       "namespace": "android_app",
       "package_name": "com.game.cardGame",
       "sha256_cert_fingerprints": [
+        "1C:7A:98:61:0C:D7:96:ED:59:83:D4:8C:1A:43:F9:4E:D3:C9:13:4D:20:CB:5C:87:46:E7:AF:36:AE:8C:CD:59",
+        "3F:24:34:3E:89:24:5B:78:E7:92:49:5E:7E:CB:FD:69:D4:0A:A5:6A:8B:C6:24:45:55:D0:0C:99:28:37:90:DE",
+        "FB:98:47:7B:5A:51:78:F6:BF:51:2A:61:25:AB:34:71:CE:C4:56:D2:8E:10:2C:D1:CA:FE:39:53:C5:35:79:A1",
         "36:be:36:34:75:29:0c:7d:5f:5e:f4:d3:c1:9c:62:20:0e:46:cd:bd:13:0c:bb:19:55:37:23:ea:26:06:31:fe",
         "c4:f0:5a:b2:45:b8:bc:18:0b:80:9c:4b:f6:88:d6:d7:fc:55:96:dd:1e:32:cf:bd:4e:98:e6:7e:a8:cc:c4:e5"
       ]
