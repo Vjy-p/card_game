@@ -9,7 +9,6 @@ import 'package:card_game/features/online/create_table/controller/create_table_c
 import 'package:card_game/features/online/room/controllers/join_table_controller.dart';
 import 'package:card_game/features/online/room/controllers/room_controller.dart';
 import 'package:card_game/features/online/room/repositories/supabase_room_repository.dart';
-import 'package:card_game/features/payments/controllers/payment_controller.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,6 +37,5 @@ class AppBinding extends Bindings {
     Get.lazyPut<JoinTableController>(() => JoinTableController());
     Get.lazyPut<CreateTableController>(() => CreateTableController());
     Get.lazyPut<AdsController>(() => AdsController(), fenix: true);
-    Get.lazyPut<PaymentController>(() => PaymentController(), fenix: true);
   }
 }
