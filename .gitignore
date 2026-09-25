@@ -16,6 +16,7 @@ migrate_working_dir/
 *.keystore
 *.env
 lib/utils/constants/constants.dart
+lib/features/payments/
 
 # IntelliJ related
 *.iml
