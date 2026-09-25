@@ -154,7 +154,9 @@ class HomeScreen extends StatelessWidget {
                             //   style: ButtonStyle(
                             //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             //     visualDensity: VisualDensity.compact,
-                            //     padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                            //     padding: WidgetStatePropertyAll(
+                            //       EdgeInsets.zero,
+                            //     ),
                             //   ),
                             //   tooltip: 'Payments',
                             //   onPressed: () {
