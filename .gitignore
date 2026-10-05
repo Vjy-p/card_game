@@ -16,6 +16,7 @@ migrate_working_dir/
 *.keystore
 *.env
 lib/utils/constants/constants.dart
+lib/firebase_options.dart
 lib/features/payments/
 
 # IntelliJ related
@@ -49,3 +50,4 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
