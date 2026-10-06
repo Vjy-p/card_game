@@ -22,7 +22,7 @@ class LobbyFooter extends GetView<RoomController> {
               controller.canStart
                   ? 'Ready to start!'
                   : 'Waiting for more players...',
-              style: TextStyle(color: AppColors.textSecondary),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ],
         ),

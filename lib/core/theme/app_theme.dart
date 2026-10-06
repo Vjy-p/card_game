@@ -5,17 +5,12 @@ import 'package:card_game/core/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 
 abstract final class AppTheme {
-  static ThemeData get dark {
+  static final ThemeData dark = _buildDark();
+
+  static ThemeData _buildDark() {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.backgroundSecondary,
       brightness: Brightness.dark,
-      // primary: AppColors.textMuted,
-      // onPrimary: AppColors.textSecondary,
-      // secondary: AppColors.actionPrimaryForeground,
-      // surface: AppColors.surfacePrimary,
-      // onSurface: AppColors.textSecondary,
-      // error: AppColors.error,
-      // surfaceContainerLow: AppColors.textMuted,
     );
 
     return ThemeData(
@@ -29,24 +24,23 @@ abstract final class AppTheme {
         AppColors.textSecondary,
       ),
       splashFactory: InkSparkle.splashFactory,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         centerTitle: true,
         backgroundColor: AppColors.backgroundPrimary,
         surfaceTintColor: AppColors.backgroundSecondary,
       ),
-      bottomAppBarTheme: BottomAppBarThemeData(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: AppColors.backgroundPrimary,
         surfaceTintColor: AppColors.backgroundSecondary,
       ),
-      cardTheme: CardThemeData(color: AppColors.surfacePrimary),
+      cardTheme: const CardThemeData(color: AppColors.surfacePrimary),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.actionPrimary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.gameTable,
-          // minimumSize: const Size(42, 52),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.sm,
           ),

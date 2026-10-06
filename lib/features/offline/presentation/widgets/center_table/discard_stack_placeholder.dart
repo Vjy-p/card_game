@@ -54,14 +54,14 @@ class DiscardStackPlaceholder extends StatelessWidget {
                 //   color: AppColors.accent.withValues(alpha: 0.6),
                 //   size: 24,
                 // ),
-                Center(
+                const Center(
                   child: Icon(
                     Icons.style_outlined,
                     color: AppColors.lightBackground,
                     size: 32,
                   ),
                 ),
-                SizedBox(height: AppSpacing.xs),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Discard',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(

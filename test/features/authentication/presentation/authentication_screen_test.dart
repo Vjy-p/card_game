@@ -1,36 +1,58 @@
+import 'package:card_game/features/authentication/controllers/authentication_controller.dart';
 import 'package:card_game/features/authentication/presentation/screens/authentication_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
 void main() {
-  testWidgets('shows sign-in controls', (tester) async {
-    await tester.pumpWidget(const GetMaterialApp(home: AuthenticationScreen()));
-
-    expect(find.text('Sign in to continue'), findsOneWidget);
-    expect(find.text('Email address'), findsOneWidget);
-    expect(find.text('Password'), findsOneWidget);
-    expect(find.text('Continue'), findsOneWidget);
+  setUp(() {
+    Get.testMode = true;
+    Get.put(AuthenticationController());
   });
 
-  testWidgets('shows validation errors for invalid submission', (tester) async {
+  tearDown(() {
+    Get.delete<AuthenticationController>();
+    Get.reset();
+  });
+
+  testWidgets('shows welcome and sign-in info', (tester) async {
     await tester.pumpWidget(const GetMaterialApp(home: AuthenticationScreen()));
 
-    await tester.tap(find.text('Continue'));
-    await tester.pump();
-
-    expect(find.text('Enter a valid email address'), findsOneWidget);
+    expect(find.text('WELCOME TO THE TABLE'), findsOneWidget);
+    expect(find.text('Play with friends'), findsOneWidget);
     expect(
-      find.text('Password must contain at least 8 characters'),
+      find.text('Join multiplayer rooms and continue your games anytime.'),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget is RichText && widget.text.toPlainText().contains('Terms'),
+      ),
       findsOneWidget,
     );
   });
 
-  testWidgets('switches to create-account mode', (tester) async {
+  testWidgets('shows brand panel on wide screen', (tester) async {
+    tester.view.physicalSize = const Size(1000, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(const GetMaterialApp(home: AuthenticationScreen()));
 
-    await tester.tap(find.text('Create account').first);
+    expect(find.text('Your table is waiting.'), findsOneWidget);
+    expect(find.text('WELCOME TO THE TABLE'), findsOneWidget);
+  });
+
+  testWidgets('fits small screen without overflow', (tester) async {
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const GetMaterialApp(home: AuthenticationScreen()));
     await tester.pump();
 
-    expect(find.text('Create your player account'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

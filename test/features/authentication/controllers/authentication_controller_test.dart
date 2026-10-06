@@ -15,11 +15,13 @@ void main() {
 
     tearDown(() {
       Get.delete<AuthenticationController>();
+      Get.reset();
     });
 
     test('starts with idle state (isLoading is false)', () {
       // In GetX, we check the reactive variable directly
       expect(controller.isLoading.value, false);
+      expect(controller.isButtonLoading.value, false);
     });
 
     test('isLoading changes during sign in process', () {

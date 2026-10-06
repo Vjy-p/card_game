@@ -137,7 +137,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           //     size: 20,
           //   ),
           // ),
-          leading: CustomBackButton(onTap: CanGoBack.go),
+          leading: const CustomBackButton(onTap: CanGoBack.go),
           title: const Text(
             'Privacy Policy',
             // style: TextStyle(
@@ -152,11 +152,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
             horizontal: AppSpacing.md,
             vertical: AppSpacing.sm,
           ),
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LegalHeader(
+              const LegalHeader(
                 icon: Icons.privacy_tip_outlined,
                 title: 'Your Privacy Matters',
                 description:
@@ -167,7 +167,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               const SizedBox(height: 28),
               ListView.separated(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(
+                physics: const NeverScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
                 ),
                 itemCount: privacyPolicyContent.length,
@@ -180,10 +180,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return SizedBox(height: AppSpacing.xs);
+                  return const SizedBox(height: AppSpacing.xs);
                 },
               ),
-              LegalFooter(
+              const LegalFooter(
                 text:
                     'By using Card Game, you acknowledge that you have read and understood this Privacy Policy.',
               ),

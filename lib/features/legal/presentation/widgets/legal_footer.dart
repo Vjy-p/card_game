@@ -41,8 +41,8 @@ class LegalFooter extends StatelessWidget {
               duration: 900.ms,
               curve: Curves.easeOutCubic,
             ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
+        const Padding(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.md,
             AppSpacing.lg,
             AppSpacing.md,

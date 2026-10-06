@@ -9,7 +9,7 @@ class OnlineUserWidget extends GetView<OnlineGameController> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       alignment: Alignment.bottomCenter,
       children: [
         OnlineUserCardStack(),

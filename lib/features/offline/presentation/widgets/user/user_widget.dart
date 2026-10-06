@@ -37,7 +37,7 @@ class UserWidget extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        UserCardStack(),
+        const UserCardStack(),
         Align(
           alignment: AlignmentGeometry.bottomCenter,
           child: ActionBar(

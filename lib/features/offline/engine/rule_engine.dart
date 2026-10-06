@@ -1,18 +1,16 @@
-import 'dart:developer';
-
 import 'package:card_game/features/offline/models/playing_card.dart';
 import 'package:collection/collection.dart';
 
 class RuleEngine {
   bool validate4thCard({required List<PlayingCard> cards}) {
-    int count = 0;
-
-    for (int i = 0; i < cards.length - 1; i++) {
-      if (cards[i].rank.value == cards[i + 1].rank.value) {
-        count++;
+    if (cards.length != 4) return false;
+    final firstRank = cards.first.rank.value;
+    for (int i = 1; i < cards.length; i++) {
+      if (cards[i].rank.value != firstRank) {
+        return false;
       }
     }
-    return count == 3;
+    return true;
   }
 
   bool validateGame({
@@ -20,35 +18,39 @@ class RuleEngine {
     required PlayingCard joker,
     required bool isJokerUnlocked,
   }) {
-    log('validate sets $sets $joker ${joker.rank.value} $isJokerUnlocked');
-    int count = 0;
+    if (sets.length != 4) return false;
 
     for (int i = 0; i < sets.length; i++) {
-      int setCounter = 0;
+      final set = sets[i];
+      final len = set.length;
+      if (len != 3 && len != 4) return false;
 
-      if (isJokerUnlocked) {
-        for (int j = 0; j < sets[i].length - 1; j++) {
-          if (sets[i][j].rank.value == sets[i][j + 1].rank.value ||
-              (sets[i][j].rank.value == joker.rank.value ||
-                  sets[i][j + 1].rank.value == joker.rank.value)) {
-            setCounter++;
+      if (!isJokerUnlocked) {
+        final firstRank = set.first.rank.value;
+        for (int j = 1; j < len; j++) {
+          if (set[j].rank.value != firstRank) {
+            return false;
           }
         }
       } else {
-        for (int j = 0; j < sets[i].length - 1; j++) {
-          if (sets[i][j].rank.value == sets[i][j + 1].rank.value) {
-            setCounter++;
+        int? targetRank;
+        for (int j = 0; j < len; j++) {
+          if (set[j].rank.value != joker.rank.value) {
+            targetRank = set[j].rank.value;
+            break;
+          }
+        }
+        if (targetRank != null) {
+          for (int j = 0; j < len; j++) {
+            final rank = set[j].rank.value;
+            if (rank != joker.rank.value && rank != targetRank) {
+              return false;
+            }
           }
         }
       }
-      log('validate set $count $setCounter');
-      if ((sets[i].length == 4 && setCounter == 3) ||
-          (sets[i].length == 3 && setCounter == 2)) {
-        count++;
-      }
     }
-    log('validate game $count ');
-    return count == 4;
+    return true;
   }
 
   int getScore({
@@ -59,25 +61,18 @@ class RuleEngine {
     required bool isShowCalledPlayer,
   }) {
     int score = 0;
-    final Map<int, int> counts = {};
-    log('validate sets $cards $joker ${joker.rank.value} $isJokerUnlocked');
-    Map<dynamic, List<PlayingCard>> sets = {};
+    final Map<int, List<PlayingCard>> sets = groupBy(cards, (v) => v.rank.value);
 
-    sets = groupBy(cards, (v) => v.rank.value.toString());
-    log('sets before $sets');
-
-    final List<PlayingCard> jokerCards =
-        sets[joker.rank.value.toString()] ?? [];
+    final List<PlayingCard> jokerCards = sets[joker.rank.value] ?? [];
     int jokerCounts = jokerCards.length;
     final bool fourthCard = fourthCards.length == 4;
 
-    sets.remove(joker.rank.value.toString());
-    log('sets after $sets');
+    sets.remove(joker.rank.value);
     if (fourthCard) {
       score += 20;
     }
 
-    for (String val in sets.keys) {
+    for (final val in sets.keys) {
       final int valCount = sets[val]?.length ?? 0;
 
       if (valCount == 9) {
@@ -125,8 +120,6 @@ class RuleEngine {
         if (jokerCounts > 1 && isJokerUnlocked) {
           score += 15;
           jokerCounts -= 2;
-        } else {
-          score += 0;
         }
       }
     }
@@ -143,9 +136,6 @@ class RuleEngine {
       score += 40;
     }
 
-    log('counts $counts');
-
-    log('score $score ');
     return score;
   }
 }

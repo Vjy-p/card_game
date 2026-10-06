@@ -23,20 +23,20 @@ class ProfileWidget extends StatelessWidget {
         //     child: Image.network(profilePath, fit: BoxFit.cover),
         //   ),
         Card(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           margin: EdgeInsets.zero,
           elevation: 10,
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Text(
               name.isNotEmpty ? name[0].toUpperCase() : 'P',
-              style: TextStyle(fontSize: 36),
+              style: const TextStyle(fontSize: 36),
             ),
           ),
         ),
         Text(
           name,
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ],

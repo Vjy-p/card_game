@@ -41,7 +41,7 @@ class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
   }
 
   void initialLoad() {
-    timer = Timer.periodic(Duration(milliseconds: 300), (Timer t) {
+    timer = Timer.periodic(const Duration(milliseconds: 300), (Timer t) {
       if (t.tick <= 10) {
         log('time ${t.tick}');
         setState(() {});
@@ -101,7 +101,7 @@ class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
                     border: Border.all(color: Colors.white54),
                   ),
                   clipBehavior: Clip.antiAlias,
-                  child: CardBack(),
+                  child: const CardBack(),
                 );
               }),
             ),
@@ -167,7 +167,7 @@ class _ClosedDeckState extends State<ClosedDeck> with TickerProviderStateMixin {
                                   border: Border.all(color: Colors.white54),
                                 ),
                                 clipBehavior: Clip.antiAlias,
-                                child: CardBack(),
+                                child: const CardBack(),
                               ),
                             );
                           },

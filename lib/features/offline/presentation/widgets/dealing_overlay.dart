@@ -15,26 +15,29 @@ class DealingCardAnimate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder<Offset>(
-      tween: Tween<Offset>(begin: startOffset, end: endOffset),
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCubic,
-      onEnd: onComplete,
-      builder: (context, offset, child) {
-        return Positioned(
-          left: offset.dx,
-          top: offset.dy,
-          child: Container(
-            width: 40,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black26)],
-            ),
-            child: const CardBack(),
+    return RepaintBoundary(
+      child: TweenAnimationBuilder<Offset>(
+        tween: Tween<Offset>(begin: startOffset, end: endOffset),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+        onEnd: onComplete,
+        builder: (context, offset, child) {
+          return Positioned(
+            left: offset.dx,
+            top: offset.dy,
+            child: child!,
+          );
+        },
+        child: Container(
+          width: 40,
+          height: 60,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: const [BoxShadow(blurRadius: 4, color: Colors.black26)],
           ),
-        );
-      },
+          child: const CardBack(),
+        ),
+      ),
     );
   }
 }

@@ -16,10 +16,11 @@ class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeController(), fenix: true);
-    final engine = GameEngine(config: GameConfig());
-    // Get.put(GameController(engine: engine));
-    Get.put(AIController(engine: engine));
-    Get.put(GameAnimationController());
+    Get.lazyPut(() => GameAnimationController(), fenix: true);
+    Get.lazyPut(
+      () => AIController(engine: GameEngine(config: const GameConfig())),
+      fenix: true,
+    );
 
     Get.lazyPut<SupabaseRoomRepository>(
       () => SupabaseRoomRepository(),

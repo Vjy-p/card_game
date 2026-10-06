@@ -13,10 +13,10 @@ class InviteCard extends GetView<RoomController> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
-        title: Text('Room Code'),
+        title: const Text('Room Code'),
         subtitle: Text(
           controller.room?.joinCode ?? '',
-          style: TextStyle(color: AppColors.textSecondary),
+          style: const TextStyle(color: AppColors.textSecondary),
         ),
         trailing: IconButton(
           icon: const Icon(Icons.copy),

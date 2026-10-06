@@ -35,7 +35,7 @@ class TableScreen extends GetView<OnlineGameController> {
           backgroundColor: AppColors.tableDark,
           surfaceTintColor: AppColors.tableDark,
           toolbarHeight: 40,
-          title: BannerAdWidget(),
+          title: const BannerAdWidget(),
 
           leading: CustomBackButton(
             onTap: () async {
@@ -47,7 +47,7 @@ class TableScreen extends GetView<OnlineGameController> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -58,58 +58,69 @@ class TableScreen extends GetView<OnlineGameController> {
               ],
             ),
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: SafeArea(
             top: false,
-            child: Obx(() {
-              // final players = controller.players;
-              final seats = controller.seatPlayers;
-              return Stack(
-                children: [
-                  Positioned.fill(
-                    child: Column(
-                      spacing: AppSpacing.md,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child:
-                              /// Top
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: PlayerWidget(player: seats[2]?.player),
-                              ),
-                        ),
-                        Expanded(
-                          flex: 11,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              /// Left
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: PlayerWidget(player: seats[1]?.player),
-                              ),
-                              OnlineCenterArea(),
-
-                              /// Right
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: PlayerWidget(player: seats[3]?.player),
-                              ),
-                            ],
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Column(
+                    spacing: AppSpacing.md,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: RepaintBoundary(
+                            child: Obx(() {
+                              final seats = controller.seatPlayers;
+                              return PlayerWidget(player: seats[2]?.player);
+                            }),
                           ),
                         ),
-                        Expanded(flex: 3, child: OnlineUserWidget()),
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        flex: 11,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: RepaintBoundary(
+                                child: Obx(() {
+                                  final seats = controller.seatPlayers;
+                                  return PlayerWidget(player: seats[1]?.player);
+                                }),
+                              ),
+                            ),
+                            const RepaintBoundary(child: OnlineCenterArea()),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: RepaintBoundary(
+                                child: Obx(() {
+                                  final seats = controller.seatPlayers;
+                                  return PlayerWidget(player: seats[3]?.player);
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Expanded(
+                        flex: 3,
+                        child: RepaintBoundary(child: OnlineUserWidget()),
+                      ),
+                    ],
                   ),
-                  CardAnimationOverlay(),
-                  GetBuilder<OnlineGameController>(
-                    builder: (gameController) {
-                      return Align(
-                        alignment: Alignment.topCenter,
+                ),
+                const RepaintBoundary(child: CardAnimationOverlay()),
+                GetBuilder<OnlineGameController>(
+                  builder: (gameController) {
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: RepaintBoundary(
                         child: ConfettiWidget(
                           confettiController: gameController.confettiController,
                           blastDirectionality: BlastDirectionality.explosive,
@@ -118,12 +129,12 @@ class TableScreen extends GetView<OnlineGameController> {
                           gravity: 0.1,
                           colors: AppColors.colorsList,
                         ),
-                      );
-                    },
-                  ),
-                ],
-              );
-            }),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -134,7 +145,7 @@ class TableScreen extends GetView<OnlineGameController> {
     return await Get.dialog(
       Dialog(
         backgroundColor: AppColors.backgroundSecondary,
-        insetPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        insetPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(AppRadius.card),
         ),
@@ -147,7 +158,7 @@ class TableScreen extends GetView<OnlineGameController> {
             mainAxisSize: MainAxisSize.min,
             spacing: AppSpacing.xxxl,
             children: [
-              Text(
+              const Text(
                 'Are you sure to exit?',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -162,7 +173,7 @@ class TableScreen extends GetView<OnlineGameController> {
                         Get.back(result: false);
                       },
                       label: 'Cancel',
-                      icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                     ),
                   ),
                   Expanded(
@@ -174,7 +185,7 @@ class TableScreen extends GetView<OnlineGameController> {
                         // controller.restart();
                       },
                       label: 'Exit',
-                      icon: Icon(Icons.restart_alt, size: 18),
+                      icon: const Icon(Icons.restart_alt, size: 18),
                     ),
                   ),
                 ],

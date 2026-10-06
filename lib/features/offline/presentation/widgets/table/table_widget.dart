@@ -20,7 +20,7 @@ class TableWidget extends StatelessWidget {
     final controller = Get.find<GameController>();
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -33,7 +33,7 @@ class TableWidget extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
+          padding: const EdgeInsets.fromLTRB(
             AppSpacing.md,
             AppSpacing.xxs,
             AppSpacing.md,
@@ -57,17 +57,19 @@ class TableWidget extends StatelessWidget {
                               if (players.length < 2) {
                                 return const SizedBox.shrink();
                               }
-                              return OpponentWidget(
-                                player: players[1],
-                                isGameEnded:
-                                    controller.table.actionState ==
-                                    ActionState.gameFinished,
+                              return RepaintBoundary(
+                                child: OpponentWidget(
+                                  player: players[1],
+                                  isGameEnded:
+                                      controller.table.actionState ==
+                                      ActionState.gameFinished,
+                                ),
                               );
                             }),
                           ),
                         ),
 
-                        SizedBox(height: AppSpacing.md),
+                        const SizedBox(height: AppSpacing.md),
 
                         // Middle section: Left opponent | Center area | Right opponent
                         Expanded(
@@ -84,12 +86,14 @@ class TableWidget extends StatelessWidget {
                                 }
                                 return Align(
                                   alignment: AlignmentGeometry.centerLeft,
-                                  child: OpponentWidget(
-                                    player: players[2],
-                                    rotation: 1.6,
-                                    isGameEnded:
-                                        controller.table.actionState ==
-                                        ActionState.gameFinished,
+                                  child: RepaintBoundary(
+                                    child: OpponentWidget(
+                                      player: players[2],
+                                      rotation: 1.6,
+                                      isGameEnded:
+                                          controller.table.actionState ==
+                                          ActionState.gameFinished,
+                                    ),
                                   ),
                                 );
                               }),
@@ -97,57 +101,59 @@ class TableWidget extends StatelessWidget {
                               // Center play area
                               Expanded(
                                 child: Center(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      spacing: AppSpacing.md,
-                                      children: [
-                                        // Center area (deck and open pile)
-                                        Obx(() {
-                                          final table = controller.table;
-                                          return CenterArea(
-                                            remainingCards:
-                                                table.remainingCards,
-                                            forwardCard: table.forwardCard,
-                                            canDraw: table.canDraw,
-                                            canTakeOpen: table.canTakeForward,
-                                            onDraw: controller.drawCard,
-                                            onTakeOpen:
-                                                controller.takeForwardCard,
-                                            hiddenJoker: table.hiddenJoker,
-                                            openCard: table.openCard,
-                                          );
-                                        }),
+                                  child: RepaintBoundary(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        spacing: AppSpacing.md,
+                                        children: [
+                                          // Center area (deck and open pile)
+                                          Obx(() {
+                                            final table = controller.table;
+                                            return CenterArea(
+                                              remainingCards:
+                                                  table.remainingCards,
+                                              forwardCard: table.forwardCard,
+                                              canDraw: table.canDraw,
+                                              canTakeOpen: table.canTakeForward,
+                                              onDraw: controller.drawCard,
+                                              onTakeOpen:
+                                                  controller.takeForwardCard,
+                                              hiddenJoker: table.hiddenJoker,
+                                              openCard: table.openCard,
+                                            );
+                                          }),
 
-                                        // Turn indicator
-                                        Obx(() {
-                                          final table = controller.table;
-                                          final currentPlayer = table.opponents
-                                              .firstWhereOrNull(
-                                                (p) => p.isCurrentTurn,
-                                              );
-                                          return table.actionState !=
-                                                  ActionState.gameFinished
-                                              ? GameTurnIndicator(
-                                                  playerName:
-                                                      currentPlayer?.name ??
-                                                      'You',
-                                                  isPlayerTurn:
-                                                      !table.isOpponentTurn,
-                                                )
-                                              : GameWinnerIndicator(
-                                                  playerName:
-                                                      controller
-                                                          .winners
-                                                          .isNotEmpty
-                                                      ? controller
-                                                            .winners
-                                                            .first
-                                                            .name
-                                                      : '',
+                                          // Turn indicator
+                                          Obx(() {
+                                            final table = controller.table;
+                                            final currentPlayer = table.opponents
+                                                .firstWhereOrNull(
+                                                  (p) => p.isCurrentTurn,
                                                 );
-                                        }),
-                                      ],
+                                            return table.actionState !=
+                                                    ActionState.gameFinished
+                                                ? GameTurnIndicator(
+                                                    playerName:
+                                                        currentPlayer?.name ??
+                                                        'You',
+                                                    isPlayerTurn:
+                                                        !table.isOpponentTurn,
+                                                  )
+                                                : GameWinnerIndicator(
+                                                    playerName:
+                                                        controller
+                                                            .winners
+                                                            .isNotEmpty
+                                                        ? controller
+                                                              .winners
+                                                              .first
+                                                              .name
+                                                        : '',
+                                                  );
+                                          }),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -161,46 +167,50 @@ class TableWidget extends StatelessWidget {
                                 }
                                 return Align(
                                   alignment: AlignmentGeometry.centerRight,
-                                  child: OpponentWidget(
-                                    player: players[0],
-                                    rotation: -1.6,
-                                    isGameEnded:
-                                        controller.table.actionState ==
-                                        ActionState.gameFinished,
+                                  child: RepaintBoundary(
+                                    child: OpponentWidget(
+                                      player: players[0],
+                                      rotation: -1.6,
+                                      isGameEnded:
+                                          controller.table.actionState ==
+                                          ActionState.gameFinished,
+                                    ),
                                   ),
                                 );
                               }),
                             ],
                           ),
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        const SizedBox(height: AppSpacing.md),
                         // Bottom section: Action bar and hand
                         Expanded(
                           flex: 3,
-                          child: Obx(() {
-                            final table = controller.table;
-                            final animating =
-                                Get.find<GameAnimationController>().isAnimating;
-                            return IgnorePointer(
-                              ignoring: animating.value,
-                              child: UserWidget(
-                                state: table.actionState,
-                                selectedCard: table.selectedCard,
-                                onDraw: controller.drawCard,
-                                onTakeOpen: controller.takeForwardCard,
-                                onDiscard: controller.passSelectedCard,
-                                onPlayAgain: controller.restart,
-                                onExit: () {
-                                  controller.clearData();
-                                  Get.back();
-                                },
-                                onSort: controller.sortCards,
-                                cards: controller.table.myCards,
-                                canDeclare: !table.isOpponentTurn,
-                                fourthCard: controller.players.first.fourthCard,
-                              ),
-                            );
-                          }),
+                          child: RepaintBoundary(
+                            child: Obx(() {
+                              final table = controller.table;
+                              final animating =
+                                  Get.find<GameAnimationController>().isAnimating;
+                              return IgnorePointer(
+                                ignoring: animating.value,
+                                child: UserWidget(
+                                  state: table.actionState,
+                                  selectedCard: table.selectedCard,
+                                  onDraw: controller.drawCard,
+                                  onTakeOpen: controller.takeForwardCard,
+                                  onDiscard: controller.passSelectedCard,
+                                  onPlayAgain: controller.restart,
+                                  onExit: () {
+                                    controller.clearData();
+                                    Get.back();
+                                  },
+                                  onSort: controller.sortCards,
+                                  cards: controller.table.myCards,
+                                  canDeclare: !table.isOpponentTurn,
+                                  fourthCard: controller.players.first.fourthCard,
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       ],
                     ),
@@ -209,13 +219,15 @@ class TableWidget extends StatelessWidget {
                     builder: (controller) {
                       return Align(
                         alignment: Alignment.topCenter,
-                        child: ConfettiWidget(
-                          confettiController: controller.confettiController,
-                          blastDirectionality: BlastDirectionality.explosive,
-                          shouldLoop: true,
-                          numberOfParticles: 30,
-                          gravity: 0.1,
-                          colors: AppColors.colorsList,
+                        child: RepaintBoundary(
+                          child: ConfettiWidget(
+                            confettiController: controller.confettiController,
+                            blastDirectionality: BlastDirectionality.explosive,
+                            shouldLoop: true,
+                            numberOfParticles: 30,
+                            gravity: 0.1,
+                            colors: AppColors.colorsList,
+                          ),
                         ),
                       );
                     },

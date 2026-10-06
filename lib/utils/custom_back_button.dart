@@ -11,7 +11,7 @@ class CustomBackButton extends StatelessWidget {
       style: ButtonStyle(
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         visualDensity: VisualDensity.compact,
-        iconSize: WidgetStatePropertyAll(20),
+        iconSize: const WidgetStatePropertyAll(20),
         backgroundBuilder: (context, states, child) {
           return child = const Icon(Icons.arrow_back_ios_new, size: 20);
         },

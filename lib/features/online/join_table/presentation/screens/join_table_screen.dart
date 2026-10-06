@@ -23,7 +23,7 @@ class JoinTableScreen extends GetView<RoomController> {
 
       return Scaffold(
         appBar: AppBar(
-          leading: CustomBackButton(),
+          leading: const CustomBackButton(),
           title: const Text('Join Table'),
         ),
         body: SafeArea(

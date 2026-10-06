@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui';
 
@@ -21,32 +22,39 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Supabase.initialize(
-    url: Constants.supabaseUrl,
-    publishableKey: Constants.supabaseKey,
-  );
-  await GoogleSignIn.instance.initialize(
-    serverClientId: kIsWeb ? null : Constants.googleServerClientKey,
-  );
   usePathUrlStrategy();
-  Supabase.instance.client.realtime.onOpen(() {
-    log('Realtime OPEN');
-  });
 
-  Supabase.instance.client.realtime.onClose((v) {
-    log('Realtime CLOSED $v');
-  });
+  // Run independent initializations concurrently to accelerate app launch
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    Supabase.initialize(
+      url: Constants.supabaseUrl,
+      publishableKey: Constants.supabaseKey,
+    ),
+    GoogleSignIn.instance.initialize(
+      serverClientId: kIsWeb ? null : Constants.googleServerClientKey,
+    ),
+    GetStorage.init(),
+  ]);
 
-  Supabase.instance.client.realtime.onError((error) {
-    log('Realtime ERROR: $error');
-  });
+  if (kDebugMode) {
+    Supabase.instance.client.realtime.onOpen(() {
+      log('Realtime OPEN');
+    });
 
-  if (!kIsWeb) {
-    MobileAds.instance.initialize();
+    Supabase.instance.client.realtime.onClose((v) {
+      log('Realtime CLOSED $v');
+    });
+
+    Supabase.instance.client.realtime.onError((error) {
+      log('Realtime ERROR: $error');
+    });
   }
 
-  await GetStorage.init();
+  if (!kIsWeb) {
+    unawaited(MobileAds.instance.initialize());
+  }
+
   runApp(const CardGameApp());
 }
 
@@ -59,7 +67,7 @@ class CardGameApp extends StatelessWidget {
       title: 'Card Game',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
-      scrollBehavior: MaterialScrollBehavior().copyWith(
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.mouse,
           PointerDeviceKind.stylus,

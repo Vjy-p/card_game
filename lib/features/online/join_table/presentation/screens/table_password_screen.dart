@@ -27,7 +27,7 @@ class _TablePasswordScreenState extends State<TablePasswordScreen> {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
-            leading: CustomBackButton(),
+            leading: const CustomBackButton(),
             title: const Text('Table Password'),
           ),
           body: SafeArea(

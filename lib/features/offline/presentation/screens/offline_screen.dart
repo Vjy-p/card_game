@@ -17,7 +17,7 @@ class OfflineScreen extends StatelessWidget {
   OfflineScreen({super.key});
 
   final controller = Get.put(
-    GameController(engine: GameEngine(config: GameConfig())),
+    GameController(engine: GameEngine(config: const GameConfig())),
   );
 
   final gameAnimationsController = Get.put(GameAnimationController());
@@ -45,7 +45,7 @@ class OfflineScreen extends StatelessWidget {
           surfaceTintColor: AppColors.tableDark,
           elevation: 0,
           toolbarHeight: 40,
-          title: BannerAdWidget(),
+          title: const BannerAdWidget(),
           leading: CustomBackButton(
             onTap: () async {
               final bool isExit = await openExitDialog(isMobile: isMobile);
@@ -56,7 +56,7 @@ class OfflineScreen extends StatelessWidget {
             },
           ),
         ),
-        body: TableWidget(),
+        body: const TableWidget(),
       ),
     );
   }
@@ -65,7 +65,7 @@ class OfflineScreen extends StatelessWidget {
     return await Get.dialog(
       Dialog(
         backgroundColor: AppColors.backgroundSecondary,
-        insetPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        insetPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(AppRadius.card),
         ),
@@ -81,7 +81,7 @@ class OfflineScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: AppSpacing.xxxl,
             children: [
-              Text(
+              const Text(
                 'Are you sure to exit?',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -96,7 +96,7 @@ class OfflineScreen extends StatelessWidget {
                         Get.back(result: false);
                       },
                       label: 'Cancel',
-                      icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                     ),
                   ),
                   Expanded(
@@ -106,7 +106,7 @@ class OfflineScreen extends StatelessWidget {
                         controller.restart();
                       },
                       label: 'Exit',
-                      icon: Icon(Icons.restart_alt, size: 18),
+                      icon: const Icon(Icons.restart_alt, size: 18),
                     ),
                   ),
                 ],

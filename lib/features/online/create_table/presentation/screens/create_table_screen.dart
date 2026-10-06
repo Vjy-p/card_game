@@ -17,7 +17,7 @@ class CreateTableScreen extends GetView<RoomController> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
+        leading: const CustomBackButton(),
         title: const Text('Create Table'),
       ),
       body: Align(
@@ -36,7 +36,7 @@ class CreateTableScreen extends GetView<RoomController> {
                       : Get.width / 2,
                 ),
                 alignment: Alignment.topCenter,
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
                   vertical: AppSpacing.md,
                 ),
@@ -69,9 +69,9 @@ class CreateTableScreen extends GetView<RoomController> {
                       decoration: InputDecoration(
                         enabled: true,
                         isDense: true,
-                        label: Text('Display Name'),
-                        hint: Text('Enter Display Name'),
-                        prefixIcon: Icon(
+                        label: const Text('Display Name'),
+                        hint: const Text('Enter Display Name'),
+                        prefixIcon: const Icon(
                           Icons.label,
                           color: AppColors.textSecondary,
                         ),
@@ -79,37 +79,37 @@ class CreateTableScreen extends GetView<RoomController> {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(color: AppColors.error),
+                          borderSide: const BorderSide(color: AppColors.error),
                         ),
                       ),
                     ),
@@ -138,9 +138,9 @@ class CreateTableScreen extends GetView<RoomController> {
                       decoration: InputDecoration(
                         enabled: true,
                         isDense: true,
-                        label: Text('Table Name'),
-                        hint: Text('Enter Table Name'),
-                        prefixIcon: Icon(
+                        label: const Text('Table Name'),
+                        hint: const Text('Enter Table Name'),
+                        prefixIcon: const Icon(
                           Icons.label,
                           color: AppColors.textSecondary,
                         ),
@@ -148,37 +148,37 @@ class CreateTableScreen extends GetView<RoomController> {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(color: AppColors.error),
+                          borderSide: const BorderSide(color: AppColors.error),
                         ),
                       ),
                       validator: (value) {
@@ -217,49 +217,49 @@ class CreateTableScreen extends GetView<RoomController> {
                               ? '4 players'
                               : 'Maximum: ${form.maxPlayers.value} players',
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.groups_rounded,
                           color: AppColors.textSecondary,
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.lightTextSecondary,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: AppColors.actionPrimary,
                           ),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.md),
-                          borderSide: BorderSide(color: AppColors.error),
+                          borderSide: const BorderSide(color: AppColors.error),
                         ),
                       ),
                     ),
 
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
                       onPressed: () async {
                         if (!form.validate()) return;
@@ -276,7 +276,7 @@ class CreateTableScreen extends GetView<RoomController> {
                         );
                       },
                       child: controller.isLoading.value
-                          ? CircularProgressIndicator.adaptive()
+                          ? const CircularProgressIndicator.adaptive()
                           : const Text('Create'),
                     ),
                   ],

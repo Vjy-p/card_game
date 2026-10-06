@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
       Get.lazyPut(() => GameAnimationController());
     }
     if (!Get.isRegistered<AIController>()) {
-      Get.lazyPut(() => AIController(engine: GameEngine(config: GameConfig())));
+      Get.lazyPut(() => AIController(engine: GameEngine(config: const GameConfig())));
     }
 
     if (action == HomePrimaryAction.playOffline) {
@@ -97,7 +97,7 @@ class HomeScreen extends StatelessWidget {
             builder: (context, constraints) {
               final wide = constraints.maxWidth >= 840;
               return CustomScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverPadding(
                     padding: EdgeInsets.symmetric(
@@ -134,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              style: ButtonStyle(
+                              style: const ButtonStyle(
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 visualDensity: VisualDensity.compact,
                                 padding: WidgetStatePropertyAll(
@@ -364,9 +364,9 @@ class HomeScreen extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
                         vertical: AppSpacing.xs,
                       ),
@@ -393,7 +393,7 @@ class HomeScreen extends StatelessWidget {
     return await Get.dialog(
       Dialog(
         backgroundColor: AppColors.backgroundSecondary,
-        insetPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        insetPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(AppRadius.card),
         ),
@@ -406,7 +406,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: AppSpacing.xxxl,
             children: [
-              Text(
+              const Text(
                 'Are you sure to exit?',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -421,7 +421,7 @@ class HomeScreen extends StatelessWidget {
                         Get.back(result: false);
                       },
                       label: 'Cancel',
-                      icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                     ),
                   ),
                   Expanded(
@@ -430,7 +430,7 @@ class HomeScreen extends StatelessWidget {
                         Get.back(result: true);
                       },
                       label: 'Exit',
-                      icon: Icon(Icons.restart_alt, size: 18),
+                      icon: const Icon(Icons.restart_alt, size: 18),
                     ),
                   ),
                 ],

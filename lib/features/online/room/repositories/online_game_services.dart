@@ -30,15 +30,14 @@ class OnlineGameService extends GetxService {
     return _supabase
         .from('game_cards')
         .stream(primaryKey: ['id'])
+        .eq('room_id', roomId)
         .map(
           (data) => data
               .where(
                 (row) =>
-                    row['room_id'].toString() == roomId && // Filter room here
-                    row['owner_player_id'].toString() ==
-                        myPlayerId && // Filter player here
+                    row['owner_player_id'].toString() == myPlayerId &&
                     row['zone'] == 'player_hand',
-              ) // Filter zone here
+              )
               .map((json) => CardModel.fromJson(json))
               .toList(),
         );
@@ -48,9 +47,9 @@ class OnlineGameService extends GetxService {
     return _supabase
         .from('game_cards')
         .stream(primaryKey: ['id'])
+        .eq('room_id', roomId)
         .map(
           (data) => data
-              .where((row) => row['room_id'].toString() == roomId)
               .map((json) => CardModel.fromJson(json))
               .toList(),
         );

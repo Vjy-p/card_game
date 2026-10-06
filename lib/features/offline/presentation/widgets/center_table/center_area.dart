@@ -45,10 +45,9 @@ class CenterArea extends StatelessWidget {
 
     final controller = Get.find<GameController>();
 
-    return SingleChildScrollView(
-      child: Container(
-        constraints: kIsWeb ? BoxConstraints(maxWidth: Get.width / 2) : null,
-        padding: EdgeInsets.all(AppSpacing.lg),
+    return Container(
+      constraints: kIsWeb ? BoxConstraints(maxWidth: Get.width / 2) : null,
+      padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -86,8 +85,7 @@ class CenterArea extends StatelessWidget {
               _buildDesktopLayout(controller: controller),
           ],
         ),
-      ),
-    );
+      );
   }
 
   /// Mobile layout - stacked vertically
@@ -228,7 +226,7 @@ class CenterArea extends StatelessWidget {
               enabled: canTakeOpen,
               onTap: onTakeOpen,
             )
-          : DiscardStackPlaceholder(isVisible: true);
+          : const DiscardStackPlaceholder(isVisible: true);
     });
   }
 }

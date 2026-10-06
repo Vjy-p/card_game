@@ -12,7 +12,12 @@ class CardBack extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Center(
-        child: Image.asset('assets/images/card_back.png', fit: BoxFit.fill),
+        child: Image.asset(
+          'assets/images/card_back.png',
+          fit: BoxFit.fill,
+          gaplessPlayback: true,
+          filterQuality: FilterQuality.low,
+        ),
       ),
     );
   }

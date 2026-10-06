@@ -49,11 +49,11 @@ class AuthenticationForm extends StatelessWidget {
           textAlign: TextAlign.center,
           text: TextSpan(
             text: 'By continuing you agree to the ',
-            style: TextStyle(color: AppColors.textMuted),
+            style: const TextStyle(color: AppColors.textMuted),
             children: [
               TextSpan(
                 text: 'Terms',
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   decoration: TextDecoration.underline,
                 ),
@@ -62,13 +62,13 @@ class AuthenticationForm extends StatelessWidget {
                     AppRoute.terms.go();
                   },
               ),
-              TextSpan(
+              const TextSpan(
                 text: ' & ',
                 style: TextStyle(color: AppColors.textMuted),
               ),
               TextSpan(
                 text: 'Privacy Policy.',
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   decoration: TextDecoration.underline,
                 ),
