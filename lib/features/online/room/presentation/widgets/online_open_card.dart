@@ -60,7 +60,8 @@ class _OpenPileState extends State<OnlineOpenCard> {
 
     return SizedBox(
       height: CardDimensions.height(context),
-      child: Row(
+      child: RepaintBoundary(
+        child: Row(
         children: [
           Tooltip(
             message: widget.enabled ? 'Take open card' : 'Cannot take card',
@@ -126,6 +127,7 @@ class _OpenPileState extends State<OnlineOpenCard> {
           ),
         ],
       ),
-    );
+    ),
+  );
   }
 }

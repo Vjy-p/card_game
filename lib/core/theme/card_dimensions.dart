@@ -10,7 +10,7 @@ class CardDimensions {
   static const double elevation = 4;
 
   static double width(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w = MediaQuery.sizeOf(context).width;
 
     if (w < 400) {
       return 54;

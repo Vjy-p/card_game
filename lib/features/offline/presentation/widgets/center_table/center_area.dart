@@ -38,15 +38,14 @@ class CenterArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
-    final isTablet =
-        MediaQuery.of(context).size.width >= 600 &&
-        MediaQuery.of(context).size.width < 1000;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isMobile = screenWidth < 600;
+    final isTablet = screenWidth >= 600 && screenWidth < 1000;
 
     final controller = Get.find<GameController>();
 
     return Container(
-      constraints: kIsWeb ? BoxConstraints(maxWidth: Get.width / 2) : null,
+      constraints: kIsWeb ? BoxConstraints(maxWidth: screenWidth / 2) : null,
       padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           gradient: LinearGradient(

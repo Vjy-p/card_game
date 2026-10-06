@@ -20,8 +20,9 @@ class PlayerWidget extends GetView<OnlineGameController> {
             final bool isCurrentTurn =
                 player?.playerId == controller.currentPlayerInternalId;
 
-            return SizedBox(
-              width: 90,
+            return RepaintBoundary(
+              child: SizedBox(
+                width: 90,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -52,7 +53,8 @@ class PlayerWidget extends GetView<OnlineGameController> {
                     ),
                 ],
               ),
-            );
-          });
+            ),
+          );
+        });
   }
 }

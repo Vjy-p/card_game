@@ -31,7 +31,7 @@ class AITurnDecisionEngine {
     // We group them and see if they satisfy the 4-set requirement
     final sets = _groupHandIntoSets(hand);
 
-    return RuleEngine().validateGame(
+    return const RuleEngine().validateGame(
       sets: sets,
       joker: joker,
       isJokerUnlocked: isJokerUnlocked,
@@ -47,7 +47,7 @@ class AITurnDecisionEngine {
     }
 
     for (var set in groups.values) {
-      if (set.length == 4 && RuleEngine().validate4thCard(cards: set)) {
+      if (set.length == 4 && const RuleEngine().validate4thCard(cards: set)) {
         fourthCard = List.from(set);
         return fourthCard;
       }
@@ -291,7 +291,7 @@ class AITurnDecisionEngine {
     for (var group in groups.values) {
       if (group.length >= 4) {
         // Use the rule engine to confirm this is a valid 4th-card set
-        if (RuleEngine().validate4thCard(cards: group)) {
+        if (const RuleEngine().validate4thCard(cards: group)) {
           locked.addAll(group);
         }
       }

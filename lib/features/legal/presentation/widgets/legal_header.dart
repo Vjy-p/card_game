@@ -18,7 +18,8 @@ class LegalHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reduceMotion = MediaQuery.of(context).disableAnimations;
+    final reduceMotion =
+        MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
     final child = Container(
       width: double.infinity,

@@ -30,7 +30,8 @@ class OnlineGameController extends BaseController {
     duration: const Duration(seconds: 5),
   );
 
-  final adsController = Get.find<AdsController>();
+  AdsController get adsController =>
+      Get.isRegistered<AdsController>() ? Get.find<AdsController>() : Get.put(AdsController());
 
   final OnlineGameService _service = Get.put(OnlineGameService());
 
@@ -90,23 +91,42 @@ class OnlineGameController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    // Listen to Hand
-    _subscriptions.add(
-      _service.watchMyHand(roomId, myPlayerId).listen((cards) {
-        myHand.assignAll(cards);
-        sortCardsById();
-      }),
-    );
-
+    // Consolidated single stream for all room cards to reduce socket connections and network overhead
     _subscriptions.add(
       _service.watchAllRoomCards(roomId).listen((cards) {
         allCards.assignAll(cards);
+
+        // Derive myHand from allCards
+        final myCards = cards
+            .where(
+              (row) =>
+                  row.ownerPlayerId.toString() == myPlayerId &&
+                  row.zone == 'player_hand',
+            )
+            .toList()
+          ..sort((a, b) => a.rank.compareTo(b.rank));
+        myHand.assignAll(myCards);
+
+        // Derive top card of discard pile
+        final discardCards =
+            cards.where((row) => row.zone == 'discard_pile').toList();
+        if (discardCards.isNotEmpty) {
+          final topCard = discardCards.reduce((current, next) {
+            final currentPos = current.pilePosition ?? 0;
+            final nextPos = next.pilePosition ?? 0;
+            return currentPos > nextPos ? current : next;
+          });
+          openCard.value = topCard;
+        } else {
+          openCard.value = null;
+        }
       }),
     );
 
     // Listen to Room State (Wild Joker Rank)
     _subscriptions.add(
       _service.watchTableState(roomId).listen((room) async {
+        if (room == null || room.isEmpty) return;
         roomState.value = room;
         log('room state $room');
         if (joker.value == null) {
@@ -132,11 +152,9 @@ class OnlineGameController extends BaseController {
                   (room['open_card_suit']?.toString().toLowerCase() ?? ''),
               orElse: () => Suit.joker,
             ),
-            rank: int.parse(room['open_card_rank']),
+            rank: int.parse(room['open_card_rank'].toString()),
             zone: 'discard_pile',
           );
-        } else {
-          openCard.value = null;
         }
 
         if (room['game_status'] == 'finished') {
@@ -148,13 +166,6 @@ class OnlineGameController extends BaseController {
           adsController.showInterstitialAd();
           log('rankings $rankings');
         }
-      }),
-    );
-
-    _subscriptions.add(
-      _service.watchOpenCard(roomId).listen((card) {
-        log('watch open card $card');
-        openCard.value = card;
       }),
     );
   }
@@ -341,8 +352,7 @@ class OnlineGameController extends BaseController {
 
   @override
   void dispose() {
-    clearData();
-    confettiController.dispose();
+    onClose();
     super.dispose();
   }
 

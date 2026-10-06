@@ -24,7 +24,7 @@ class OfflineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
+    final isMobile = MediaQuery.sizeOf(context).width < 600;
     // final isTablet =
     //     MediaQuery.of(context).size.width >= 600 &&
     //     MediaQuery.of(context).size.width < 1000;
@@ -35,6 +35,7 @@ class OfflineScreen extends StatelessWidget {
         if (didPop) return;
         final bool isExit = await openExitDialog(isMobile: isMobile);
         if (isExit) {
+          controller.clearData();
           AppRoute.home.offAll();
           // Get.back();
         }
@@ -50,6 +51,7 @@ class OfflineScreen extends StatelessWidget {
             onTap: () async {
               final bool isExit = await openExitDialog(isMobile: isMobile);
               if (isExit) {
+                controller.clearData();
                 AppRoute.home.offAll();
                 // Get.back();
               }

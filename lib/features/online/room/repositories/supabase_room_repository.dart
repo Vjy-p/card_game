@@ -160,7 +160,8 @@ class SupabaseRoomRepository extends GetxService {
         .map((rows) {
           log('STREAM EVENT: $rows');
           return rows.isEmpty ? 0 : _int(rows.first['revision']);
-        });
+        })
+        .distinct();
   }
 
   Future<String> startGame({

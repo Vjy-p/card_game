@@ -54,14 +54,16 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _start() async {
     // Precache critical card and branding assets so first game load has zero decode lag
     unawaited(Future.wait([
-      precacheImage(const AssetImage('assets/images/card_back.png'), context),
+      precacheImage(
+        const ResizeImage(AssetImage('assets/images/card_back.png'), width: 200),
+        context,
+      ),
       precacheImage(const AssetImage('assets/logo/logo.png'), context),
       precacheImage(const AssetImage('assets/logo/bg.png'), context),
     ]));
 
-    final mediaQuery = MediaQuery.of(context);
-
-    if (mediaQuery.disableAnimations) {
+    if (!mounted) return;
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
       _animationController.value = 1;
     } else {
       await _animationController.forward();

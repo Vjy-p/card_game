@@ -18,7 +18,8 @@ class LegalSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final reduceMotion = MediaQuery.of(context).disableAnimations;
+    final reduceMotion =
+        MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
     final section = Padding(
       padding: const EdgeInsets.only(bottom: 28),

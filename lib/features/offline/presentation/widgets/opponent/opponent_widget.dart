@@ -17,34 +17,36 @@ class OpponentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: rotation,
-      child: Column(
-        spacing: AppSpacing.xs,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // if (player.isThinking)
-          //   const Padding(
-          //     padding: EdgeInsets.only(bottom: 6),
-          //     child: OpponentThinking(),
-          //   ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: OpponentAvatar(
-              name: player.name,
-              isCurrentTurn: player.isCurrentTurn,
-              isJokerUnlocked: player.isJokerUnlocked,
-              isGameEnded: isGameEnded,
+    return RepaintBoundary(
+      child: Transform.rotate(
+        angle: rotation,
+        child: Column(
+          spacing: AppSpacing.xs,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // if (player.isThinking)
+            //   const Padding(
+            //     padding: EdgeInsets.only(bottom: 6),
+            //     child: OpponentThinking(),
+            //   ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: OpponentAvatar(
+                name: player.name,
+                isCurrentTurn: player.isCurrentTurn,
+                isJokerUnlocked: player.isJokerUnlocked,
+                isGameEnded: isGameEnded,
+              ),
             ),
-          ),
-          // OpponentName(name: player.name),
-          OpponentCardStack(cardCount: player.cardCount),
-          // Text('${player.cardCount} Cards'),
-          if (player.hasWon) ...[
-            const Icon(Icons.emoji_events, color: Colors.amber),
+            // OpponentName(name: player.name),
+            OpponentCardStack(cardCount: player.cardCount),
+            // Text('${player.cardCount} Cards'),
+            if (player.hasWon) ...[
+              const Icon(Icons.emoji_events, color: Colors.amber),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

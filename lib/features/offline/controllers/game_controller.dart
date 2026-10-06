@@ -24,18 +24,20 @@ class GameController extends GetxController {
   final GameEngine _engine;
   late final AIController _aiController;
   String gameSessionId = DateTime.now().microsecondsSinceEpoch.toString();
-  final adsController = Get.find<AdsController>();
+  AdsController get adsController =>
+      Get.isRegistered<AdsController>() ? Get.find<AdsController>() : Get.put(AdsController());
 
   final Rx<TableViewState> _table = TableViewState.initial().obs;
 
   TableViewState get table => _table.value;
 
-  final SupabaseClient supabase = Supabase.instance.client;
+  SupabaseClient get supabase => Supabase.instance.client;
 
   final Rx<PlayingCard?> _selectedCard = Rx<PlayingCard?>(null);
 
   PlayingCard? get selectedCard => _selectedCard.value;
-  PlayingCard? get openCard => _engine.deckManager.openCard;
+  PlayingCard? get openCard =>
+      _engine.deckManager.isInitialized ? _engine.deckManager.openCard : null;
 
   ConfettiController confettiController = ConfettiController(
     duration: const Duration(seconds: 5),
@@ -90,6 +92,7 @@ class GameController extends GetxController {
 
   Future<void> initializeGame() async {
     gameSessionId = DateTime.now().microsecondsSinceEpoch.toString();
+    final currentSession = gameSessionId;
     final animController = Get.put(GameAnimationController());
 
     // 1. This initializes the deck and fills player hands internally
@@ -106,19 +109,23 @@ class GameController extends GetxController {
     }
 
     animController.startDealing();
+    if (gameSessionId != currentSession || isClosed) return;
     refreshTable();
 
     // 4. Staggered animation: Add cards round-by-round to reduce rebuild cycles from 52 to 13
     const int cardsPerPlayer = 13;
     for (int round = 0; round < cardsPerPlayer; round++) {
+      if (gameSessionId != currentSession || isClosed) return;
       for (int seat = 0; seat < players.length; seat++) {
         final card = capturedHands[seat]![round];
         players[seat].hand.add(card);
       }
+      if (gameSessionId != currentSession || isClosed) return;
       refreshTable();
       await Future.delayed(const Duration(milliseconds: 70));
     }
 
+    if (gameSessionId != currentSession || isClosed) return;
     animController.stopDealing();
     refreshTable();
     log('game initialised');
@@ -183,7 +190,7 @@ class GameController extends GetxController {
 
   bool validate4thCards({required List<PlayingCard> cards}) {
     try {
-      players.first.jokerUnlocked.value = RuleEngine().validate4thCard(
+      players.first.jokerUnlocked.value = const RuleEngine().validate4thCard(
         cards: cards,
       );
       if (players.first.jokerUnlocked.value) {
@@ -201,7 +208,7 @@ class GameController extends GetxController {
 
   bool validateEndGame({required List<List<PlayingCard>> sets}) {
     try {
-      final bool value = RuleEngine().validateGame(
+      final bool value = const RuleEngine().validateGame(
         sets: sets,
         joker: table.hiddenJoker!,
         isJokerUnlocked: players.first.jokerUnlocked.value,
@@ -212,7 +219,7 @@ class GameController extends GetxController {
         sortCards();
         _engine.endGame(players: players);
         for (int i = 0; i < players.length; i++) {
-          final int score = RuleEngine().getScore(
+          final int score = const RuleEngine().getScore(
             cards: players[i].hand,
             joker: table.hiddenJoker!,
             isJokerUnlocked: players[i].jokerUnlocked.value,
@@ -250,6 +257,14 @@ class GameController extends GetxController {
   //---------------------------------------------------------------------------
 
   void refreshTable() {
+    if (isClosed) return;
+
+    if (!_engine.isStarted) {
+      _table.value = TableViewState.initial();
+      update();
+      return;
+    }
+
     final opponents = players
         .where((e) => e.seat != 0)
         .map(
@@ -262,7 +277,7 @@ class GameController extends GetxController {
             cardCount: e.hand.length,
             isCurrentTurn: _engine.turnManager.currentPlayer == e.seat,
             isThinking: false,
-            hasWon: false,
+            hasWon: winners.isNotEmpty && winners.first.id == e.id,
             score: e.score,
             isJokerUnlocked: e.jokerUnlocked.value,
           ),
@@ -279,15 +294,17 @@ class GameController extends GetxController {
     } else {
       actionState = ActionState.waitingToDiscard;
     }
+
+    final isDeckReady = _engine.deckManager.isInitialized;
     _table.value = TableViewState(
-      forwardCard: _engine.deckManager.forwardCard,
-      remainingCards: _engine.deckManager.closedDeckCount,
+      forwardCard: isDeckReady ? _engine.deckManager.forwardCard : null,
+      remainingCards: isDeckReady ? _engine.deckManager.closedDeckCount : 0,
       myCards: List.of(players[0].hand),
       opponents: opponents,
       actionState: actionState,
       selectedCard: _selectedCard.value,
       hiddenJoker: _engine.state.hiddenJoker,
-      openCard: _engine.deckManager.openCard,
+      openCard: isDeckReady ? _engine.deckManager.openCard : null,
     );
 
     update();
@@ -387,7 +404,7 @@ class GameController extends GetxController {
 
       // 3. Calculate scores for EVERYONE
       for (var p in players) {
-        final int score = RuleEngine().getScore(
+        final int score = const RuleEngine().getScore(
           cards: p.hand,
           joker: table.hiddenJoker!,
           isJokerUnlocked: p.jokerUnlocked.value,
@@ -423,6 +440,7 @@ class GameController extends GetxController {
   Future<void> restart() async {
     clearData();
     await initializeGame();
+    if (isClosed) return;
     refreshTable();
   }
 
@@ -493,42 +511,10 @@ class GameController extends GetxController {
       ];
       winners.clear();
       _engine.reset();
-      _table.refresh();
-
       _selectedCard.value = null;
-      // refreshTable();
-      // final opponents = players
-      //     .where((e) => e.seat != 0)
-      //     .map(
-      //       (e) => PlayerStatus(
-      //         id: e.id,
-      //         seat: e.seat,
-      //         name: e.name,
-      //         type: e.type,
-      //         difficulty: e.difficulty,
-      //         cardCount: e.hand.length,
-      //         isCurrentTurn: _engine.turnManager.currentPlayer == e.seat,
-      //         isThinking: false,
-      //         hasWon: false,
-      //         score: e.score,
-      //         isJokerUnlocked: e.jokerUnlocked.value,
-      //       ),
-      //     )
-      //     .toList();
-      // _table.value = TableViewState(
-      //   forwardCard: null,
-      //   hiddenJoker: null,
-      //   openCard: null,
-      //   remainingCards: 0,
-      //   opponents: [],
-      //   myCards: [],
-      //   actionState: ActionState.waitingToDraw,
-      //   selectedCard: null,
-      // );
-
-      _table.refresh();
+      _table.value = TableViewState.initial();
+      update();
     } catch (e) {
-      // refreshTable();
       log('Clear Data $e');
     }
   }

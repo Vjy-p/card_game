@@ -2,6 +2,9 @@ import 'package:card_game/features/offline/models/playing_card.dart';
 import 'package:collection/collection.dart';
 
 class RuleEngine {
+  const RuleEngine();
+  static const RuleEngine instance = RuleEngine();
+
   bool validate4thCard({required List<PlayingCard> cards}) {
     if (cards.length != 4) return false;
     final firstRank = cards.first.rank.value;
@@ -72,8 +75,8 @@ class RuleEngine {
       score += 20;
     }
 
-    for (final val in sets.keys) {
-      final int valCount = sets[val]?.length ?? 0;
+    for (final cardsOfRank in sets.values) {
+      final int valCount = cardsOfRank.length;
 
       if (valCount == 9) {
         score += 60;

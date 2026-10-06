@@ -16,10 +16,12 @@ class CustomLoading extends StatelessWidget {
     return Center(
       child: SizedBox.square(
         dimension: dimension ?? 24,
-        child: CircularProgressIndicator(
-          strokeWidth: strokeWidth ?? 2.5,
-          semanticsLabel: 'Starting game',
-          color: color,
+        child: RepaintBoundary(
+          child: CircularProgressIndicator(
+            strokeWidth: strokeWidth ?? 2.5,
+            semanticsLabel: 'Starting game',
+            color: color,
+          ),
         ),
       ),
     );

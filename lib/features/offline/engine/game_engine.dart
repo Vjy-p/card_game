@@ -14,7 +14,7 @@ class GameEngine {
 
   final DeckManager _deckManager = DeckManager();
 
-  late TurnManager _turnManager;
+  TurnManager _turnManager = TurnManager(playerCount: 4);
 
   late GameState _state;
 

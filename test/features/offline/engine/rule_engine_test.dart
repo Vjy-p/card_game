@@ -8,7 +8,7 @@ void main() {
   late RuleEngine ruleEngine;
 
   setUp(() {
-    ruleEngine = RuleEngine();
+    ruleEngine = const RuleEngine();
   });
 
   PlayingCard makeCard(String id, CardRank rank, CardSuit suit) {

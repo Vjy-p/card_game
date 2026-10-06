@@ -18,7 +18,7 @@ class UserCardStack extends StatelessWidget {
           .toSet();
 
       return SizedBox(
-        width: Get.width,
+        width: MediaQuery.sizeOf(context).width,
         child: Stack(
           clipBehavior: Clip.none,
           children: List.generate(myCards.length, (index) {

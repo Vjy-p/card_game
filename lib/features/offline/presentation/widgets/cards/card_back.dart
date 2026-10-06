@@ -14,6 +14,7 @@ class CardBack extends StatelessWidget {
       child: Center(
         child: Image.asset(
           'assets/images/card_back.png',
+          cacheWidth: 200,
           fit: BoxFit.fill,
           gaplessPlayback: true,
           filterQuality: FilterQuality.low,

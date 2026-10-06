@@ -16,7 +16,7 @@ class AdsController extends GetxController {
   }
 
   void loadInterstitialAd() {
-    if (kIsWeb) {
+    if (kIsWeb || Get.testMode) {
       return;
     }
     log(

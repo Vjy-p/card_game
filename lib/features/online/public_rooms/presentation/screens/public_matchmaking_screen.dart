@@ -146,58 +146,54 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Obx(() {
-                      return _roomController.isLoading.value
-                          ? const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(AppSpacing.xl),
-                                child: CustomLoading(),
+                      if (_roomController.isLoading.value) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(AppSpacing.xl),
+                            child: CustomLoading(),
+                          ),
+                        );
+                      }
+                      if (_roomController.errorMessage.value?.isNotEmpty == true) {
+                        return _MessageCard(
+                          message: 'Could not load public tables.',
+                          actionLabel: 'Retry',
+                          onAction: () => _roomController.getPublicRooms(),
+                        );
+                      }
+                      if (_roomController.publicTables.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: _roomController.publicTables.length,
+                        physics: const NeverScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
+                        itemBuilder: (context, index) {
+                          final table = _roomController.publicTables[index];
+                          return Card(
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.public_rounded),
                               ),
-                            )
-                          : const SizedBox();
-                    }),
-                    Obx(() {
-                      return _roomController.errorMessage.isNotEmpty == true
-                          ? _MessageCard(
-                              message: 'Could not load public tables.',
-                              actionLabel: 'Retry',
-                              onAction: () => _roomController.getPublicRooms(),
-                            )
-                          : const SizedBox();
-                    }),
-                    Obx(() {
-                      return !_roomController.isLoading.value
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: _roomController.publicTables.length,
-                              physics: const NeverScrollableScrollPhysics(
-                                parent: BouncingScrollPhysics(),
+                              title: Text(table.tableName),
+                              subtitle: Text(
+                                '${table.playerCount} / ${table.maxPlayers} players',
                               ),
-                              itemBuilder: (context, index) {
-                                final table =
-                                    _roomController.publicTables[index];
-                                return Card(
-                                  child: ListTile(
-                                    leading: const CircleAvatar(
-                                      child: Icon(Icons.public_rounded),
-                                    ),
-                                    title: Text(table.tableName),
-                                    subtitle: Text(
-                                      '${table.playerCount} / ${table.maxPlayers} players',
-                                    ),
-                                    trailing: FilledButton.tonal(
-                                      onPressed: _roomController.isLoading.value
-                                          ? null
-                                          : () => _join(table),
-                                      child: const Text('Join'),
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(height: AppSpacing.md);
-                              },
-                            )
-                          : const SizedBox();
+                              trailing: FilledButton.tonal(
+                                onPressed: _roomController.isLoading.value
+                                    ? null
+                                    : () => _join(table),
+                                child: const Text('Join'),
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: AppSpacing.md);
+                        },
+                      );
                     }),
                   ],
                 ),

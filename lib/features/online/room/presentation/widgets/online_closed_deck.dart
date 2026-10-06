@@ -55,6 +55,7 @@ class _ClosedDeckState extends State<OnlineClosedDeck>
 
   @override
   void dispose() {
+    timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -80,8 +81,9 @@ class _ClosedDeckState extends State<OnlineClosedDeck>
     const stackCount = 10;
     const stackOffset = 4.0;
 
-    return ((timer?.tick ?? 12) < 11)
-        ? SizedBox(
+    return RepaintBoundary(
+      child: ((timer?.tick ?? 12) < 11)
+          ? SizedBox(
             width: cardWidth + (stackOffset * (10 - (timer?.tick ?? 0))) * 1,
             height: cardHeight,
             child: Wrap(
@@ -179,7 +181,8 @@ class _ClosedDeckState extends State<OnlineClosedDeck>
                 ),
               ),
             ),
-          );
+          ),
+    );
   }
 
   Widget _buildCardBackWithShadow({

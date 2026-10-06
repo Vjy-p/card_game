@@ -240,6 +240,8 @@ class DeckManager {
 
   int get deckCount => _deckCount;
 
+  bool get isInitialized => _initialized;
+
   int get playerCount => _playerCount;
 
   int get closedDeckCount => _closedDeck.length;

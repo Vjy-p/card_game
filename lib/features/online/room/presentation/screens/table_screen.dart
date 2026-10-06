@@ -27,6 +27,7 @@ class TableScreen extends GetView<OnlineGameController> {
         if (didPop) return;
         final bool isExit = await openExitDialog();
         if (isExit) {
+          controller.clearData();
           Get.back();
         }
       },
@@ -41,6 +42,7 @@ class TableScreen extends GetView<OnlineGameController> {
             onTap: () async {
               final bool isExit = await openExitDialog();
               if (isExit) {
+                controller.clearData();
                 Get.back();
               }
             },

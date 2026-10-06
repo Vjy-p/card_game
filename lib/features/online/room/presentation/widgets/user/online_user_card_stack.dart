@@ -15,7 +15,7 @@ class OnlineUserCardStack extends GetView<OnlineGameController> {
 
       return SizedBox(
         key: controller.handKey,
-        width: Get.width,
+        width: MediaQuery.sizeOf(context).width,
         child: Stack(
           clipBehavior: Clip.none,
           children: List.generate(myHand.length, (index) {

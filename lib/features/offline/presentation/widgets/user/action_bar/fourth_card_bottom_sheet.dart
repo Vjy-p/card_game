@@ -40,7 +40,7 @@ class _DeclareCardSheetState extends State<FourthCardBottomSheet> {
     return GetBuilder<GameController>(
       builder: (controller) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.65,
+          height: MediaQuery.sizeOf(context).height * 0.65,
           decoration: const BoxDecoration(
             color: AppColors.backgroundSecondary,
             borderRadius: BorderRadius.vertical(top: Radius.circular(32)),

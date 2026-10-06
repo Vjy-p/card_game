@@ -55,12 +55,12 @@ class OnlineGameService extends GetxService {
         );
   }
 
-  Stream<Map<String, dynamic>> watchTableState(String roomId) {
+  Stream<Map<String, dynamic>?> watchTableState(String roomId) {
     return _supabase
         .from('rooms')
         .stream(primaryKey: ['id'])
         .eq('id', roomId)
-        .map((data) => data.first);
+        .map((data) => data.isNotEmpty ? data.first : null);
   }
 
   // Future drawFromDeck({required String roomId}) async {

@@ -32,15 +32,17 @@ class OnlineUserCardTile extends StatelessWidget {
           ? index * 32.0
           : index * 48.0,
       duration: const Duration(milliseconds: 250),
-      child: SizedBox(
-        width: 65,
-        child: GestureDetector(
-          onTap: isLocked ? null : onTap,
-          child: AspectRatio(
-            aspectRatio: 0.656,
-            child: OnlineCardFace(
-              card: card,
-              isLocked: isLocked,
+      child: RepaintBoundary(
+        child: SizedBox(
+          width: 65,
+          child: GestureDetector(
+            onTap: isLocked ? null : onTap,
+            child: AspectRatio(
+              aspectRatio: 0.656,
+              child: OnlineCardFace(
+                card: card,
+                isLocked: isLocked,
+              ),
             ),
           ),
         ),

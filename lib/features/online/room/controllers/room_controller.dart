@@ -345,7 +345,6 @@ class RoomController extends BaseController {
                 },
               );
             }
-            refresh();
           }
         });
   }
