@@ -15,7 +15,7 @@ class GameTurnIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
       ),
@@ -34,7 +34,7 @@ class GameTurnIndicator extends StatelessWidget {
         spacing: AppSpacing.sm,
         children: [
           if (isPlayerTurn)
-            Icon(Icons.circle, color: AppColors.actionPrimary, size: 8),
+            const Icon(Icons.circle, color: AppColors.actionPrimary, size: 8),
           Flexible(
             child: Text(
               '$playerName\'s Turn',

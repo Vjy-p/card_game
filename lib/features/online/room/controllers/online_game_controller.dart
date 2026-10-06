@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:card_game/core/router/app_route.dart';
@@ -22,6 +23,8 @@ class OnlineGameController extends BaseController {
   final String roomId;
   final String myPlayerId;
   final String snapshotString;
+
+  final List<StreamSubscription> _subscriptions = [];
 
   ConfettiController confettiController = ConfettiController(
     duration: const Duration(seconds: 5),
@@ -88,64 +91,72 @@ class OnlineGameController extends BaseController {
   void onInit() {
     super.onInit();
     // Listen to Hand
-    _service.watchMyHand(roomId, myPlayerId).listen((cards) {
-      myHand.assignAll(cards);
-      sortCardsById();
-    });
+    _subscriptions.add(
+      _service.watchMyHand(roomId, myPlayerId).listen((cards) {
+        myHand.assignAll(cards);
+        sortCardsById();
+      }),
+    );
 
-    _service.watchAllRoomCards(roomId).listen((cards) {
-      allCards.assignAll(cards);
-    });
+    _subscriptions.add(
+      _service.watchAllRoomCards(roomId).listen((cards) {
+        allCards.assignAll(cards);
+      }),
+    );
 
     // Listen to Room State (Wild Joker Rank)
-    _service.watchTableState(roomId).listen((room) async {
-      roomState.value = room;
-      log('room state $room');
-      if (joker.value == null) {
-        joker.value = CardModel(
-          id: room['joker_card_id'].toString(),
-          suit: Suit.values.firstWhere(
-            (e) =>
-                e.name ==
-                (room['joker_suit']?.toString().toLowerCase() ?? 'joker'),
-            orElse: () => Suit.joker,
-          ),
-          rank: room['joker_rank'],
-          zone: room['joker_zone'] ?? 'joker_indicator',
-        );
-      }
-
-      if (room['open_card_id'] != null) {
-        openCard.value = CardModel(
-          id: room['open_card_id'].toString(),
-          suit: Suit.values.firstWhere(
-            (e) =>
-                e.name ==
-                (room['open_card_suit']?.toString().toLowerCase() ?? ''),
-            orElse: () => Suit.joker,
-          ),
-          rank: int.parse(room['open_card_rank']),
-          zone: 'discard_pile',
-        );
-      } else {
-        openCard.value = null;
-      }
-
-      if (room['game_status'] == 'finished') {
-        rankings.value = await _service.watchRankings(roomId);
-
-        if (rankings.isNotEmpty) {
-          AppRoute.onlineRanking.go();
+    _subscriptions.add(
+      _service.watchTableState(roomId).listen((room) async {
+        roomState.value = room;
+        log('room state $room');
+        if (joker.value == null) {
+          joker.value = CardModel(
+            id: room['joker_card_id'].toString(),
+            suit: Suit.values.firstWhere(
+              (e) =>
+                  e.name ==
+                  (room['joker_suit']?.toString().toLowerCase() ?? 'joker'),
+              orElse: () => Suit.joker,
+            ),
+            rank: room['joker_rank'],
+            zone: room['joker_zone'] ?? 'joker_indicator',
+          );
         }
-        adsController.showInterstitialAd();
-        log('rankings $rankings');
-      }
-    });
 
-    _service.watchOpenCard(roomId).listen((card) {
-      log('watch open card $card');
-      openCard.value = card;
-    });
+        if (room['open_card_id'] != null) {
+          openCard.value = CardModel(
+            id: room['open_card_id'].toString(),
+            suit: Suit.values.firstWhere(
+              (e) =>
+                  e.name ==
+                  (room['open_card_suit']?.toString().toLowerCase() ?? ''),
+              orElse: () => Suit.joker,
+            ),
+            rank: int.parse(room['open_card_rank']),
+            zone: 'discard_pile',
+          );
+        } else {
+          openCard.value = null;
+        }
+
+        if (room['game_status'] == 'finished') {
+          rankings.value = await _service.watchRankings(roomId);
+
+          if (rankings.isNotEmpty) {
+            AppRoute.onlineRanking.go();
+          }
+          adsController.showInterstitialAd();
+          log('rankings $rankings');
+        }
+      }),
+    );
+
+    _subscriptions.add(
+      _service.watchOpenCard(roomId).listen((card) {
+        log('watch open card $card');
+        openCard.value = card;
+      }),
+    );
   }
 
   void sortCardsById() {
@@ -322,12 +333,24 @@ class OnlineGameController extends BaseController {
   }
 
   @override
+  void onClose() {
+    clearData();
+    confettiController.dispose();
+    super.onClose();
+  }
+
+  @override
   void dispose() {
     clearData();
+    confettiController.dispose();
     super.dispose();
   }
 
   void clearData() {
+    for (final sub in _subscriptions) {
+      sub.cancel();
+    }
+    _subscriptions.clear();
     confettiController.stop();
     _service.clearData();
     myHand.clear();

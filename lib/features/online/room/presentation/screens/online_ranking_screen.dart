@@ -62,8 +62,8 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
             Positioned.fill(
               child: Scaffold(
                 appBar: AppBar(
-                  leading: CustomBackButton(),
-                  title: Text('Winners'),
+                  leading: const CustomBackButton(),
+                  title: const Text('Winners'),
                 ),
                 body: Align(
                   alignment: AlignmentGeometry.topCenter,
@@ -78,7 +78,7 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                     alignment: Alignment.center,
                     child: ListView.separated(
                       itemCount: controller.rankings.length,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: AppSpacing.xs,
                         horizontal: AppSpacing.xs,
                       ),
@@ -99,19 +99,19 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                           collapsedBackgroundColor: AppColors.surfacePrimary,
                           leading: Text(
                             controller.rankings[index].score.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
                           title: Text(
                             controller.rankings[index].name,
-                            style: TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 16),
                           ),
-                          tilePadding: EdgeInsets.symmetric(
+                          tilePadding: const EdgeInsets.symmetric(
                             horizontal: AppSpacing.md,
                           ),
-                          childrenPadding: EdgeInsets.symmetric(
+                          childrenPadding: const EdgeInsets.symmetric(
                             horizontal: AppSpacing.xs,
                           ),
                           children: [
@@ -146,7 +146,7 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                         );
                       },
                       separatorBuilder: (context, index) {
-                        return SizedBox(height: AppSpacing.xs);
+                        return const SizedBox(height: AppSpacing.xs);
                       },
                     ),
                   ),
@@ -178,7 +178,7 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                                   Get.back();
                                 },
                                 label: 'Back',
-                                icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                                icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                               ),
                             ),
                             Expanded(
@@ -186,12 +186,12 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                                 onPressed: () async {
                                   controller.clearData();
                                   await Future.delayed(
-                                    Duration(microseconds: 100),
+                                    const Duration(microseconds: 100),
                                   );
                                   AppRoute.home.offAll();
                                 },
                                 label: 'Play again',
-                                icon: Icon(Icons.restart_alt, size: 18),
+                                icon: const Icon(Icons.restart_alt, size: 18),
                               ),
                             ),
                           ],

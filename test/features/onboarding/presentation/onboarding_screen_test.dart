@@ -1,11 +1,23 @@
 import 'package:card_game/core/router/app_route.dart';
+import 'package:card_game/features/onboarding/controllers/onboarding_controller.dart';
 import 'package:card_game/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
+  setUp(() {
+    Get.testMode = true;
+  });
+
+  tearDown(() {
+    if (Get.isRegistered<OnboardingController>()) {
+      Get.find<OnboardingController>().stopAutoScroll();
+      Get.delete<OnboardingController>();
+    }
+    Get.reset();
+  });
+
   testWidgets('shows the first rule and advances to the next page', (
     tester,
   ) async {
@@ -23,23 +35,22 @@ void main() {
   });
 
   testWidgets('skip navigates to authentication destination', (tester) async {
-    final router = GoRouter(
-      initialLocation: AppRoute.onboarding.path,
-      routes: [
-        GoRoute(
-          path: AppRoute.onboarding.path,
-          builder: (_, _) => const OnboardingScreen(),
-        ),
-        GoRoute(
-          name: AppRoute.authentication.name,
-          path: AppRoute.authentication.path,
-          builder: (_, _) =>
-              const Scaffold(body: Text('Authentication destination')),
-        ),
-      ],
+    await tester.pumpWidget(
+      GetMaterialApp(
+        initialRoute: AppRoute.onboarding.path,
+        getPages: [
+          GetPage(
+            name: AppRoute.onboarding.path,
+            page: () => const OnboardingScreen(),
+          ),
+          GetPage(
+            name: AppRoute.authentication.path,
+            page: () =>
+                const Scaffold(body: Text('Authentication destination')),
+          ),
+        ],
+      ),
     );
-    addTearDown(router.dispose);
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
     expect(find.text('Authentication destination'), findsOneWidget);

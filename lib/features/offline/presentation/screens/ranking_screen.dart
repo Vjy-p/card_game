@@ -17,10 +17,10 @@ class RankingScreen extends StatelessWidget {
     return GetBuilder<GameController>(
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(leading: CustomBackButton(), title: Text('Winners')),
+          appBar: AppBar(leading: const CustomBackButton(), title: const Text('Winners')),
           body: ListView.separated(
             itemCount: controller.winners.length,
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: AppSpacing.xs,
               horizontal: AppSpacing.xs,
             ),
@@ -37,14 +37,14 @@ class RankingScreen extends StatelessWidget {
                 collapsedBackgroundColor: AppColors.surfacePrimary,
                 leading: Text(
                   controller.winners[index].score.toString(),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
                 ),
                 title: Text(
                   controller.winners[index].name,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                tilePadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                childrenPadding: EdgeInsets.symmetric(
+                tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                childrenPadding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.xs,
                 ),
                 children: [
@@ -77,7 +77,7 @@ class RankingScreen extends StatelessWidget {
               );
             },
             separatorBuilder: (context, index) {
-              return SizedBox(height: AppSpacing.xs);
+              return const SizedBox(height: AppSpacing.xs);
             },
           ),
 
@@ -94,18 +94,18 @@ class RankingScreen extends StatelessWidget {
                       AppRoute.home.offAll();
                     },
                     label: 'EXit',
-                    icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                   ),
                 ),
                 Expanded(
                   child: ActionButton(
                     onPressed: () async {
                       controller.restart();
-                      await Future.delayed(Duration(microseconds: 100));
+                      await Future.delayed(const Duration(microseconds: 100));
                       Get.back();
                     },
                     label: 'Play again',
-                    icon: Icon(Icons.restart_alt, size: 18),
+                    icon: const Icon(Icons.restart_alt, size: 18),
                   ),
                 ),
               ],

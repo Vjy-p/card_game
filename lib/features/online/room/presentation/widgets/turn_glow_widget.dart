@@ -45,27 +45,29 @@ class _TurnGlowState extends State<TurnGlow>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (_, child) {
-        final glow = widget.active ? _controller.value : 0;
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (_, child) {
+          final glow = widget.active ? _controller.value : 0;
 
-        return Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              if (widget.active)
-                BoxShadow(
-                  color: AppColors.gold.withValues(alpha: 0.7),
-                  blurRadius: 14 + glow * 18,
-                  spreadRadius: 2 + glow * 8,
-                ),
-            ],
-          ),
-          child: child,
-        );
-      },
-      child: widget.child,
+          return Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                if (widget.active)
+                  BoxShadow(
+                    color: AppColors.gold.withValues(alpha: 0.7),
+                    blurRadius: 14 + glow * 18,
+                    spreadRadius: 2 + glow * 8,
+                  ),
+              ],
+            ),
+            child: child,
+          );
+        },
+        child: widget.child,
+      ),
     );
   }
 

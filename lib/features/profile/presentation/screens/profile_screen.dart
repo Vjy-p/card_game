@@ -19,25 +19,25 @@ class ProfileScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
-            leading: CustomBackButton(),
+            leading: const CustomBackButton(),
             title: const Text('Profile'),
             actions: [
               IconButton(
                 onPressed: () {
                   openLogOutAlertBox();
                 },
-                icon: Icon(Icons.logout, size: 20),
+                icon: const Icon(Icons.logout, size: 20),
               ),
               IconButton(
                 onPressed: () {
                   openDeleteAlertBox();
                 },
-                icon: Icon(Icons.delete_outline_rounded, size: 20),
+                icon: const Icon(Icons.delete_outline_rounded, size: 20),
               ),
             ],
           ),
           body: controller.isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : controller.error
               ? Center(
                   child: Column(
@@ -45,13 +45,13 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Something went wrong'),
+                      const Text('Something went wrong'),
                       FilledButton.icon(
                         onPressed: () {
                           controller.getUserDetails();
                         },
-                        label: Text('Retry'),
-                        icon: Icon(Icons.restore),
+                        label: const Text('Retry'),
+                        icon: const Icon(Icons.restore),
                       ),
                     ],
                   ),
@@ -59,11 +59,11 @@ class ProfileScreen extends StatelessWidget {
               : Align(
                   alignment: AlignmentGeometry.topCenter,
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: AppSpacing.md,
                     ),
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 800),
                       child: Column(
@@ -169,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('Are you sure to Logout?', style: TextStyle(fontSize: 18)),
+              const Text('Are you sure to Logout?', style: TextStyle(fontSize: 18)),
               Row(
                 spacing: 20,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
                             Get.back();
                           },
                     icon: const Icon(Icons.arrow_back),
-                    label: Text('Cancel'),
+                    label: const Text('Cancel'),
                   ),
                   Obx(() {
                     return FilledButton.icon(
@@ -194,8 +194,8 @@ class ProfileScreen extends StatelessWidget {
                             },
                       icon: const Icon(Icons.logout),
                       label: authenticationController.isButtonLoading.value
-                          ? CustomLoading()
-                          : Text('Logout'),
+                          ? const CustomLoading()
+                          : const Text('Logout'),
                     );
                   }),
                 ],
@@ -226,7 +226,7 @@ class ProfileScreen extends StatelessWidget {
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('Delete Account ?', style: TextStyle(fontSize: 18)),
+              const Text('Delete Account ?', style: TextStyle(fontSize: 18)),
               Row(
                 spacing: 20,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -239,7 +239,7 @@ class ProfileScreen extends StatelessWidget {
                             Get.back();
                           },
                     icon: const Icon(Icons.arrow_back),
-                    label: Text('Cancel'),
+                    label: const Text('Cancel'),
                   ),
                   Obx(() {
                     return FilledButton.icon(
@@ -250,8 +250,8 @@ class ProfileScreen extends StatelessWidget {
                             },
                       icon: const Icon(Icons.delete),
                       label: authenticationController.isButtonLoading.value
-                          ? CustomLoading()
-                          : Text('Delete'),
+                          ? const CustomLoading()
+                          : const Text('Delete'),
                     );
                   }),
                 ],

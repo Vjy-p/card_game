@@ -69,8 +69,8 @@ class _OnlineFourthCardBottomsheetState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: const Text(
+                    const Expanded(
+                      child: Text(
                         'Declare 4th Card',
                         style: TextStyle(
                           fontSize: 18,
@@ -81,7 +81,7 @@ class _OnlineFourthCardBottomsheetState
                     MaterialButton(
                       minWidth: 30,
                       height: 30,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
                       color: AppColors.textMuted,
@@ -93,7 +93,7 @@ class _OnlineFourthCardBottomsheetState
               ),
               // TOP AREA: The 4 Sets
               _buildDragTarget(),
-              Spacer(),
+              const Spacer(),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Text(
@@ -116,9 +116,9 @@ class _OnlineFourthCardBottomsheetState
                     horizontal: 12,
                     vertical: 16,
                   ),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.surfacePrimary,
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                       top: Radius.circular(30),
                     ),
                   ),
@@ -152,7 +152,7 @@ class _OnlineFourthCardBottomsheetState
                           Get.back();
                         },
                         label: 'Back',
-                        icon: Icon(Icons.arrow_back_ios, size: 18),
+                        icon: const Icon(Icons.arrow_back_ios, size: 18),
                       ),
                     ),
                     Expanded(
@@ -169,7 +169,7 @@ class _OnlineFourthCardBottomsheetState
                           }
                         },
                         label: 'Declare',
-                        icon: Icon(Icons.check_circle, size: 18),
+                        icon: const Icon(Icons.check_circle, size: 18),
                       ),
                     ),
                   ],
@@ -198,7 +198,7 @@ class _OnlineFourthCardBottomsheetState
         final bool isHovering = candidateData.isNotEmpty;
         return AnimatedContainer(
           height: 120,
-          margin: EdgeInsets.symmetric(horizontal: 30),
+          margin: const EdgeInsets.symmetric(horizontal: 30),
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
             color: isHovering
@@ -214,7 +214,7 @@ class _OnlineFourthCardBottomsheetState
           ),
           child: Center(
             child: cardSets.isEmpty
-                ? Text('add +')
+                ? const Text('add +')
                 : Wrap(
                     spacing: 8, // Overlap cards visually
                     runSpacing: 4,

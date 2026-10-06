@@ -16,7 +16,10 @@ class GuestLobbyScreen extends GetView<RoomController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: CustomBackButton(), title: const Text('Lobby')),
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        title: const Text('Lobby'),
+      ),
       body: Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -28,11 +31,11 @@ class GuestLobbyScreen extends GetView<RoomController> {
                 : Get.width / 2,
           ),
           alignment: Alignment.topCenter,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.md,
             vertical: AppSpacing.md,
           ),
-          child: Column(
+          child: const Column(
             spacing: 20,
             children: [
               LobbyHeader(),

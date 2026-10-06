@@ -16,7 +16,7 @@ class GameOverActions extends StatelessWidget {
     return Column(
       spacing: AppSpacing.sm,
       children: [
-        Text('Game Over'),
+        const Text('Game Over'),
         Row(
           spacing: AppSpacing.sm,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -26,14 +26,14 @@ class GameOverActions extends StatelessWidget {
               child: ActionButton(
                 onPressed: onExit,
                 label: 'EXit',
-                icon: Icon(Icons.exit_to_app),
+                icon: const Icon(Icons.exit_to_app),
               ),
             ),
             Expanded(
               child: ActionButton(
                 onPressed: onPlayAgain,
                 label: 'Play again',
-                icon: Icon(Icons.restart_alt),
+                icon: const Icon(Icons.restart_alt),
               ),
             ),
           ],

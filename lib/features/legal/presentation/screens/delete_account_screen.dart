@@ -90,7 +90,7 @@ class DeleteAccountScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
+            const Expanded(
               child: Align(
                 alignment: AlignmentGeometry.centerLeft,
                 child: CustomBackButton(onTap: CanGoBack.go),
@@ -121,7 +121,7 @@ class DeleteAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
           ],
         ),
 
@@ -212,8 +212,8 @@ class DeleteAccountScreen extends StatelessWidget {
           _bulletPoint('Card Game account and profile information'),
           _bulletPoint('Account-associated game data'),
           _bulletPoint('Game history and associated data'),
-          SizedBox(height: 15),
-          Text(
+          const SizedBox(height: 15),
+          const Text(
             'Information that may be retained',
             style: TextStyle(
               fontSize: 17,
@@ -221,7 +221,7 @@ class DeleteAccountScreen extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          Text(
+          const Text(
             'Certain information may need to be retained for a limited period where required for security, fraud prevention, legal, or accounting purposes.',
             style: TextStyle(
               fontSize: 15,
@@ -321,10 +321,10 @@ class DeleteAccountScreen extends StatelessWidget {
 
   Widget _buildHelpCard() {
     return _cardWrapper(
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Need help?',
             style: TextStyle(
               fontSize: 22,
@@ -332,7 +332,7 @@ class DeleteAccountScreen extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          const Text(
+          Text(
             'If you cannot access your account or have questions, contact our support team using the deletion request option above.',
             style: TextStyle(
               fontSize: 15,
@@ -373,7 +373,7 @@ class DeleteAccountScreen extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 color: AppColors.textSecondary,
                 height: 1.5,
@@ -416,7 +416,7 @@ class DeleteAccountScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                   color: AppColors.textSecondary,
                   height: 1.5,

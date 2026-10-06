@@ -17,28 +17,28 @@ class OnboardingController extends GetxController {
   bool get isLastPage => pageIndex.value == pageCount - 1;
 
   final pages = [
-    OnboardingPageContent(
+    const OnboardingPageContent(
       eyebrow: 'THE CORE RULE',
       title: 'Match the rank. Suits do not decide the set.',
       description:
           '8♠, 8♥, 8♦ is valid because all three cards share the same rank. The real suits and colors stay visible for easy card reading.',
       visualType: OnboardingVisualType.rankMatch,
     ),
-    OnboardingPageContent(
+    const OnboardingPageContent(
       eyebrow: 'MULTIPLE DECKS',
       title: 'Identical-looking cards can exist together.',
       description:
           '8♠, 8♠, 8♥ is also valid. Multiple physical decks create duplicate-looking cards, while every card remains uniquely tracked by the game.',
       visualType: OnboardingVisualType.duplicateCards,
     ),
-    OnboardingPageContent(
+    const OnboardingPageContent(
       eyebrow: 'UNLOCK THE JOKER',
       title: 'Reveal four matching ranks to discover your joker.',
       description:
           'Reveal a natural four-of-a-kind to unlock the hidden joker for yourself. Other players still cannot see the joker until they unlock it too.',
       visualType: OnboardingVisualType.jokerUnlock,
     ),
-    OnboardingPageContent(
+    const OnboardingPageContent(
       eyebrow: 'HOW TO WIN',
       title: 'Organize 13 cards into 3 + 3 + 3 + 4.',
       description:
@@ -51,7 +51,9 @@ class OnboardingController extends GetxController {
   void onInit() {
     super.onInit();
     pageController = PageController();
-    startAutoScroll();
+    if (!Get.testMode) {
+      startAutoScroll();
+    }
   }
 
   void startAutoScroll() {
@@ -70,6 +72,7 @@ class OnboardingController extends GetxController {
   }
 
   void setPage(int index) {
+    if (index < 0 || index >= pageCount) return;
     pageIndex.value = index;
   }
 

@@ -53,7 +53,7 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
+        leading: const CustomBackButton(),
         title: const Text('Play Online'),
       ),
       body: SafeArea(
@@ -63,7 +63,7 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
             alignment: AlignmentGeometry.topCenter,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.lg),
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 800),
                 alignment: Alignment.topCenter,
@@ -147,13 +147,13 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
                     const SizedBox(height: AppSpacing.sm),
                     Obx(() {
                       return _roomController.isLoading.value
-                          ? Center(
+                          ? const Center(
                               child: Padding(
                                 padding: EdgeInsets.all(AppSpacing.xl),
                                 child: CustomLoading(),
                               ),
                             )
-                          : SizedBox();
+                          : const SizedBox();
                     }),
                     Obx(() {
                       return _roomController.errorMessage.isNotEmpty == true
@@ -162,14 +162,14 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
                               actionLabel: 'Retry',
                               onAction: () => _roomController.getPublicRooms(),
                             )
-                          : SizedBox();
+                          : const SizedBox();
                     }),
                     Obx(() {
                       return !_roomController.isLoading.value
                           ? ListView.separated(
                               shrinkWrap: true,
                               itemCount: _roomController.publicTables.length,
-                              physics: NeverScrollableScrollPhysics(
+                              physics: const NeverScrollableScrollPhysics(
                                 parent: BouncingScrollPhysics(),
                               ),
                               itemBuilder: (context, index) {
@@ -194,10 +194,10 @@ class _PublicMatchmakingScreenState extends State<PublicMatchmakingScreen> {
                                 );
                               },
                               separatorBuilder: (context, index) {
-                                return SizedBox(height: AppSpacing.md);
+                                return const SizedBox(height: AppSpacing.md);
                               },
                             )
-                          : SizedBox();
+                          : const SizedBox();
                     }),
                   ],
                 ),

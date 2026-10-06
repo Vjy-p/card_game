@@ -93,12 +93,12 @@ class _OpenPileState extends State<JokerPile> {
                           ),
                         ),
                       )
-                      .animate(delay: Duration(milliseconds: 1200))
+                      .animate(delay: const Duration(milliseconds: 1200))
                       .slide(
                         curve: Curves.easeOut,
-                        begin: isMobile ? Offset(0.5, -1.2) : Offset(-1.7, 0),
-                        end: Offset(0, 0),
-                        duration: Duration(milliseconds: 1300),
+                        begin: isMobile ? const Offset(0.5, -1.2) : const Offset(-1.7, 0),
+                        end: const Offset(0, 0),
+                        duration: const Duration(milliseconds: 1300),
                       ),
             ),
           ),

@@ -10,7 +10,7 @@ class GameWinnerIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xs,
         vertical: AppSpacing.sm,
       ),
@@ -23,7 +23,7 @@ class GameWinnerIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: AppSpacing.xxs,
         children: [
-          Icon(Icons.circle, color: AppColors.actionPrimary, size: 8),
+          const Icon(Icons.circle, color: AppColors.actionPrimary, size: 8),
           Flexible(
             child: Text(
               'Winner is $playerName\'s',

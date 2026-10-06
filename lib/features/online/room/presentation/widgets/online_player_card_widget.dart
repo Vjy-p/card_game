@@ -26,7 +26,7 @@ class OnlinePlayerCardWidget extends StatelessWidget {
         height: height,
         transform: Matrix4.translationValues(0, data.selected ? -18 : 0, 0),
         child: data.card == null
-            ? CardBack()
+            ? const CardBack()
             : data.faceUp && data.card != null
             ? OnlineCardFace(card: data.card!)
             : const CardBack(),

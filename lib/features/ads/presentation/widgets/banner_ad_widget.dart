@@ -4,6 +4,7 @@ import 'package:card_game/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BannerAdWidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class BannerAdWidgetState extends State<BannerAdWidget> {
   @override
   void initState() {
     super.initState();
-    if (kIsWeb) {
+    if (kIsWeb || Get.testMode) {
       return;
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

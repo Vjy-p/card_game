@@ -94,7 +94,7 @@ class _CardAnimationOverlayState extends State<CardAnimationOverlay>
     // Arc peak should sit at the horizontal MIDPOINT between start and end,
     // not their sum - that's what was throwing the curve off before.
     final double midX = (start!.dx + end!.dx) / 2;
-    final double arcHeight = 120;
+    const double arcHeight = 120;
     control = Offset(
       midX,
       (start!.dy < end!.dy ? start!.dy : end!.dy) - arcHeight,
@@ -137,57 +137,59 @@ class _CardAnimationOverlayState extends State<CardAnimationOverlay>
           return const SizedBox();
         }
 
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (_, _) {
-            final offset = _bezier(animation.value);
-            final rotation = lerpDouble(.20, 0, animation.value)!;
-            final scale = lerpDouble(.92, 1, animation.value)!;
-            // Quick fade-in so the card doesn't pop in abruptly at the start.
-            final opacity = Curves.easeOut.transform(
-              (animation.value / 0.25).clamp(0.0, 1.0),
-            );
+        final bool isDeckDraw =
+            _activeFlight!.type == CardAnimationType.drawFromDeck;
 
-            final bool isDeckDraw =
-                _activeFlight!.type == CardAnimationType.drawFromDeck;
+        final cardWidget = Material(
+          color: Colors.transparent,
+          elevation: 12,
+          child: SizedBox(
+            height: CardDimensions.height(context),
+            width: CardDimensions.width(context),
+            child: isDeckDraw
+                ? const CardBack()
+                : OnlinePlayerCardWidget(
+                    data: OnlinePlayerViewData(
+                      card: _activeFlight!.card,
+                      selected: false,
+                    ),
+                  ),
+          ),
+        );
 
-            return Stack(
-              children: [
-                Positioned(
-                  left: offset.dx,
-                  top: offset.dy,
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Transform.rotate(
-                      angle: rotation,
-                      child: Transform.scale(
-                        scale: scale,
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 12,
-                          child: SizedBox(
-                            height: CardDimensions.height(context),
-                            width: CardDimensions.width(context),
-                            // Deck draws don't know the card face yet, so
-                            // fly a card back instead of a blank/null card.
-                            // Open-card draws already know the face.
-                            child: isDeckDraw
-                                ? const CardBack()
-                                : OnlinePlayerCardWidget(
-                                    data: OnlinePlayerViewData(
-                                      card: _activeFlight!.card,
-                                      selected: false,
-                                    ),
-                                  ),
-                          ),
+        return RepaintBoundary(
+          child: AnimatedBuilder(
+            animation: animation,
+            builder: (_, child) {
+              final offset = _bezier(animation.value);
+              final rotation = lerpDouble(.20, 0, animation.value)!;
+              final scale = lerpDouble(.92, 1, animation.value)!;
+              // Quick fade-in so the card doesn't pop in abruptly at the start.
+              final opacity = Curves.easeOut.transform(
+                (animation.value / 0.25).clamp(0.0, 1.0),
+              );
+
+              return Stack(
+                children: [
+                  Positioned(
+                    left: offset.dx,
+                    top: offset.dy,
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Transform.rotate(
+                        angle: rotation,
+                        child: Transform.scale(
+                          scale: scale,
+                          child: child,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+            child: cardWidget,
+          ),
         );
       }),
     );

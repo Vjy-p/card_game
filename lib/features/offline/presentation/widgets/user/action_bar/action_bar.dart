@@ -62,7 +62,7 @@ class ActionBar extends StatelessWidget {
       ),
 
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         // vertical: AppRadius.sm,
       ),

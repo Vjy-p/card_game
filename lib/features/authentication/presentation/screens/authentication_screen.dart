@@ -11,7 +11,9 @@ class AuthenticationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthenticationController>(
-      init: AuthenticationController(),
+      init: Get.isRegistered<AuthenticationController>()
+          ? Get.find<AuthenticationController>()
+          : AuthenticationController(),
       builder: (controller) {
         return Scaffold(
           body: SafeArea(

@@ -76,11 +76,11 @@ class HostLobbyScreen extends GetView<RoomController> {
                   ],
                 ),
               ),
-              InviteCard(),
-              LobbyFooter(),
-              SizedBox(height: AppSpacing.sm),
-              StartGameButton(),
-              SizedBox(height: AppSpacing.lg),
+              const InviteCard(),
+              const LobbyFooter(),
+              const SizedBox(height: AppSpacing.sm),
+              const StartGameButton(),
+              const SizedBox(height: AppSpacing.lg),
             ],
           );
         }),
@@ -104,9 +104,9 @@ class HostLobbyScreen extends GetView<RoomController> {
             ),
           ),
           const Spacer(),
-          IconButton(
+          const IconButton(
             onPressed: null,
-            icon: const Icon(Icons.settings, color: Colors.transparent),
+            icon: Icon(Icons.settings, color: Colors.transparent),
           ),
         ],
       ),

@@ -15,7 +15,7 @@ class ProfileRowWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.md),
         color: AppColors.backgroundSecondary,
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
       ),
@@ -27,14 +27,14 @@ class ProfileRowWidget extends StatelessWidget {
             flex: 2,
             child: Text(
               label,
-              style: TextStyle(color: AppColors.textSecondary),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ),
           Expanded(
             flex: 3,
             child: Text(
               value,
-              style: TextStyle(color: AppColors.textSecondary),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ),
         ],

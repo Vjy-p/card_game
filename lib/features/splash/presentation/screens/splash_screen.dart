@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:card_game/core/responsive/responsive_value.dart';
 import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_motion.dart';
@@ -50,6 +52,13 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _start() async {
+    // Precache critical card and branding assets so first game load has zero decode lag
+    unawaited(Future.wait([
+      precacheImage(const AssetImage('assets/images/card_back.png'), context),
+      precacheImage(const AssetImage('assets/logo/logo.png'), context),
+      precacheImage(const AssetImage('assets/logo/bg.png'), context),
+    ]));
+
     final mediaQuery = MediaQuery.of(context);
 
     if (mediaQuery.disableAnimations) {

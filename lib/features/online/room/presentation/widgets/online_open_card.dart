@@ -102,20 +102,20 @@ class _OpenPileState extends State<OnlineOpenCard> {
                                 ),
                               ),
                             )
-                            .animate(delay: Duration(milliseconds: 1200))
+                            .animate(delay: const Duration(milliseconds: 1200))
                             .custom(
                               duration: 1000.ms,
                               builder: (context, value, child) {
-                                return value == 1 ? child : CardBack();
+                                return value == 1 ? child : const CardBack();
                               },
                             )
                             .slide(
                               curve: Curves.easeOut,
                               begin: isMobile
-                                  ? Offset(-0.1, -1.15)
-                                  : Offset(-3, 0),
-                              end: Offset(0, 0),
-                              duration: Duration(milliseconds: 1000),
+                                  ? const Offset(-0.1, -1.15)
+                                  : const Offset(-3, 0),
+                              end: const Offset(0, 0),
+                              duration: const Duration(milliseconds: 1000),
                             )
                             .then(delay: (-700).ms)
                             .flipH(),

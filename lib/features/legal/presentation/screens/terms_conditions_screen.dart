@@ -129,7 +129,7 @@ class TermsConditionsScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: CustomBackButton(onTap: CanGoBack.go),
+          leading: const CustomBackButton(onTap: CanGoBack.go),
           title: const Text(
             'Terms & Conditions',
             // style: TextStyle(
@@ -144,11 +144,11 @@ class TermsConditionsScreen extends StatelessWidget {
             horizontal: AppSpacing.md,
             vertical: AppSpacing.sm,
           ),
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LegalHeader(
+              const LegalHeader(
                 icon: Icons.description_outlined,
                 title: 'Terms of Use',
                 description:
@@ -159,7 +159,7 @@ class TermsConditionsScreen extends StatelessWidget {
               const SizedBox(height: 28),
               ListView.separated(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(
+                physics: const NeverScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
                 ),
                 itemCount: termsAndConditionsContent.length,
@@ -172,10 +172,10 @@ class TermsConditionsScreen extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return SizedBox(height: AppSpacing.xs);
+                  return const SizedBox(height: AppSpacing.xs);
                 },
               ),
-              LegalFooter(
+              const LegalFooter(
                 text:
                     'By using Card Game, you acknowledge that you have read, understood, and agreed to these Terms & Conditions.',
               ),

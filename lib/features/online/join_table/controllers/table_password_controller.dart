@@ -2,7 +2,7 @@ import 'package:card_game/features/online/join_table/models/table_password_state
 import 'package:get/get.dart';
 
 class TablePasswordController extends GetxController {
-  TablePasswordState tablePasswordState = TablePasswordState();
+  TablePasswordState tablePasswordState = const TablePasswordState();
 
   void setPassword(String value) {
     tablePasswordState = tablePasswordState.copyWith(

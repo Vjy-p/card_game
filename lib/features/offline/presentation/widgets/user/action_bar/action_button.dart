@@ -21,7 +21,7 @@ class ActionButton extends StatelessWidget {
       minWidth: 40,
       onPressed: onPressed,
       // elevation: 4,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: AppRadius.sm,
       ),

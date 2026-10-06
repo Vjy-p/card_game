@@ -15,15 +15,25 @@ class AuthenticationController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isButtonLoading = false.obs;
 
-  final SupabaseClient _supabase = Supabase.instance.client;
-  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final SupabaseClient? _injectedSupabase;
+  final GoogleSignIn? _injectedGoogleSignIn;
+
+  AuthenticationController({
+    SupabaseClient? supabaseClient,
+    GoogleSignIn? googleSignInClient,
+  })  : _injectedSupabase = supabaseClient,
+        _injectedGoogleSignIn = googleSignInClient;
+
+  SupabaseClient get _supabase => _injectedSupabase ?? Supabase.instance.client;
+  GoogleSignIn get _googleSignIn =>
+      _injectedGoogleSignIn ?? GoogleSignIn.instance;
   StreamSubscription<GoogleSignInAuthenticationEvent>? googleAuthSubscription;
 
   @override
   void onInit() {
     super.onInit();
 
-    if (kIsWeb) {
+    if (kIsWeb && !Get.testMode) {
       initializeGoogleWebListener();
     }
   }

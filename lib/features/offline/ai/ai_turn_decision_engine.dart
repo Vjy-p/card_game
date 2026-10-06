@@ -179,43 +179,17 @@ class AITurnDecisionEngine {
   int _calculateSequencePotential(List<PlayingCard> hand) {
     if (hand.isEmpty) return 0;
 
-    final ranks = <int>[];
-    final rankMap = {
-      'A': 1,
-      '2': 2,
-      '3': 3,
-      '4': 4,
-      '5': 5,
-      '6': 6,
-      '7': 7,
-      '8': 8,
-      '9': 9,
-      '10': 10,
-      'J': 11,
-      'Q': 12,
-      'K': 13,
-    };
-
-    for (final card in hand) {
-      final rankStr = card.rank.toString().split('.').last;
-      if (rankMap.containsKey(rankStr)) {
-        ranks.add(rankMap[rankStr]!);
-      }
-    }
-
-    if (ranks.isEmpty) return 0;
-
-    ranks.sort();
+    final ranks = hand.map((card) => card.rank.value).toList()..sort();
     int maxSequence = 1;
     int currentSequence = 1;
 
     for (int i = 1; i < ranks.length; i++) {
       if (ranks[i] == ranks[i - 1] + 1) {
         currentSequence++;
-        maxSequence = maxSequence > currentSequence
-            ? maxSequence
-            : currentSequence;
-      } else {
+        if (currentSequence > maxSequence) {
+          maxSequence = currentSequence;
+        }
+      } else if (ranks[i] != ranks[i - 1]) {
         currentSequence = 1;
       }
     }
@@ -229,7 +203,7 @@ class AITurnDecisionEngine {
     required bool isDifficult,
   }) {
     if (context.boardState.openCard == null) {
-      return DrawDecisionFactors(
+      return const DrawDecisionFactors(
         shouldTakeOpen: false,
         confidence: 0.9,
         reason: 'No open card available',
@@ -242,7 +216,7 @@ class AITurnDecisionEngine {
     // Check if it's a joker
     final isJoker = openCard.rank.toString() == jokerRank;
     if (isJoker) {
-      return DrawDecisionFactors(
+      return const DrawDecisionFactors(
         shouldTakeOpen: true,
         confidence: 1.0,
         reason: 'Open card is joker',
@@ -267,7 +241,7 @@ class AITurnDecisionEngine {
     }
 
     // Default to draw from deck
-    return DrawDecisionFactors(
+    return const DrawDecisionFactors(
       shouldTakeOpen: false,
       confidence: 0.8,
       reason: 'No strategic benefit to open card',

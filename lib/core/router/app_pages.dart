@@ -203,12 +203,12 @@ class AppPages {
     ),
     GetPage(
       name: AppRoute.offlineRanking.path,
-      page: () => RankingScreen(),
+      page: () => const RankingScreen(),
       // binding: AppBinding(),
     ),
     GetPage(
       name: AppRoute.onlineRanking.path,
-      page: () => OnlineRankingScreen(),
+      page: () => const OnlineRankingScreen(),
       // binding: AppBinding(),
     ),
     GetPage(

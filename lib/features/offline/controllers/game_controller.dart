@@ -23,7 +23,7 @@ class GameController extends GetxController {
 
   final GameEngine _engine;
   late final AIController _aiController;
-  String gameSessionId = DateTime.fromMicrosecondsSinceEpoch.toString();
+  String gameSessionId = DateTime.now().microsecondsSinceEpoch.toString();
   final adsController = Get.find<AdsController>();
 
   final Rx<TableViewState> _table = TableViewState.initial().obs;
@@ -89,7 +89,7 @@ class GameController extends GetxController {
   // }
 
   Future<void> initializeGame() async {
-    gameSessionId = DateTime.fromMicrosecondsSinceEpoch.toString();
+    gameSessionId = DateTime.now().microsecondsSinceEpoch.toString();
     final animController = Get.put(GameAnimationController());
 
     // 1. This initializes the deck and fills player hands internally
@@ -108,17 +108,15 @@ class GameController extends GetxController {
     animController.startDealing();
     refreshTable();
 
-    // 4. Staggered animation: Add cards back to hands one by one
+    // 4. Staggered animation: Add cards round-by-round to reduce rebuild cycles from 52 to 13
     const int cardsPerPlayer = 13;
     for (int round = 0; round < cardsPerPlayer; round++) {
       for (int seat = 0; seat < players.length; seat++) {
         final card = capturedHands[seat]![round];
         players[seat].hand.add(card);
-
-        refreshTable();
-        // Adjust speed here: 50ms is fast, 100ms is standard
-        await Future.delayed(const Duration(milliseconds: 60));
       }
+      refreshTable();
+      await Future.delayed(const Duration(milliseconds: 70));
     }
 
     animController.stopDealing();
@@ -292,7 +290,6 @@ class GameController extends GetxController {
       openCard: _engine.deckManager.openCard,
     );
 
-    _table.refresh();
     update();
   }
 
@@ -447,8 +444,16 @@ class GameController extends GetxController {
   }
 
   @override
+  void onClose() {
+    clearData();
+    confettiController.dispose();
+    super.onClose();
+  }
+
+  @override
   void dispose() {
     clearData();
+    confettiController.dispose();
     super.dispose();
   }
 

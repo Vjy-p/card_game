@@ -55,10 +55,10 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
           gravity: 0.1,
           colors: AppColors.colorsList,
           child: Scaffold(
-            appBar: AppBar(title: Text('Winners')),
+            appBar: AppBar(title: const Text('Winners')),
             body: ListView.separated(
               itemCount: controller.rankings.length,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: AppSpacing.xs,
                 horizontal: AppSpacing.xs,
               ),
@@ -75,14 +75,14 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                   collapsedBackgroundColor: AppColors.surfacePrimary,
                   leading: Text(
                     controller.rankings[index].score.toString(),
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
                   ),
                   title: Text(
                     controller.rankings[index].name,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  tilePadding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                  childrenPadding: EdgeInsets.symmetric(
+                  tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                  childrenPadding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.xs,
                   ),
                   children: [
@@ -115,7 +115,7 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                 );
               },
               separatorBuilder: (context, index) {
-                return SizedBox(height: AppSpacing.xs);
+                return const SizedBox(height: AppSpacing.xs);
               },
             ),
             bottomNavigationBar: BottomAppBar(
@@ -132,18 +132,18 @@ class _OnlineRankingScreenState extends State<OnlineRankingScreen> {
                         Get.back();
                       },
                       label: 'Back',
-                      icon: Icon(Icons.arrow_back_ios_new, size: 18),
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                     ),
                   ),
                   Expanded(
                     child: ActionButton(
                       onPressed: () async {
                         controller.clearData();
-                        await Future.delayed(Duration(microseconds: 100));
+                        await Future.delayed(const Duration(microseconds: 100));
                         AppRoute.home.offAll();
                       },
                       label: 'Play again',
-                      icon: Icon(Icons.restart_alt, size: 18),
+                      icon: const Icon(Icons.restart_alt, size: 18),
                     ),
                   ),
                 ],

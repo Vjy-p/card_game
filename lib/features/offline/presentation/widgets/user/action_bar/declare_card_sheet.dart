@@ -78,8 +78,8 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: const Text(
+                    const Expanded(
+                      child: Text(
                         'Declare Sets',
                         style: TextStyle(
                           fontSize: 18,
@@ -90,7 +90,7 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                     MaterialButton(
                       minWidth: 30,
                       height: 30,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
                       color: AppColors.textMuted,
@@ -142,9 +142,9 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                     horizontal: 12,
                     vertical: 16,
                   ),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.surfacePrimary,
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                       top: Radius.circular(30),
                     ),
                   ),
@@ -178,7 +178,7 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                           Get.back();
                         },
                         label: 'Back',
-                        icon: Icon(Icons.arrow_back_ios, size: 18),
+                        icon: const Icon(Icons.arrow_back_ios, size: 18),
                       ),
                     ),
                     Expanded(
@@ -195,7 +195,7 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                           }
                         },
                         label: 'Declare',
-                        icon: Icon(Icons.check_circle, size: 18),
+                        icon: const Icon(Icons.check_circle, size: 18),
                       ),
                     ),
                   ],
@@ -253,7 +253,7 @@ class _DeclareCardSheetState extends State<DeclareCardSheet> {
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: Text(
                     'SET ${setIndex + 1}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

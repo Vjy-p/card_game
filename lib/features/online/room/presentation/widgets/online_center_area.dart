@@ -206,7 +206,7 @@ class OnlineCenterArea extends GetView<OnlineGameController> {
                   controller.pickOpenCard(card: controller.openCard.value!);
                 },
               )
-            : DiscardStackPlaceholder(isVisible: true);
+            : const DiscardStackPlaceholder(isVisible: true);
       }),
     );
   }
