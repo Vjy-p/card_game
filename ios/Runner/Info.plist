@@ -81,5 +81,21 @@
   </array>
   <key>GADApplicationIdentifier</key>
   <string>ca-app-pub-3380879541884589~1597080284</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>upi</string>
+    <string>googlepay</string>
+    <string>phonepe</string>
+    <string>paytm</string>
+    <string>bhim</string>
+    <string>credpay</string>
+    <string>tez</string>
+    <string>paytmmp</string>
+  </array>
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSAllowsArbitraryLoadsInWebContent</key>
+    <true/>
+  </dict>
 </dict>
 </plist>

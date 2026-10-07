@@ -150,20 +150,20 @@ class HomeScreen extends StatelessWidget {
                                 size: 24,
                               ),
                             ),
-                            // IconButton(
-                            //   style: ButtonStyle(
-                            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            //     visualDensity: VisualDensity.compact,
-                            //     padding: WidgetStatePropertyAll(
-                            //       EdgeInsets.zero,
-                            //     ),
-                            //   ),
-                            //   tooltip: 'Payments',
-                            //   onPressed: () {
-                            //     AppRoute.payments.go();
-                            //   },
-                            //   icon: Icon(Icons.payments, size: 24),
-                            // ),
+                            IconButton(
+                              style: const ButtonStyle(
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                                padding: WidgetStatePropertyAll(
+                                  EdgeInsets.zero,
+                                ),
+                              ),
+                              tooltip: 'Coin Store',
+                              onPressed: () {
+                                AppRoute.payments.go();
+                              },
+                              icon: const Icon(Icons.monetization_on_outlined, size: 24),
+                            ),
                             // IconButton(
                             //   tooltip: 'Settings',
                             //   onPressed: null,

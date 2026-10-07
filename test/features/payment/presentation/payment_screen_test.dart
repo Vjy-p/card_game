@@ -1,345 +1,354 @@
+import 'package:card_game/features/payment/controllers/payment_controller.dart';
+import 'package:card_game/features/payment/models/coin_package.dart';
+import 'package:card_game/features/payment/models/payment_result.dart';
+import 'package:card_game/features/payment/models/payment_state_machine.dart';
+import 'package:card_game/features/payment/models/payment_status.dart';
+import 'package:card_game/features/payment/presentation/screens/payments_screen.dart';
+import 'package:card_game/features/payment/services/razorpay_payment_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 
-import '../controllers/payment_state_machine_test.dart';
+class MockRazorpayPaymentService implements IRazorpayPaymentService {
+  bool initialized = false;
+  bool disposed = false;
+  CoinPackage? lastPackage;
+  String? lastCustomerEmail;
+  PaymentResult openResult =
+      PaymentResult.success(paymentId: 'pay_mock_123');
+
+  @override
+  Future<void> initialize() async {
+    initialized = true;
+  }
+
+  @override
+  Future<PaymentResult> openCheckout({
+    required CoinPackage package,
+    required String customerEmail,
+    String? customerContact,
+  }) async {
+    lastPackage = package;
+    lastCustomerEmail = customerEmail;
+    return openResult;
+  }
+
+  @override
+  void dispose() {
+    disposed = true;
+  }
+}
 
 void main() {
-  group('Razorpay Payment State Machine', () {
-    // 1
+  setUp(() {
+    Get.reset();
+    Get.testMode = true;
+  });
+
+  tearDown(() {
+    Get.reset();
+  });
+
+  group('Payment State Machine Transitions', () {
     test('created -> checkout started', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      expect(machine.state, TestPaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.checkoutStarted);
+      expect(machine.state, PaymentStatus.checkoutStarted);
     });
 
-    // 2
     test('checkout -> captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 3
     test('checkout -> failed', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      machine.transition(TestPaymentStatus.failed);
-
-      expect(machine.state, TestPaymentStatus.failed);
+      machine.transition(PaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.failed);
+      expect(machine.state, PaymentStatus.failed);
     });
 
-    // 4
     test('checkout -> pending', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      machine.transition(TestPaymentStatus.pending);
-
-      expect(machine.state, TestPaymentStatus.pending);
+      machine.transition(PaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.pending);
+      expect(machine.state, PaymentStatus.pending);
     });
 
-    // 5
     test('pending -> authorized', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      machine.transition(TestPaymentStatus.authorized);
-
-      expect(machine.state, TestPaymentStatus.authorized);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.authorized);
+      expect(machine.state, PaymentStatus.authorized);
     });
 
-    // 6
     test('pending -> captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 7
     test('authorized -> captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.authorized);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.authorized);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 8
     test('captured is terminal for failed', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      final result = machine.transition(TestPaymentStatus.failed);
-
+      machine.transition(PaymentStatus.captured);
+      final result = machine.transition(PaymentStatus.failed);
       expect(result, false);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 9
     test('captured -> refunded', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.refunded);
-
-      expect(machine.state, TestPaymentStatus.refunded);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.refunded);
+      expect(machine.state, PaymentStatus.refunded);
     });
 
-    // 10
     test('refunded is terminal', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.refunded);
-
-      final result = machine.transition(TestPaymentStatus.captured);
-
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.refunded);
+      final result = machine.transition(PaymentStatus.captured);
       expect(result, false);
     });
 
-    // 11
     test('duplicate captured is safe', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 12
     test('authorized webhook after captured does not downgrade', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      final result = machine.transition(TestPaymentStatus.authorized);
-
+      machine.transition(PaymentStatus.captured);
+      final result = machine.transition(PaymentStatus.authorized);
       expect(result, false);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 13
     test('failed then retry can reach checkout', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.failed);
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      expect(machine.state, TestPaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.failed);
+      machine.transition(PaymentStatus.checkoutStarted);
+      expect(machine.state, PaymentStatus.checkoutStarted);
     });
 
-    // 14
     test('network error represented by pending', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      expect(machine.state, TestPaymentStatus.pending);
+      machine.transition(PaymentStatus.pending);
+      expect(machine.state, PaymentStatus.pending);
     });
 
-    // 15
     test('bank timeout stays pending', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.checkoutStarted);
-
-      machine.transition(TestPaymentStatus.pending);
-
-      expect(machine.state, TestPaymentStatus.pending);
+      machine.transition(PaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.pending);
+      expect(machine.state, PaymentStatus.pending);
     });
 
-    // 16
     test('pending later becomes captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 17
     test('pending later becomes failed', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      machine.transition(TestPaymentStatus.failed);
-
-      expect(machine.state, TestPaymentStatus.failed);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.failed);
+      expect(machine.state, PaymentStatus.failed);
     });
 
-    // 18
     test('captured cannot become cancelled', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.transition(TestPaymentStatus.cancelled), false);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.transition(PaymentStatus.cancelled), false);
     });
 
-    // 19
     test('captured cannot become pending', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.transition(TestPaymentStatus.pending), false);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.transition(PaymentStatus.pending), false);
     });
 
-    // 20
     test('captured cannot become authorized', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.transition(TestPaymentStatus.authorized), false);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.transition(PaymentStatus.authorized), false);
     });
 
-    // 21
     test('webhook order captured before authorized', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.authorized);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.authorized);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 22
     test('webhook order failed before captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.failed);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.failed);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 23
     test('duplicate failed webhook is harmless', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.failed);
-
-      machine.transition(TestPaymentStatus.failed);
-
-      expect(machine.state, TestPaymentStatus.failed);
+      machine.transition(PaymentStatus.failed);
+      machine.transition(PaymentStatus.failed);
+      expect(machine.state, PaymentStatus.failed);
     });
 
-    // 24
     test('offline recovery pending -> captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      // Internet restored.
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 25
     test('app restart recovery pending -> captured', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      // Simulates status check after app restart.
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 26
     test('bank server failure can recover', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 27
     test('payment callback failure does not require immediate retry', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      expect(machine.state, TestPaymentStatus.pending);
+      machine.transition(PaymentStatus.pending);
+      expect(machine.state, PaymentStatus.pending);
     });
 
-    // 28
     test('uncertain payment cannot be automatically treated as failed', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.pending);
-
-      expect(machine.state, TestPaymentStatus.pending);
+      machine.transition(PaymentStatus.pending);
+      expect(machine.state, PaymentStatus.pending);
     });
 
-    // 29
     test('successful payment remains successful after duplicate events', () {
       final machine = PaymentStateMachine();
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      machine.transition(TestPaymentStatus.authorized);
-
-      machine.transition(TestPaymentStatus.captured);
-
-      expect(machine.state, TestPaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.authorized);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
     });
 
-    // 30
     test('complete uncertain payment lifecycle', () {
       final machine = PaymentStateMachine();
+      machine.transition(PaymentStatus.checkoutStarted);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.pending);
+      machine.transition(PaymentStatus.captured);
+      machine.transition(PaymentStatus.captured);
+      expect(machine.state, PaymentStatus.captured);
+    });
+  });
 
-      machine.transition(TestPaymentStatus.checkoutStarted);
+  group('PaymentController & Razorpay Flow', () {
+    test('initialize loads default packages and selects bronze package', () {
+      final mockService = MockRazorpayPaymentService();
+      final controller = PaymentController(paymentService: mockService);
+      Get.put(controller);
 
-      // Internet disappears.
-      machine.transition(TestPaymentStatus.pending);
+      expect(controller.packages.length, equals(5));
+      expect(controller.selectedPackage.value?.id, equals('coins_1500'));
+      expect(controller.status.value, equals(PaymentStatus.created));
+      expect(mockService.initialized, isTrue);
+    });
 
-      // App restarts.
-      machine.transition(TestPaymentStatus.pending);
+    test('buyPackage successfully completes and credits coins', () async {
+      final mockService = MockRazorpayPaymentService();
+      final controller = PaymentController(paymentService: mockService);
+      Get.put(controller);
 
-      // Server checks Razorpay.
-      machine.transition(TestPaymentStatus.captured);
+      final initialCoins = controller.userCoins.value;
+      final package = controller.packages.first; // 500 coins
 
-      // Duplicate webhook.
-      machine.transition(TestPaymentStatus.captured);
+      final result = await controller.buyPackage(package);
 
-      expect(machine.state, TestPaymentStatus.captured);
+      expect(result.isSuccess, isTrue);
+      expect(controller.status.value, equals(PaymentStatus.captured));
+      expect(controller.userCoins.value, equals(initialCoins + package.coins));
+      expect(controller.isProcessing.value, isFalse);
+    });
+
+    test('buyPackage handles user cancellation', () async {
+      final mockService = MockRazorpayPaymentService();
+      mockService.openResult = PaymentResult.cancelled();
+      final controller = PaymentController(paymentService: mockService);
+      Get.put(controller);
+
+      final initialCoins = controller.userCoins.value;
+      final package = controller.packages.first;
+
+      final result = await controller.buyPackage(package);
+
+      expect(result.isCancelled, isTrue);
+      expect(controller.status.value, equals(PaymentStatus.cancelled));
+      expect(controller.userCoins.value, equals(initialCoins)); // coins unchanged
+    });
+
+    test('buyPackage handles payment failure', () async {
+      final mockService = MockRazorpayPaymentService();
+      mockService.openResult =
+          PaymentResult.failure(errorMessage: 'Payment declined');
+      final controller = PaymentController(paymentService: mockService);
+      Get.put(controller);
+
+      final package = controller.packages.first;
+      final result = await controller.buyPackage(package);
+
+      expect(result.isFailure, isTrue);
+      expect(controller.status.value, equals(PaymentStatus.failed));
+      expect(controller.errorMessage.value, equals('Payment declined'));
+    });
+  });
+
+  group('PaymentsScreen Widget Test', () {
+    testWidgets('renders coin packages and reacts to selection',
+        (tester) async {
+      final mockService = MockRazorpayPaymentService();
+      final controller = PaymentController(paymentService: mockService);
+      Get.put(controller);
+
+      await tester.pumpWidget(
+        const GetMaterialApp(
+          home: PaymentsScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Coin Store'), findsOneWidget);
+      expect(find.text('Razorpay Secure Checkout'), findsOneWidget);
+      expect(find.text('Choose a package'), findsOneWidget);
+      expect(find.text('500 Coins'), findsOneWidget);
+      expect(find.text('1,500 Coins'), findsOneWidget);
+      expect(find.text('4,000 Coins'), findsOneWidget);
+
+      // Tap on the High Roller package (4,000 coins)
+      final packageFinder = find.text('4,000 Coins');
+      await tester.tap(packageFinder);
+      await tester.pumpAndSettle();
+
+      expect(controller.selectedPackage.value?.id, equals('coins_4000'));
+      expect(find.text('Pay ₹599 with Razorpay'), findsOneWidget);
     });
   });
 }
