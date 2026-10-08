@@ -20,6 +20,7 @@ lib/firebase_options.dart
 lib/features/payments/
 lib/firebase_options.dart
 supabase/
+firebase.json
 
 # IntelliJ related
 *.iml
