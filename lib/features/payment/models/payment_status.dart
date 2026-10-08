@@ -7,4 +7,6 @@ enum PaymentStatus {
   failed,
   cancelled,
   refunded,
+  refundPending,
+  refundFailed,
 }

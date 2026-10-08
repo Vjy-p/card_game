@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:card_game/core/services/common_services.dart';
 import 'package:card_game/features/payment/models/coin_package.dart';
+import 'package:card_game/features/payment/models/payment_history_model.dart';
 import 'package:card_game/features/payment/models/payment_result.dart';
 import 'package:card_game/features/payment/models/payment_state_machine.dart';
 import 'package:card_game/features/payment/models/payment_status.dart';
+import 'package:card_game/features/payment/services/payment_services.dart';
 import 'package:card_game/features/payment/services/razorpay_payment_service.dart';
 import 'package:card_game/features/profile/controllers/profile_controller.dart';
 import 'package:card_game/utils/custom_toast.dart';
@@ -13,9 +15,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PaymentController extends GetxController {
   PaymentController({IRazorpayPaymentService? paymentService})
-      : _paymentService = paymentService ?? RazorpayPaymentService();
+    : _razorPayPaymentService = paymentService ?? RazorpayPaymentService();
 
-  final IRazorpayPaymentService _paymentService;
+  final IRazorpayPaymentService _razorPayPaymentService;
   final PaymentStateMachine stateMachine = PaymentStateMachine();
 
   late final Rx<PaymentStatus> status;
@@ -27,20 +29,27 @@ class PaymentController extends GetxController {
 
   SupabaseClient get _supabase => Supabase.instance.client;
 
+  PaymentServices paymentServices = PaymentServices();
+  RxList<PaymentHistoryModel> paymentHistoryList = <PaymentHistoryModel>[].obs;
+  RxBool isLastPaymentHistory = false.obs;
+  final RxBool isHistoryLoading = false.obs;
+  final RxBool isHistoryError = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     status = stateMachine.state.obs;
     if (packages.isNotEmpty) {
-      selectedPackage.value = packages[1]; // Select popular Bronze package by default
+      selectedPackage.value =
+          packages[1]; // Select popular Bronze package by default
     }
-    _paymentService.initialize();
+    _razorPayPaymentService.initialize();
     loadUserCoins();
   }
 
   @override
   void onClose() {
-    _paymentService.dispose();
+    _razorPayPaymentService.dispose();
     super.onClose();
   }
 
@@ -72,7 +81,9 @@ class PaymentController extends GetxController {
 
   Future<PaymentResult> buyPackage(CoinPackage package) async {
     if (isProcessing.value) {
-      return PaymentResult.failure(errorMessage: 'A purchase is already in progress.');
+      return PaymentResult.failure(
+        errorMessage: 'A purchase is already in progress.',
+      );
     }
 
     isProcessing.value = true;
@@ -90,7 +101,7 @@ class PaymentController extends GetxController {
       status.value = stateMachine.state;
 
       // Open Razorpay Checkout modal
-      final result = await _paymentService.openCheckout(
+      final result = await _razorPayPaymentService.openCheckout(
         package: package,
         customerEmail: userEmail,
       );
@@ -156,6 +167,73 @@ class PaymentController extends GetxController {
     // If ProfileController is active, refresh its details
     if (Get.isRegistered<ProfileController>()) {
       Get.find<ProfileController>().getUserDetails();
+    }
+  }
+
+  Future<void> getPaymentHistoryStatus({required String id}) async {
+    // try {
+    //   isHistoryLoading.value = true;
+    //   isHistoryError.value = false;
+
+    //   final response = await PaymentServices().getPaymentStatus(id);
+    //   if (response['payment'] != null) {
+    //     final List data = response['payment'] as List;
+
+    //     final List<PaymentHistoryModel> tempList = data
+    //         .map((e) => PaymentHistoryModel.fromJson(e))
+    //         .toList();
+    //     paymentHistoryList.addAll(tempList);
+    //     isHistoryLoading.value = false;
+    //     isHistoryError.value = false;
+    //   } else {
+    //     isHistoryLoading.value = false;
+    //     isHistoryError.value = true;
+    //   }
+    // } catch (e, stackTree) {
+    //   isHistoryLoading.value = false;
+    //   isHistoryError.value = true;
+    //   log('Error loading history: $e $stackTree');
+    // }
+  }
+
+  Future<void> getPaymentHistory() async {
+    try {
+      if (paymentHistoryList.isNotEmpty) {
+        return;
+      }
+      isHistoryLoading.value = true;
+      isHistoryError.value = false;
+
+      final response = await PaymentServices().getPaymentHistory();
+      if (response != null && response['payments'] != null) {
+        final List data = response['payments'] as List;
+
+        final List<PaymentHistoryModel> tempList = data
+            .map((e) => PaymentHistoryModel.fromJson(e))
+            .toList();
+
+        // for (PaymentHistoryModel payment in tempList) {
+        //   final int index = paymentHistoryList.indexWhere(
+        //     (e) => e.id == payment.id,
+        //   );
+        //   if (index == -1) {
+        //     paymentHistoryList.add(payment);
+        //   }
+        // }
+        paymentHistoryList.addAll(
+          tempList.where((p) => !paymentHistoryList.any((e) => e.id == p.id)),
+        );
+
+        isHistoryLoading.value = false;
+        isHistoryError.value = false;
+      } else {
+        isHistoryLoading.value = false;
+        isHistoryError.value = true;
+      }
+    } catch (e, stackTree) {
+      isHistoryLoading.value = false;
+      isHistoryError.value = true;
+      log('Error loading history: $e $stackTree');
     }
   }
 }

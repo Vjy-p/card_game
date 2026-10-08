@@ -2,6 +2,7 @@ import 'package:card_game/core/theme/app_colors.dart';
 import 'package:card_game/core/theme/app_radius.dart';
 import 'package:card_game/core/theme/app_spacing.dart';
 import 'package:card_game/features/payment/controllers/payment_controller.dart';
+import 'package:card_game/features/payment/presentation/screens/payments_history_screen.dart';
 import 'package:card_game/features/payment/presentation/widgets/coin_package_tile.dart';
 import 'package:card_game/utils/custom_back_button.dart';
 import 'package:card_game/utils/custom_loading.dart';
@@ -24,6 +25,13 @@ class PaymentsScreen extends StatelessWidget {
         title: const Text('Coin Store'),
         centerTitle: false,
         actions: [
+          IconButton(
+            onPressed: () {
+              controller.getPaymentHistory();
+              Get.to(() => const PaymentsHistoryScreen());
+            },
+            icon: const Icon(Icons.history),
+          ),
           // Current Balance Chip
           Obx(() {
             return Container(

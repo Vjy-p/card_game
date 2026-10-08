@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:card_game/features/payment/models/coin_package.dart';
+import 'package:card_game/features/payment/models/payment_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,6 +14,7 @@ class PaymentServices {
 
   // Factory returns the same instance every time
   factory PaymentServices() => _instance;
+  final SupabaseClient apiClient = Supabase.instance.client;
 
   Future verifyPayment({
     required String currentDbPaymentId,
@@ -79,30 +81,67 @@ class PaymentServices {
     }
   }
 
-  Future getPaymentHistory() async {
+  Future<PaymentModel> getPaymentStatus(String paymentId) async {
+    final response = await apiClient.functions.invoke(
+      'payment-status',
+      body: {'payment_id': paymentId},
+    );
+
+    final data = Map<String, dynamic>.from(response.data as Map);
+
+    if (data['error'] != null) {
+      throw Exception(data['error'].toString());
+    }
+
+    return PaymentModel.fromJson(
+      Map<String, dynamic>.from(data['payment'] as Map),
+    );
+  }
+
+  Future getPaymentHistory({int page = 1, int limit = 20}) async {
     try {
-      final user = Supabase.instance.client.auth.currentUser;
-      if (user != null) {
-        final response = await Supabase.instance.client.functions.invoke(
-          'create-payment-order',
-          body: {
-            'amount': package.amountInPaise,
-            'client_request_id': clientRequestId,
-            'package_id': package.id,
-            'coins': package.coins,
-          },
-        );
+      final response = await apiClient.functions.invoke(
+        'payment-history',
+        body: {'page': page, 'limit': limit},
+      );
 
-        if (response.status == 200 && response.data != null) {
-          final dynamic data = response.data is String
-              ? jsonDecode(response.data as String)
-              : response.data;
+      log(
+        'payment history response: '
+        '${response.data}',
+      );
 
-          return data;
-        }
+      final data = response.data;
+
+      if (data == null) {
+        throw Exception('Empty response from payment-history');
       }
+
+      final json = Map<String, dynamic>.from(data as Map);
+
+      if (json['success'] != true) {
+        throw Exception(
+          json['message'] ?? json['error'] ?? 'Unable to fetch payment history',
+        );
+      }
+
+      return data;
+      // } on  catch (e) {
+      //   log(
+      //     'payment history FunctionException '
+      //     'status=${e.status} '
+      //     'reason=${e.reasonPhrase} '
+      //     'details=${e.details}',
+      //   );
+
+      //   throw Exception(
+      //     e.details?.toString() ??
+      //         e.reasonPhrase ??
+      //         'Payment history request failed',
+      //   );
     } catch (e) {
-      log('Error in getting payment history');
+      log('payment history error: $e');
+
+      rethrow;
     }
   }
 }

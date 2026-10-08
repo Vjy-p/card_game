@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:card_game/features/payment/models/coin_package.dart';
 import 'package:card_game/features/payment/models/payment_result.dart';
+import 'package:card_game/features/payment/services/payment_services.dart';
 import 'package:card_game/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -28,6 +28,8 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
   String? _currentDbPaymentId;
   String? _currentOrderId;
 
+  PaymentServices paymentServices = PaymentServices();
+
   @override
   Future<void> initialize() async {
     if (_initialized || kIsWeb || Get.testMode) {
@@ -46,30 +48,27 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    log('[Razorpay] Payment Success: paymentId=${response.paymentId}, orderId=${response.orderId}');
+    log(
+      '[Razorpay] Payment Success: paymentId=${response.paymentId}, orderId=${response.orderId}',
+    );
 
     if (_currentDbPaymentId != null && response.signature != null) {
       try {
-        final verifyResponse = await Supabase.instance.client.functions.invoke(
-          'verify-payment',
-          body: {
-            'payment_id': _currentDbPaymentId,
-            'order_id': response.orderId ?? _currentOrderId,
-            'razorpay_payment_id': response.paymentId,
-            'razorpay_signature': response.signature,
-          },
+        final data = await paymentServices.verifyPayment(
+          currentDbPaymentId: _currentDbPaymentId ?? '',
+          orderId: response.orderId ?? _currentOrderId ?? '',
+          paymentId: response.paymentId ?? '',
+          signature: response.signature ?? '',
         );
-
-        final dynamic data = verifyResponse.data is String
-            ? jsonDecode(verifyResponse.data as String)
-            : verifyResponse.data;
 
         if (data is Map && data['error'] != null) {
           log('[Razorpay] Verification rejected: ${data['error']}');
           if (_pendingCompleter != null && !_pendingCompleter!.isCompleted) {
-            _pendingCompleter!.complete(PaymentResult.failure(
-              errorMessage: 'Payment verification failed: ${data['error']}',
-            ));
+            _pendingCompleter!.complete(
+              PaymentResult.failure(
+                errorMessage: 'Payment verification failed: ${data['error']}',
+              ),
+            );
             return;
           }
         }
@@ -80,26 +79,34 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
     }
 
     if (_pendingCompleter != null && !_pendingCompleter!.isCompleted) {
-      _pendingCompleter!.complete(PaymentResult.success(
-        paymentId: response.paymentId ?? '',
-        orderId: response.orderId ?? _currentOrderId,
-        signature: response.signature,
-      ));
+      _pendingCompleter!.complete(
+        PaymentResult.success(
+          paymentId: response.paymentId ?? '',
+          orderId: response.orderId ?? _currentOrderId,
+          signature: response.signature,
+        ),
+      );
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    log('[Razorpay] Payment Error: code=${response.code}, message=${response.message}');
+    log(
+      '[Razorpay] Payment Error: code=${response.code}, message=${response.message}',
+    );
     if (_pendingCompleter != null && !_pendingCompleter!.isCompleted) {
       if (response.code == Razorpay.PAYMENT_CANCELLED) {
-        _pendingCompleter!.complete(PaymentResult.cancelled(
-          message: response.message ?? 'Payment cancelled by user',
-        ));
+        _pendingCompleter!.complete(
+          PaymentResult.cancelled(
+            message: response.message ?? 'Payment cancelled by user',
+          ),
+        );
       } else {
-        _pendingCompleter!.complete(PaymentResult.failure(
-          errorMessage: response.message ?? 'Payment failed',
-          errorCode: response.code,
-        ));
+        _pendingCompleter!.complete(
+          PaymentResult.failure(
+            errorMessage: response.message ?? 'Payment failed',
+            errorCode: response.code,
+          ),
+        );
       }
     }
   }
@@ -107,9 +114,11 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
   void _handleExternalWallet(ExternalWalletResponse response) {
     log('[Razorpay] External Wallet Selected: ${response.walletName}');
     if (_pendingCompleter != null && !_pendingCompleter!.isCompleted) {
-      _pendingCompleter!.complete(PaymentResult.success(
-        paymentId: 'wallet_${response.walletName ?? "external"}',
-      ));
+      _pendingCompleter!.complete(
+        PaymentResult.success(
+          paymentId: 'wallet_${response.walletName ?? "external"}',
+        ),
+      );
     }
   }
 
@@ -128,7 +137,8 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
 
     if (kIsWeb) {
       return PaymentResult.failure(
-        errorMessage: 'Razorpay checkout is currently supported on mobile platforms.',
+        errorMessage:
+            'Razorpay checkout is currently supported on mobile platforms.',
       );
     }
 
@@ -138,9 +148,9 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
 
     // Cancel any previous pending checkout attempt
     if (_pendingCompleter != null && !_pendingCompleter!.isCompleted) {
-      _pendingCompleter!.complete(PaymentResult.cancelled(
-        message: 'Superseded by new payment request',
-      ));
+      _pendingCompleter!.complete(
+        PaymentResult.cancelled(message: 'Superseded by new payment request'),
+      );
     }
 
     _pendingCompleter = Completer<PaymentResult>();
@@ -153,29 +163,18 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
     try {
       final user = Supabase.instance.client.auth.currentUser;
       if (user != null) {
-        final response = await Supabase.instance.client.functions.invoke(
-          'create-payment-order',
-          body: {
-            'amount': package.amountInPaise,
-            'client_request_id': clientRequestId,
-            'package_id': package.id,
-            'coins': package.coins,
-          },
-        );
+        final data = await paymentServices.getOrderID(package: package);
 
-        if (response.status == 200 && response.data != null) {
-          final dynamic data = response.data is String
-              ? jsonDecode(response.data as String)
-              : response.data;
-          if (data is Map && data['payment'] != null) {
-            final paymentData = data['payment'] as Map;
-            _currentDbPaymentId = paymentData['id']?.toString();
-            _currentOrderId = paymentData['razorpay_order_id']?.toString();
-          }
+        if (data is Map && data['payment'] != null) {
+          final paymentData = data['payment'] as Map;
+          _currentDbPaymentId = paymentData['id']?.toString();
+          _currentOrderId = paymentData['razorpay_order_id']?.toString();
         }
       }
     } catch (e) {
-      log('[Razorpay] Edge function create-payment-order error: $e. Proceeding with standard checkout.');
+      log(
+        '[Razorpay] Edge function create-payment-order error: $e. Proceeding with standard checkout.',
+      );
     }
 
     final options = <String, dynamic>{
@@ -194,9 +193,7 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
         'coins': package.coins.toString(),
         'client_request_id': clientRequestId,
       },
-      'theme': {
-        'color': '#3395FF',
-      },
+      'theme': {'color': '#3395FF'},
       if (_currentOrderId != null && _currentOrderId!.isNotEmpty)
         'order_id': _currentOrderId,
     };
@@ -206,7 +203,9 @@ class RazorpayPaymentService implements IRazorpayPaymentService {
     } catch (e) {
       log('[Razorpay] Open checkout exception: $e');
       if (!_pendingCompleter!.isCompleted) {
-        _pendingCompleter!.complete(PaymentResult.failure(errorMessage: e.toString()));
+        _pendingCompleter!.complete(
+          PaymentResult.failure(errorMessage: e.toString()),
+        );
       }
     }
 
