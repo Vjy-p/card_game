@@ -19,6 +19,7 @@ lib/utils/constants/constants.dart
 lib/firebase_options.dart
 lib/features/payments/
 lib/firebase_options.dart
+supabase/
 
 # IntelliJ related
 *.iml
