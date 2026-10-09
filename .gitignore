@@ -26,6 +26,7 @@ firebase.json
 **/android/app/google-services.json
 android/app/google-services.json
 macos/Runner/GoogleService-Info.plist
+ios/Runner/GoogleService-Info.plist
 
 # IntelliJ related
 *.iml
