@@ -21,6 +21,7 @@ lib/features/payments/
 lib/firebase_options.dart
 supabase/
 firebase.json
+.firebaserc
 
 # IntelliJ related
 *.iml
@@ -54,3 +55,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+/android/
+/ios/
+/macos/

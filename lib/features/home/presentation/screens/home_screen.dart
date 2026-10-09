@@ -32,7 +32,9 @@ class HomeScreen extends StatelessWidget {
       Get.lazyPut(() => GameAnimationController());
     }
     if (!Get.isRegistered<AIController>()) {
-      Get.lazyPut(() => AIController(engine: GameEngine(config: const GameConfig())));
+      Get.lazyPut(
+        () => AIController(engine: GameEngine(config: const GameConfig())),
+      );
     }
 
     if (action == HomePrimaryAction.playOffline) {
@@ -150,20 +152,23 @@ class HomeScreen extends StatelessWidget {
                                 size: 24,
                               ),
                             ),
-                            IconButton(
-                              style: const ButtonStyle(
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                visualDensity: VisualDensity.compact,
-                                padding: WidgetStatePropertyAll(
-                                  EdgeInsets.zero,
-                                ),
-                              ),
-                              tooltip: 'Coin Store',
-                              onPressed: () {
-                                AppRoute.payments.go();
-                              },
-                              icon: const Icon(Icons.monetization_on_outlined, size: 24),
-                            ),
+                            // IconButton(
+                            //   style: const ButtonStyle(
+                            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            //     visualDensity: VisualDensity.compact,
+                            //     padding: WidgetStatePropertyAll(
+                            //       EdgeInsets.zero,
+                            //     ),
+                            //   ),
+                            //   tooltip: 'Coin Store',
+                            //   onPressed: () {
+                            //     AppRoute.payments.go();
+                            //   },
+                            //   icon: const Icon(
+                            //     Icons.monetization_on_outlined,
+                            //     size: 24,
+                            //   ),
+                            // ),
                             // IconButton(
                             //   tooltip: 'Settings',
                             //   onPressed: null,

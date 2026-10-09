@@ -22,10 +22,41 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3380879541884589~1597080284</string>
+	<key>GIDClientID</key>
+	<string>1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>upi</string>
+		<string>googlepay</string>
+		<string>phonepe</string>
+		<string>paytm</string>
+		<string>bhim</string>
+		<string>credpay</string>
+		<string>tez</string>
+		<string>paytmmp</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -49,6 +80,11 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -66,36 +102,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>GIDClientID</key>
-  <string>1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t.apps.googleusercontent.com</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-  	<dict>
-  		<key>CFBundleTypeRole</key>
-  		<string>Editor</string>
-  		<key>CFBundleURLSchemes</key>
-  		<array>
-  			<string>com.googleusercontent.apps.1092733022095-89d1kjp23btmb1jg9ev5eg2unikrh34t</string>
-  		</array>
-  	</dict>
-  </array>
-  <key>GADApplicationIdentifier</key>
-  <string>ca-app-pub-3380879541884589~1597080284</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>upi</string>
-    <string>googlepay</string>
-    <string>phonepe</string>
-    <string>paytm</string>
-    <string>bhim</string>
-    <string>credpay</string>
-    <string>tez</string>
-    <string>paytmmp</string>
-  </array>
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSAllowsArbitraryLoadsInWebContent</key>
-    <true/>
-  </dict>
 </dict>
 </plist>

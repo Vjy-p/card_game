@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="vjy-p.github.io"
+                    android:host="cardgame-fourthcard.web.app"
                     android:pathPrefix="/" />
                 <!-- <data  android:pathPrefix /> -->
             </intent-filter>
