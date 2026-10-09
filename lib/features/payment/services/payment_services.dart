@@ -71,34 +71,39 @@ class PaymentServices {
           return data;
         }
       }
-    } catch (e) {
+    } catch (e, stackTree) {
       log(
-        '[Razorpay] Edge function create-payment-order error: $e. Proceeding with standard checkout.',
+        '[Razorpay] Edge function create-payment-order error: $e. Proceeding with standard checkout. $stackTree',
       );
-      return Exception(
+      throw Exception(
         '[Razorpay] Edge function create-payment-order error: $e. Proceeding with standard checkout.',
       );
     }
   }
 
-  Future<PaymentModel> getPaymentStatus(String paymentId) async {
-    final response = await apiClient.functions.invoke(
-      'payment-status',
-      body: {'payment_id': paymentId},
-    );
+  Future<PaymentModel?> getPaymentStatus(String paymentId) async {
+    try {
+      final response = await apiClient.functions.invoke(
+        'payment-status',
+        body: {'payment_id': paymentId},
+      );
 
-    final data = Map<String, dynamic>.from(response.data as Map);
+      final data = Map<String, dynamic>.from(response.data as Map);
 
-    if (data['error'] != null) {
-      throw Exception(data['error'].toString());
+      if (data['error'] != null) {
+        throw Exception(data['error'].toString());
+      }
+
+      return PaymentModel.fromJson(
+        Map<String, dynamic>.from(data['payment'] as Map),
+      );
+    } catch (e, stackTree) {
+      log('error get payment Status : $e $stackTree');
+      throw Exception('error get payment history : $e $stackTree');
     }
-
-    return PaymentModel.fromJson(
-      Map<String, dynamic>.from(data['payment'] as Map),
-    );
   }
 
-  Future getPaymentHistory({int page = 1, int limit = 20}) async {
+  Future<Map?> getPaymentHistory({int page = 1, int limit = 20}) async {
     try {
       final response = await apiClient.functions.invoke(
         'payment-history',
@@ -138,10 +143,9 @@ class PaymentServices {
       //         e.reasonPhrase ??
       //         'Payment history request failed',
       //   );
-    } catch (e) {
-      log('payment history error: $e');
-
-      rethrow;
+    } catch (e, stackTree) {
+      log('error get payment history : $e $stackTree');
+      throw Exception('error get payment history : $e $stackTree');
     }
   }
 }

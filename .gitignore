@@ -22,6 +22,10 @@ lib/firebase_options.dart
 supabase/
 firebase.json
 .firebaserc
+.firebase/
+**/android/app/google-services.json
+android/app/google-services.json
+macos/Runner/GoogleService-Info.plist
 
 # IntelliJ related
 *.iml
